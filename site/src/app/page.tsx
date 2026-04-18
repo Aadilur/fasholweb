@@ -1,97 +1,78 @@
 import Image from "next/image";
 import { Section } from "@/components/ui/Section";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
 import { Reveal, StaggerChildren, StaggerItem } from "@/components/ui/Reveal";
-import { StatCard } from "@/components/site/StatCard";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
-import { Figure } from "@/components/site/Figure";
-import { SupplyChainFigure } from "@/components/figures/SupplyChain";
+import { PlatformSection } from "@/components/site/PlatformSection";
 import { PriceBarsFigure } from "@/components/figures/PriceBars";
-import { CropCalendarFigure } from "@/components/figures/CropCalendar";
 import { BangladeshMapFigure } from "@/components/figures/BangladeshMap";
 import { PARTNERS, INVESTORS } from "@/data/site";
 
 export default function HomePage() {
  return (
  <>{/* ───────────── Hero ───────────── */}
- <section className="relative bg-[var(--color-ink)] text-[var(--color-paper)] overflow-hidden h-svh flex flex-col justify-between pt-[72px] tablet:pt-[96px]">
- <div className="absolute inset-0">
- {/* Static poster for instant paint + video fallback */}
+ <section className="relative bg-[var(--color-paper)] text-[var(--color-deep-green)]">
+ {/* Illustration - natural aspect, full width */}
+ <div className="relative w-full">
  <Image
- src="/images/content/hero-paddy-aerial.jpg"
+ src="/h7-hero.webp"
  alt=""
- fill
+ width={1920}
+ height={780}
  priority
- className="object-cover"
  sizes="100vw"
+ className="block w-full h-auto"
  />
- <video
- src="/herovideo10.mp4"
- autoPlay
- loop
- muted
- playsInline
- preload="auto"
- poster="/images/content/hero-paddy-aerial.jpg"
- className="absolute inset-0 w-full h-full object-cover"
+ {/* Soft cream fade at the image floor - separates illustration from headline without visible gap */}
+ <div
  aria-hidden
+ className="absolute inset-x-0 bottom-0 h-10 tablet:h-14 pointer-events-none"
+ style={{
+ background: "linear-gradient(to top, var(--color-paper) 0%, rgba(255,251,234,0) 100%)",
+ }}
  />
  </div>
 
- {/* Glossy brand scrim — bottom-anchored deep-green wash with sheen.
- Sits above the video, beneath the text. Carries readability without text-shadow. */}
- <div
- aria-hidden
- className="absolute inset-0 pointer-events-none"
- style={{
- background: [
- // 1) Top sheen — thin emerald highlight where the scrim "lifts" off the image
- "linear-gradient(to top, transparent 50%, rgba(19,193,113,0.09) 56%, transparent 62%)",
- // 2) Inner gloss — soft creamy bloom in the lower-mid band, the "wet glass" highlight
- "linear-gradient(to top, transparent 0%, rgba(255,251,234,0.07) 18%, transparent 40%)",
- // 3) Main brand scrim — heavier deep-green from bottom, capped below the sun (~62%)
- "linear-gradient(to top, rgba(6,94,58,1) 0%, rgba(6,94,58,0.94) 16%, rgba(6,94,58,0.78) 32%, rgba(6,94,58,0.46) 48%, transparent 62%)",
- ].join(", "),
- }}
- />
-
- {/* Hero copy */}
- <div className="container-page relative w-full flex-1 flex flex-col justify-end pt-8 tablet:pt-12 pb-4 tablet:pb-6">
- <Reveal as="h1" className="t-hero whitespace-nowrap">
+ {/* Headline block - compact, centered */}
+ <div className="container-page text-center pt-0 pb-4 tablet:pt-0 tablet:pb-5">
+ <Reveal as="h1" className="t-hero !text-[30px] tablet:!text-[44px] desktop:!text-[56px] !text-[var(--color-deep-green)] max-w-[900px] mx-auto">
  Building a better food supply chain
  </Reveal>
  {/* <Reveal
  as="p"
  delay={0.16}
- className="t-body-lg !text-[rgba(255,251,234,0.94)] mt-6 tablet:mt-8 max-w-2xl"
+ className="t-body-lg !text-[var(--color-ink-subtle)] mt-4 max-w-2xl mx-auto"
  >
  Fashol moves perishable produce from farms across Bangladesh to buyers in Dhaka,
  Singapore, and Dubai. Direct pricing. Real-time logistics.{" "}
- <span className="text-[var(--color-lime)] font-medium">26 percent less waste.</span>
+ <span className="text-[var(--color-deep-green)] font-medium">26 percent less waste.</span>
  </Reveal> */}
- <Reveal delay={0.24} className="mt-8 tablet:mt-10 flex flex-col tablet:flex-row gap-3">
- <Button variant="primary" href="/contact">
+ <Reveal delay={0.24} className="mt-4 tablet:mt-5 flex flex-col tablet:flex-row gap-3 justify-center items-center">
+ <Button variant="primary" href="/contact" className="!h-10 !px-5 !text-[13px]">
  Partner with Fashol
  </Button>
- <Button variant="on-dark" href="/data">
+ <Button
+ variant="secondary"
+ href="/data"
+ className="!h-10 !px-5 !text-[13px] !text-[var(--color-deep-green)] !border-[var(--color-deep-green)] hover:!bg-[rgba(6,94,58,0.06)]"
+ >
  Read the data →
  </Button>
  </Reveal>
  </div>
 
- {/* At-a-glance stats — anchored to hero floor */}
- <div className="container-page relative w-full pb-6 tablet:pb-10">
- <div className="grid grid-cols-2 desktop:grid-cols-4 gap-3 tablet:gap-4">
+ {/* At-a-glance stats - compact */}
+ <div className="container-page pb-5 tablet:pb-6">
+ <div className="grid grid-cols-2 desktop:grid-cols-4 gap-2 tablet:gap-3">
  {[
  { v: "60,000+", l: "Registered farmers" },
  { v: "7,000+", l: "Buyers" },
  { v: "15,000+ MT", l: "Food loss prevented" },
  { v: "4+ Countries", l: "cross-border supply chain solution" },
  ].map((s) => (
- <div key={s.l} className="rounded-2xl border border-[rgba(255,255,255,0.18)] bg-[rgba(19,19,19,0.28)] backdrop-blur-md backdrop-saturate-150 px-4 py-3 tablet:p-5">
- <div className="text-[22px] tablet:text-[30px] leading-none t-tabular" style={{ fontWeight: 500 }}>{s.v}</div>
- <div className="t-caption !text-[rgba(255,255,255,0.65)] mt-2 tablet:mt-3">{s.l}</div>
+ <div key={s.l} className="rounded-xl border border-[rgba(6,94,58,0.2)] bg-[rgba(255,251,234,0.92)] backdrop-blur-sm px-3 py-2 tablet:px-4 tablet:py-2.5">
+ <div className="text-[17px] tablet:text-[22px] leading-none t-tabular !text-[var(--color-deep-green)]" style={{ fontWeight: 500 }}>{s.v}</div>
+ <div className="t-caption !text-[var(--color-ink-subtle)] mt-1 tablet:mt-1.5">{s.l}</div>
  </div>
  ))}
  </div>
@@ -124,65 +105,67 @@ export default function HomePage() {
  </div>
  </Section>
 
- {/* ───────────── Chapter I — The argument ───────────── */}
- <Section tone="surface">
+ <PlatformSection />
+
+ {/* ───────────── Chapter I - The argument ───────────── */}
+ <Section tone="paper">
  <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
  <Reveal as="h2" className="t-h2 desktop:col-span-6">
- Direct procurement from the farm gate; disciplined delivery to the buyer.
+ We buy direct from farmers and deliver to the buyer&apos;s door.
  </Reveal>
  <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
  <p>
- Bangladesh&apos;s agricultural supply chain passes produce through five to seven intermediaries
- before it reaches a retailer. Pricing is opaque. Payment is late. Roughly a third of what is
- grown spoils before it is sold.
+ Fashol moves fresh produce from farms in nine Bangladeshi districts to buyers in Dhaka, Singapore, Dubai, and Bangkok. Our field agents buy direct from the farmer. Our hubs grade and cold-store the produce. Our trucks run on Fashol&apos;s own delivery routes. Farmers are paid by mobile money within 24 hours of weighing.
  </p>
  <p className="mt-5">
- Fashol removes the middle layers and replaces them with a platform — agent network,
- cold logistics, quality grading, settlement.
+ Owning every step of that route is the point. It keeps the price fair for the farmer, the quality consistent for the buyer, and the journey short enough to move fresh food across borders. The same platform that runs nine districts in Bangladesh today is what we are taking into the rest of South Asia next.
  </p>
  </Reveal>
  </div>
 
- {/* Fig 02 */}
- <div className="mt-16 tablet:mt-20">
- <div className="flex items-baseline justify-between gap-4 mb-6">
+ {/* Unified figure + five-node key */}
+ <Reveal className="mt-10 tablet:mt-14">
+ <div className="card-plain p-6 tablet:p-8">
  <h3 className="t-h5 max-w-2xl" style={{ fontWeight: 500 }}>
- The Fashol chain, five nodes. Cycle time: 18–24 hours, farm gate → buyer door.
+ Five nodes, 18 to 24 hours from the farmer to the buyer&apos;s door.
  </h3>
- </div>
- <Reveal>
- <SupplyChainFigure />
- </Reveal>
- </div>
-
- {/* Three stages */}
- <StaggerChildren className="grid tablet:grid-cols-3 gap-6 mt-14" stagger={0.1}>
- {[
- { s: "Stage 01", t: "Farm-gate onboarding", b: "Field agents register smallholders via the Jogaan app. Each farmer holds a record of what they grow, when, in what quantity, and at what price. No paper ledger. No verbal agreement. Transparent from day one." },
- { s: "Stage 02", t: "Cold logistics & grading", b: "Pickup, cold storage, and a four-tier quality grade applied at hub intake. Produce is catalogued before it leaves the district — not relabeled at the urban wholesale market, as is the common practice." },
- { s: "Stage 03", t: "Settlement & dispatch", b: "Buyers — MSMEs, quick-commerce operators, exporters, wholesalers — order through the platform. Farmers are paid via mobile financial services within 24 hours of weighing. Delivery runs on company route plans, not on aratdar convenience." },
- ].map((c) => (
- <StaggerItem key={c.s} className="card-plain p-8 flex flex-col gap-4">
- <Eyebrow>{c.s}</Eyebrow>
- <h4 className="t-h5" style={{ fontWeight: 500 }}>{c.t}</h4>
- <p className="t-body">{c.b}</p>
- </StaggerItem>
- ))}
- </StaggerChildren>
-
- {/* Field photo */}
- <div className="mt-16">
- <Figure
- src="/images/content/cabbage-field-bd.jpg"
- alt="A field agent walks through rows of cabbage at sunrise while inspecting produce in a company-registered Bangladeshi field."
- caption="Cabbage collection, company-registered farmer. Jashore district, 2024."
- credit="Photograph by Adil Ahnaf"
+ <div className="mt-6">
+ <Image
+ src="/images/content/card-image-10.png"
+ alt="Fashol's five-node supply chain, from rural farm to urban buyer and export markets."
+ width={1920}
+ height={1072}
+ loading="lazy"
+ sizes="(min-width: 1200px) 1100px, 100vw"
+ className="w-full h-auto"
  />
  </div>
+ <div className="mt-8 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-5 gap-px bg-[var(--color-line)] border-t border-[var(--color-line)] -mx-6 tablet:-mx-8 -mb-6 tablet:-mb-8 overflow-hidden rounded-b-[23px]">
+ {[
+ { n: "01", t: "FARMER", s: "Direct procurement", stat: "60,000+ growers", d: "Field agents register the farmer on the Jogaan app and lock the price at weighing." },
+ { n: "02", t: "DISTRICT HUB", s: "Grade and cold-store", stat: "40+ hubs", d: "Four-tier quality grading, applied at hub intake." },
+ { n: "03", t: "PLATFORM", s: "Match and settle", stat: "24h payout", d: "Mobile money settlement to the farmer." },
+ { n: "04", t: "LAST MILE", s: "Refrigerated dispatch", stat: "1,050+ MT/month", d: "Refrigerated trucks on Fashol's own delivery routes." },
+ { n: "05", t: "BUYER'S DOOR", s: "Order to delivery", stat: "7,000+ buyers", d: "From a Dhaka MSME to an exporter shipping into Singapore, Dubai, or Bangkok." },
+ ].map((c) => (
+ <div key={c.n} className="p-5 tablet:p-6 bg-[var(--color-paper)] flex flex-col gap-2.5">
+ <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] text-[10px] t-mono">
+ {c.n}
+ </span>
+ <h4 className="t-h5 tracking-[-0.02em] mt-2" style={{ fontWeight: 500 }}>{c.t}</h4>
+ <p className="t-caption">{c.s}</p>
+ <p className="t-body-sm text-[var(--color-ink-subtle)] mt-1">{c.stat}</p>
+ <p className="t-caption">{c.d}</p>
+ </div>
+ ))}
+ </div>
+ </div>
+ </Reveal>
+
  </Section>
 
  {/* ───────────── Operations register ───────────── */}
- <Section tone="paper">
+ <Section tone="surface">
  <div className="grid desktop:grid-cols-12 gap-10 mt-10">
  <Reveal as="h2" className="t-h2 desktop:col-span-7">
  Forty-plus hubs. Nine districts. One platform behind every farmer.
@@ -199,7 +182,7 @@ export default function HomePage() {
  <BangladeshMapFigure />
  </Reveal>
  <p className="t-caption mt-4">
- Fashol operating districts, Bangladesh — 2026 Q1.
+ Fashol operating districts, Bangladesh - 2026 Q1.
  </p>
  </div>
 
@@ -251,8 +234,8 @@ export default function HomePage() {
  </div>
  </Section>
 
- {/* ───────────── Chapter II — The evidence ───────────── */}
- <Section tone="surface">
+ {/* ───────────── Chapter II - The evidence ───────────── */}
+ <Section tone="paper">
  <div className="grid desktop:grid-cols-12 gap-10">
  <Reveal as="h2" className="t-h2 desktop:col-span-7">
  What a farmer actually earns for one kilo of cabbage.
@@ -273,7 +256,7 @@ export default function HomePage() {
  <ol className="mt-6 t-caption space-y-1 max-w-3xl">
  <li>1. Traditional chain assumes five intermediaries: farmer → local trader → aratdar → urban wholesaler → retailer → consumer.</li>
  <li>2. Fashol chain: farmer → field agent → hub → buyer → consumer. Cold-chain loss and quality grading applied at intake.</li>
- <li>3. Averages for Grade A cabbage, Jashore &amp; Satkhira, Nov 2024 – Feb 2025. Internal reporting; figures rounded to the nearest BDT.</li>
+ <li>3. Averages for Grade A cabbage, Jashore &amp; Satkhira, Nov 2024 - Feb 2025. Internal reporting; figures rounded to the nearest BDT.</li>
  </ol>
  </div>
 
@@ -281,30 +264,10 @@ export default function HomePage() {
  <Button variant="primary" href="/case-study">One farmer, twelve harvests →</Button>
  <Button variant="secondary" href="/data">Full impact data, 2019 → 2026</Button>
  </div>
-
- {/* Crop calendar */}
- <div className="mt-24">
- <Reveal>
- <h2 className="t-h2 mt-6 max-w-3xl">Seven crops. Twelve months. Peak windows, mapped.</h2>
- <p className="t-body-lg mt-5 max-w-3xl">
- The Fashol network&apos;s leading seven crop lines, indexed against the months they peak across
- our operating districts. Grey = off-season. Terracotta = peak harvest. Use this to plan
- procurement or farmer onboarding.
- </p>
- </Reveal>
- <div className="mt-10">
- <Reveal>
- <h3 className="t-h5 max-w-2xl mb-4" style={{ fontWeight: 500 }}>
- Crop peak calendar, 2026 — Jashore · Satkhira · Rajshahi · Bogura · Comilla composite.
- </h3>
- <CropCalendarFigure />
- </Reveal>
- </div>
- </div>
  </Section>
 
- {/* ───────────── Editorial — From the founder ───────────── */}
- <Section tone="paper">
+ {/* ───────────── Editorial - From the founder ───────────── */}
+ <Section tone="surface">
  <div className="container-narrow">
  <Reveal>
  <p className="t-mono text-[11px] text-[var(--color-ink-muted)] mt-3">
@@ -320,7 +283,7 @@ export default function HomePage() {
  through a bad season. That isn&apos;t an essay, it is a balance sheet. The price a grower of tomatoes
  in Jashore receives is roughly one-fifth of what a customer pays at a Dhaka supermarket. The other
  four-fifths lives in the five to seven people who sit between the field and the shelf. Most of them
- add nothing — not cold-chain, not grading, not a trade service, not even a receipt.
+ add nothing - not cold-chain, not grading, not a trade service, not even a receipt.
  </p>
  <p>
  We built Fashol to remove as many of those layers as we could, and to replace them with a platform
@@ -337,38 +300,8 @@ export default function HomePage() {
  </p>
  </Reveal>
  <Reveal delay={0.24} className="mt-10 t-mono text-[11px] text-[var(--color-ink-muted)]">
- — Sakib Hossain — Founder &amp; CEO — Kawran Bazar, Dhaka
+ - Sakib Hossain - Founder &amp; CEO - Kawran Bazar, Dhaka
  </Reveal>
- </div>
- </Section>
-
- {/* ───────────── Services summary ───────────── */}
- <Section tone="surface">
- <Reveal as="h2" delay={0.08} className="t-h2 mt-6 max-w-3xl">
- Six services. One platform. Every stage of the chain.
- </Reveal>
-
- <StaggerChildren className="grid tablet:grid-cols-2 desktop:grid-cols-3 gap-4 mt-14" stagger={0.08}>
- {[
- { n: "01", t: "Farm-to-market platform", b: "Direct farmer-to-buyer matching. No aratdars. Pricing visible to both sides.", tag: "Fashol · B2B" },
- { n: "02", t: "Smart logistics network", b: "Cold chain and last-mile pickup for rural, climate-vulnerable districts.", tag: "Fleet · Route" },
- { n: "03", t: "Buyer solutions", b: "Ordering, inventory, fulfilment for MSMEs, quick-commerce, exporters, wholesalers.", tag: "SaaS · Retail" },
- { n: "04", t: "Market intelligence", b: "Real-time price data and seasonal analytics for smallholder decision-making.", tag: "Data · Pricing" },
- { n: "05", t: "Quality assurance", b: "Four-tier grading applied at hub intake — before stock reaches the buyer.", tag: "Grade · QC" },
- { n: "06", t: "Financial solvency", b: "24-hour settlement via mobile money. Agricultural credit for established growers.", tag: "Payments · Credit" },
- ].map((s) => (
- <StaggerItem key={s.n} className="card-plain p-7 flex flex-col gap-4">
- <div className="flex items-center justify-between">
- <span className="t-mono text-[11px] text-[var(--color-ink-muted)]">{s.n}</span>
- <span className="t-mono text-[10px] text-[var(--color-ink-muted)]">{s.tag}</span>
- </div>
- <h3 className="t-h5" style={{ fontWeight: 500 }}>{s.t}</h3>
- <p className="t-body mt-auto">{s.b}</p>
- </StaggerItem>
- ))}
- </StaggerChildren>
- <div className="mt-10">
- <Button variant="primary" href="/services">See the full services index →</Button>
  </div>
  </Section>
 
@@ -385,7 +318,7 @@ export default function HomePage() {
  <div className="grid tablet:grid-cols-2 desktop:grid-cols-3 gap-x-10 gap-y-12 mt-14 border-t border-[var(--color-line-strong)] pt-12">
  {[
  { p: "P.01", t: "Farmer first", b: "Every pricing decision starts from what the grower will take home. Not from the margin the platform can hold." },
- { p: "P.02", t: "Accountability", b: "Named owners for each commitment — to farmers, to buyers, to investors. Escalation paths are visible." },
+ { p: "P.02", t: "Accountability", b: "Named owners for each commitment - to farmers, to buyers, to investors. Escalation paths are visible." },
  { p: "P.03", t: "Sustainability", b: "Waste reduction is measured per district, per season, per crop. It is a ledger entry, not a talking point." },
  { p: "P.04", t: "Human-centered", b: "Jogaan is tested with agents and farmers who have never used a smartphone. If they cannot use it, it ships again." },
  { p: "P.05", t: "Optimisation", b: "Data first. First principles next. Opinion last. Decisions are traceable to numbers we can show." },
@@ -407,10 +340,10 @@ export default function HomePage() {
  <blockquote className="t-h3 mt-8 max-w-3xl" style={{ fontWeight: 500 }}>
  &ldquo;Fashol has changed the shape of my farming. Prices are{" "}
  <span className="text-[var(--color-lime)]">25 percent higher</span> than what the aratdar paid me
- — and the money is in my mobile wallet within a day, not a month.&rdquo;
+ - and the money is in my mobile wallet within a day, not a month.&rdquo;
  </blockquote>
  <p className="t-mono text-[11px] !text-[rgba(255,255,255,0.65)] mt-10">
- — Mohammad Rahim Uddin — Vegetable farmer, Satkhira — Onboarded 2023
+ - Mohammad Rahim Uddin - Vegetable farmer, Satkhira - Onboarded 2023
  </p>
  </div>
  <div className="desktop:col-span-5">
@@ -467,41 +400,7 @@ export default function HomePage() {
 
  </Section>
 
- {/* ───────────── SDG alignment ───────────── */}
- <Section tone="surface">
- <div className="grid desktop:grid-cols-12 gap-10 mt-10">
- <Reveal as="h2" className="t-h2 desktop:col-span-7">
- Six of seventeen UN Sustainable Development Goals, mapped to operations.
- </Reveal>
- <Reveal delay={0.08} className="desktop:col-span-5 t-body-lg">
- We audit against these each quarter. The icon is the UN&apos;s; the measurement is ours.
- </Reveal>
- </div>
-
- <div className="grid tablet:grid-cols-2 desktop:grid-cols-3 gap-4 mt-14">
- {[
- { n: "SDG 01", t: "No poverty", img: "sdg-01", b: "Farmer income lift, measured at onboarding vs. 12-month benchmark." },
- { n: "SDG 02", t: "Zero hunger", img: "sdg-02", b: "Food loss prevented in metric tons, per district, per season." },
- { n: "SDG 08", t: "Decent work", img: "sdg-08", b: "Full-time hub roles created in rural districts with historically thin employment." },
- { n: "SDG 09", t: "Industry & infrastructure",img: "sdg-09", b: "Cold storage and route-planning built in districts previously served by none." },
- { n: "SDG 12", t: "Responsible consumption", img: "sdg-12", b: "Quality grading reduces returns; traceability reduces over-ordering." },
- { n: "SDG 13", t: "Climate action", img: "sdg-13", b: "Climate-vulnerable farmers prioritised for onboarding in flood-prone coastal belts." },
- ].map((s) => (
- <div key={s.n} className="card-plain p-6 flex gap-5 items-start">
- <div className="relative w-14 h-14 shrink-0">
- <Image src={`/images/content/${s.img}.jpg`} alt={`UN ${s.n}: ${s.t}`} fill sizes="56px" className="object-contain rounded-md" />
- </div>
- <div>
- <span className="t-mono text-[11px] text-[var(--color-ink-muted)]">{s.n}</span>
- <h3 className="t-h5 mt-1" style={{ fontWeight: 500 }}>{s.t}</h3>
- <p className="t-body-sm mt-2 text-[var(--color-ink-subtle)]">{s.b}</p>
- </div>
- </div>
- ))}
- </div>
- </Section>
-
- {/* ───────────── Join — CTA triad ───────────── */}
+ {/* ───────────── Join - CTA triad ───────────── */}
  <Section tone="ink">
  <Reveal as="h2" delay={0.08} className="t-h2 mt-6 max-w-3xl">
  The chain is still being built. Join as a farmer, a buyer, or a colleague.

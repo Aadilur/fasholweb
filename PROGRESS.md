@@ -1,6 +1,6 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-18 (pm)
+**Last updated:** 2026-04-19
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
 
@@ -20,8 +20,8 @@ Production build passes with 24 statically-rendered routes (`npm run build`).
 
 ### Components
 - **UI**: [`Button`](site/src/components/ui/Button.tsx), [`Eyebrow`](site/src/components/ui/Eyebrow.tsx), [`Section`](site/src/components/ui/Section.tsx), [`Reveal`](site/src/components/ui/Reveal.tsx) (self-unmounts after first animation to reduce layer count).
-- **Site**: [`Nav`](site/src/components/site/Nav.tsx) (Voiceflow-style floating pill, see §4 Nav), [`Footer`](site/src/components/site/Footer.tsx), [`PageHeader`](site/src/components/site/PageHeader.tsx), [`Accordion`](site/src/components/site/Accordion.tsx), [`LogoMarquee`](site/src/components/site/LogoMarquee.tsx), [`Figure`](site/src/components/site/Figure.tsx), [`StatCard`](site/src/components/site/StatCard.tsx).
-- **SVG figures**: [`SupplyChain`](site/src/components/figures/SupplyChain.tsx), [`BangladeshMap`](site/src/components/figures/BangladeshMap.tsx), [`PriceBars`](site/src/components/figures/PriceBars.tsx), [`CropCalendar`](site/src/components/figures/CropCalendar.tsx), [`OnboardingCurve`](site/src/components/figures/OnboardingCurve.tsx) (40,120 endpoint), [`OnionPrice`](site/src/components/figures/OnionPrice.tsx), [`RouteEfficiency`](site/src/components/figures/RouteEfficiency.tsx).
+- **Site**: [`Nav`](site/src/components/site/Nav.tsx) (Voiceflow-style floating pill, see §4 Nav), [`Footer`](site/src/components/site/Footer.tsx), [`PageHeader`](site/src/components/site/PageHeader.tsx), [`Accordion`](site/src/components/site/Accordion.tsx), [`LogoMarquee`](site/src/components/site/LogoMarquee.tsx), [`Figure`](site/src/components/site/Figure.tsx), [`StatCard`](site/src/components/site/StatCard.tsx), [`PlatformSection`](site/src/components/site/PlatformSection.tsx) (4-product bento: Jogaan, Hyperfarm, Banijjo, CropCash, with Hyperfarm/CropCash modals).
+- **SVG figures**: [`SupplyChain`](site/src/components/figures/SupplyChain.tsx) (no longer used on home, kept on disk), [`BangladeshMap`](site/src/components/figures/BangladeshMap.tsx), [`PriceBars`](site/src/components/figures/PriceBars.tsx), [`CropCalendar`](site/src/components/figures/CropCalendar.tsx) (no longer used on home, kept on disk), [`OnboardingCurve`](site/src/components/figures/OnboardingCurve.tsx) (40,120 endpoint), [`OnionPrice`](site/src/components/figures/OnionPrice.tsx), [`RouteEfficiency`](site/src/components/figures/RouteEfficiency.tsx).
 
 ### Images & assets
 - 69 images from `content-export/assets/images/` copied to [`site/public/images/content/`](site/public/images/content/).
@@ -55,6 +55,47 @@ Production build passes with 24 statically-rendered routes (`npm run build`).
 - **Uniform logo heights**: removed the per-logo `scale` multipliers on the home-page "As featured in" `LogoMarquee` (Prothom Alo 1.35 / Daily Star 1.45 / Tech in Asia 1.2 → all 1.0) so every outlet renders at the same pixel height on one straight baseline. Base height nudged `48 → 44px`.
 - **Section height trimmed**: Section block padding overridden from the default `section-y` (`72/96/123px`) down to `!py-[14px] tablet:!py-[21px] desktop:!py-7` (roughly 14/21/28px). Inner `gap-6 → gap-2`. Net section height ≈ 30–35% of the prior version.
 - **Transparent logo backgrounds**: AgFunder (`investor02.png`) and Orbit Startups (`investor03.png`) had white rectangles baked in. Stripped white to alpha=0 with a Pillow pass (threshold 240); all four corners verified transparent. Couldn't find clean transparent PNGs online — official AgFunder site now serves a black-only wordmark (no plant), and Orbit rebranded to Orbit Ventures with a white-on-dark SVG — so in-place alpha strip was the pragmatic call. If AgFunder News branding ("AFN" mark) is preferred going forward, source `black-e1742824364136.png` from `agfundernews.com/wp-content/uploads/2025/03/`.
+
+### Home-page structural pass (2026-04-19)
+
+Three whole sections deleted and the section-tone rhythm re-balanced.
+
+- **Deleted: Services summary** ("Six services. One platform. Every stage of the chain.") — six numbered cards + CTA to `/services`. Full services index still lives at `/services`.
+- **Deleted: Crop peak calendar** (the sub-block inside Chapter II with "Seven crops. Twelve months." and the `CropCalendarFigure`). Chapter II retains the price-bars evidence + its two CTAs.
+- **Deleted: SDG alignment** ("Six of seventeen UN Sustainable Development Goals…"). Six `sdg-0*.jpg` image copies removed from `site/public/images/content/` (originals preserved in `content-export/`).
+- **Section tone re-alternation**: with Services, Crop calendar, and SDG gone, Chapter I `surface→paper`, Ops register `paper→surface`, Chapter II `surface→paper`, Founder `paper→surface`. Final flow: ink · paper · surface · paper · surface · paper · surface · paper · ink · paper · ink.
+- **Imports pruned** in [page.tsx](site/src/app/page.tsx): `Eyebrow`, `CropCalendarFigure`, `StatCard`, `SupplyChainFigure`, `Figure` (all unused after the deletions / Chapter I rewrite).
+- **Em/en dash scrub** across [page.tsx](site/src/app/page.tsx): all `—` and `–` replaced with `-` (hard rule: no em/en dashes anywhere on the home page, incl. section-divider comments and the founder letter's `Most of them add nothing - not cold-chain…`). Arrows (→) and the box-drawing `─` in section comments are preserved.
+
+### Platform section added above Chapter I (2026-04-19)
+
+New [`PlatformSection`](site/src/components/site/PlatformSection.tsx) — 4-product bento ("Jogaan / Hyperfarm / Banijjo / CropCash"). Jogaan is a flagship tile (col-span-6, row-span-2); Hyperfarm and Banijjo are wide tiles; CropCash is full-width at the bottom. Jogaan and Banijjo link out to Google Play. Hyperfarm opens an iOS/Android/Web chooser modal. CropCash opens a 3-field WhatsApp lead form that prefills a message to the Fashol number. Section tone: `surface`. Slotted between "As featured in" and Chapter I.
+
+### Chapter I — figure + copy rewrite (2026-04-19)
+
+- **Headline rewritten**: *"Direct procurement from the farm gate; disciplined delivery to the buyer."* → *"We buy direct from farmers and deliver to the buyer's door."*
+- **Body rewritten** to the two-paragraph version that names the four export markets (Dhaka, Singapore, Dubai, Bangkok) and the nine operating districts.
+- **Supply-chain visual**: the `SupplyChainFigure` SVG was replaced with a single isometric illustration (`/images/content/card-image-10.png`) inside a `card-plain` container, plus an inline 5-node horizontal key (FARMER → DISTRICT HUB → PLATFORM → LAST MILE → BUYER'S DOOR) with per-node stats (60,000+ growers, 40+ hubs, 24h payout, 1,050+ MT/month, 7,000+ buyers).
+- **Stage cards removed** (the three-card Stage 01/02/03 row).
+- **Field photo removed** (cabbage-field `Figure` with Adil Ahnaf photo credit).
+
+### Hero — complete rebuild around a static illustration (2026-04-19)
+
+The video-hero is gone. Replaced with a single isometric illustration + stacked editorial content.
+
+- **Video + poster swap → single static photo**: removed `<video src="/herovideo11.mp4">` and the bottom-anchored deep-green scrim overlay. The hero is now a single `<Image src="/h7-hero.webp" width={1920} height={780}>` in normal flow with `w-full h-auto` (no `fill`, no `object-cover` crop). Illustration iterated through generations h1/h2/h3/h4/h5/h6/h7 before landing on the final. Old `herovideo10.mp4` and `herovideo11.mp4` deleted; `herovideo*.mp4` gitignored.
+- **Image cropped from top**: original 1920×815 generation was trimmed 35px off the cream sky (final file 1920×780, saved as [h7-hero.webp](site/public/h7-hero.webp)) so the 4 stat cards land at the 900px viewport fold on a standard laptop.
+- **Stacked layout** (no aspect-locked frame): image → headline block (H1 + CTAs) → stat tiles row. No more absolute-positioned content overlaying the image.
+- **H1**: deep-green (`var(--color-deep-green)`), centered, `max-w-[900px]`, overridden from `t-hero` default (clamp 40-72) to `!text-[30px] tablet:!text-[44px] desktop:!text-[56px]`. 56px on desktop is intentionally larger than any other font on the home page (next-biggest is `t-h2` at 48px max), so the hero H1 is the visual anchor for the whole page.
+- **CTAs**: primary lime pill (`Partner with Fashol`) + secondary outlined pill (`Read the data →`) with deep-green text + deep-green border. Both shrunk to `!h-10 !px-5 !text-[13px]`. Centered row on tablet+, stacked column on mobile.
+- **Stat tiles**: compacted — `rounded-xl` border, `px-3 py-2 tablet:px-4 tablet:py-2.5` padding, figures `text-[17px] tablet:text-[22px]`, cream semi-opaque background (`rgba(255,251,234,0.92)`) with deep-green figures and ink-subtle labels. Grid stays 2-col mobile / 4-col desktop.
+- **Section bg**: flat cream (`var(--color-paper)`), no scrim, no overlay. The illustration's own cream sky at the top blends with the section bg, so the fixed nav floats over it seamlessly with no visible seam.
+- **Soft cream fade at image floor**: `h-10 tablet:h-14` bottom-to-transparent gradient sitting at the illustration's bottom edge, separating it from the H1 without inserting any structural gap. Padding above H1 is `pt-0` on all breakpoints so the headline is visually flush with the image.
+- **Headline block padding**: `pt-0 pb-4 tablet:pt-0 tablet:pb-5`.
+- **Stat tiles padding**: `pb-5 tablet:pb-6`.
+- **Viewport math at 1440×900**: image renders at ~585px, headline block ~185px, stats ~80px → total hero ~850-870px, landing the 4 stat cards right at the fold. "As featured in" sits just below the fold at that size.
+- **Brand-cream fade experimentation**: green → cream → green scrim iterations are gone. The final design is scrim-free; readability comes from the deep-green H1 on the cream bg, not from overlaying the image.
+- **Nav text color**: unchanged (`var(--color-ink-subtle)` = near-black with green bias). Already readable over the cream hero.
 
 ### "As featured in" moved directly under the hero (2026-04-18 pm)
 - **Removed "The full network" partner marquee** that sat between the hero and "Chapter I — The argument" ([page.tsx:102-111](site/src/app/page.tsx#L102-L111), old). This was the Kiam / AsiaTech / Upay / Dutch-Bangla Bank / Syngenta / Foodpanda strip driven by `PARTNERS`.
@@ -91,7 +132,9 @@ Overwrote all accent tokens in [`globals.css`](site/src/app/globals.css) to matc
 
 ## 2 · What's happening now
 
-Dev server running at `http://localhost:3000`. Home page has the Voiceflow-style nav, video hero, brand-aligned colors, and all editorial furniture stripped per the user's feedback. Most recent pass (2026-04-18 pm) repositioned the "As featured in" press-logo band directly under the hero and killed the "The full network" partner marquee that previously occupied that slot. The partner logos still exist in the Trust-register grid further down the page. Hero subhead is still commented out and will need to be reinstated or replaced.
+Home page has been restructured around a static illustrated hero and an 11-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Chapter II (price bars) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, CropCash). Hero is now a single 1920×780 webp (`h7-hero.webp`) with the H1 sitting flush below it; a small cream→transparent fade softens the boundary. Hero subhead is still commented out; commit history preserves it if the user wants it back.
+
+A content-strategy brief lives at [`HOME_CONTENT_BRIEF.md`](HOME_CONTENT_BRIEF.md) — a snapshot of the home page's copy, voice rules, and known copy-debt for future copywriting work in a fresh chat.
 
 ---
 
@@ -183,10 +226,17 @@ All tokens live in [`site/src/app/globals.css`](site/src/app/globals.css). Full 
 
 ## 6 · Known items still open (flagged for the user)
 
-1. **`news-2` and `news-5` share the same hero image** (`news-5-dhakatribune.jpeg`) — preserved from content export; consider a unique hero per article before launch.
-2. **`news-6` uses generic `warehouse.jpg`** — replace when a DITECH-partnership-specific photo is available.
-3. **`gallery08.jpeg` and `gallery09.jpeg`** sit in `public/images/content/` but aren't referenced on any page.
-4. **Legal dates** on privacy/terms: "Last updated 2024.12" — flagged for legal review.
-5. **Case-study composite farmer**: "Md. Rafiqul Islam" is a composite; a verified single-farmer case should replace before launch.
-6. **Indentation hygiene**: a UTF-8 recovery pass during editorial cleanup collapsed some 2-space indents to 1-space in a handful of files. TypeScript doesn't care but a `prettier --write` run would normalize them.
-7. **Benign Turbopack warning** at build: two package-lock.json files detected. Silence by setting `turbopack.root` in `site/next.config.ts` if desired.
+1. **Scoreboard drift across the home page**: hero tiles say 60,000 farmers / 7,000 buyers / 15,000+ MT / 4+ countries, but the ops-register table footer still reads 40+ hubs / 40,000+ farmers / ~1,050 MT, the ops-register H2 still says "Forty-plus hubs," and the founder-letter paragraph 3 still opens with "We are 40,000 farmers, 40-plus hubs, 26 percent less waste." The copy in each of those places is deliberately preserved (do-not-rewrite rule) and needs a copy-strategy pass — see [`HOME_CONTENT_BRIEF.md`](HOME_CONTENT_BRIEF.md) §6.
+2. **Farmer-count gap**: hero claims 60,000+; district-wise ops-register table sums to ~25,620. The page doesn't reconcile the difference (registered vs. active, nine-district vs. national).
+3. **"4+ Countries" not enumerated**: the page names Bangladesh, Singapore, UAE/Dubai, and Bangkok across scattered places but never lists all four in a single line under the hero.
+4. **Hero subhead commented out** at [page.tsx:31](site/src/app/page.tsx#L31) — three-line pitch awaiting a rewrite or a decision to drop entirely.
+5. **`news-2` and `news-5` share the same hero image** (`news-5-dhakatribune.jpeg`) — preserved from content export; consider a unique hero per article before launch.
+6. **`news-6` uses generic `warehouse.jpg`** — replace when a DITECH-partnership-specific photo is available.
+7. **`gallery08.jpeg` and `gallery09.jpeg`** sit in `public/images/content/` but aren't referenced on any page.
+8. **Legal dates** on privacy/terms: "Last updated 2024.12" — flagged for legal review.
+9. **Case-study composite farmer**: "Md. Rafiqul Islam" is a composite; a verified single-farmer case should replace before launch.
+10. **Cross-page scoreboard harmonisation**: `/about`, `/data`, `/services`, `/layout.tsx` SEO still reference old numbers in places. Out of scope for home-page work but affects narrative consistency.
+11. **Indentation hygiene**: a UTF-8 recovery pass during editorial cleanup collapsed some 2-space indents to 1-space in a handful of files. TypeScript doesn't care but a `prettier --write` run would normalize them.
+12. **Benign Turbopack warning** at build: two package-lock.json files detected. Silence by setting `turbopack.root` in `site/next.config.ts` if desired.
+13. **Unused hero-image candidates** in `site/public/`: `h1.jpg`, `h2.jpg`, `h3.png` — early alternates kept on disk but not referenced anywhere. Delete when you're sure you won't revisit.
+14. **Orphaned webp/component assets**: `SupplyChain.tsx` and `CropCalendar.tsx` are still on disk but no longer imported on the home page. Left in place for reuse elsewhere.

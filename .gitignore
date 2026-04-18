@@ -36,13 +36,5 @@ yarn-error.log*
 # reference scrape — not part of the product, re-runnable via framer-template-cloner
 aeline-clone/
 
-# unused hero video alternates — only herovideo10.mp4 is referenced in site/src/app/page.tsx
-site/public/herovideo1.mp4
-site/public/herovideo2.mp4
-site/public/herovideo3.mp4
-site/public/herovideo4.mp4
-site/public/herovideo5.mp4
-site/public/herovideo6.mp4
-site/public/herovideo7.mp4
-site/public/herovideo8.mp4
-site/public/herovideo9.mp4
+# unused hero video alternates - hero is now a static photo, no videos are referenced
+site/public/herovideo*.mp4
