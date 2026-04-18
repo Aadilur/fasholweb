@@ -84,10 +84,10 @@ export default function HomePage() {
  <div className="container-page relative w-full pb-6 tablet:pb-10">
  <div className="grid grid-cols-2 desktop:grid-cols-4 gap-3 tablet:gap-4">
  {[
- { v: "40,000+", l: "Farmers" },
- { v: "40+", l: "Hubs" },
- { v: "26%", l: "Waste cut" },
- { v: "10,000 MT", l: "Food loss prevented" },
+ { v: "60,000+", l: "Registered farmers" },
+ { v: "7,000+", l: "Buyers" },
+ { v: "15,000+ MT", l: "Food loss prevented" },
+ { v: "4+ Countries", l: "cross-border supply chain solution" },
  ].map((s) => (
  <div key={s.l} className="rounded-2xl border border-[rgba(255,255,255,0.18)] bg-[rgba(19,19,19,0.28)] backdrop-blur-md backdrop-saturate-150 px-4 py-3 tablet:p-5">
  <div className="text-[22px] tablet:text-[30px] leading-none t-tabular" style={{ fontWeight: 500 }}>{s.v}</div>
@@ -99,7 +99,7 @@ export default function HomePage() {
  </section>
 
  {/* ───────────── Featured in ───────────── */}
- <Section tone="paper" className="!py-[14px] tablet:!py-[21px] desktop:!py-7">
+ <Section tone="paper" className="!py-[10px] tablet:!py-[16px] desktop:!py-[20px]">
  <div className="flex flex-col gap-2">
  <p className="t-body" style={{ fontWeight: 500 }}>As featured in</p>
  <LogoMarquee

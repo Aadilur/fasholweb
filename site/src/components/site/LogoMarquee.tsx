@@ -109,7 +109,7 @@ export function LogoMarquee({
   }, [centerAlt, durationSec]);
 
   return (
-    <div className="marquee py-6" ref={containerRef}>
+    <div className="marquee py-3" ref={containerRef}>
       <div className="marquee-track marquee-track-js" ref={trackRef}>
         {doubled.map((l, i) => {
           const h = Math.round(height * (l.scale ?? 1));

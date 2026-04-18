@@ -139,26 +139,6 @@ export function Nav() {
 
           {/* ── RIGHT — standalone CTAs ── */}
           <div className="hidden desktop:flex items-center gap-2 shrink-0">
-            <Link
-              href="/bn"
-              className={clsx(
-                "relative font-[var(--font-display)] text-[13px] font-medium tracking-tight text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)] transition-colors px-3.5 py-1.5 rounded-full",
-                scrolled ? "border border-transparent" : "border border-[rgba(19,19,19,0.06)]"
-              )}
-            >
-              <span
-                aria-hidden
-                className={clsx(
-                  "absolute inset-0 rounded-full overflow-hidden pointer-events-none transition-opacity duration-[320ms]",
-                  scrolled ? "opacity-0" : "opacity-100",
-                  "backdrop-blur-[24px] saturate-[1.5]"
-                )}
-              >
-                <span className="absolute inset-0 bg-[rgba(255,255,255,0.78)]" />
-                <span className="absolute inset-0" style={{ background: "rgba(228, 231, 231, 0.35)" }} />
-              </span>
-              <span className="relative">বাংলা ↗</span>
-            </Link>
             <Button variant="primary" href="/contact" className="!h-9 !px-4 !text-[12px]">
               Partner with Fashol
             </Button>
@@ -209,12 +189,6 @@ export function Nav() {
               </ul>
               <div className="mt-4 pt-4 border-t border-[#404040] flex flex-col gap-2">
                 <Button variant="primary" href="/contact">Partner with Fashol</Button>
-                <Link
-                  href="/bn"
-                  className="text-center font-[var(--font-display)] text-[13px] font-medium tracking-tight text-[rgba(255,255,255,0.7)] hover:text-white transition-colors py-2"
-                >
-                  বাংলা ↗
-                </Link>
               </div>
             </div>
           </div>

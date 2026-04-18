@@ -369,7 +369,7 @@ body {
   opacity: 0.5;
 }
 
-/* Bengali text */
+/* Bengali text (inline snippets only — full bn site deferred) */
 .lang-bn { font-family: var(--font-bengali); letter-spacing: 0; }
 
 /* reduce-motion guard */
