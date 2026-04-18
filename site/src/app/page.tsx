@@ -105,13 +105,14 @@ export default function HomePage() {
  <LogoMarquee
  colored
  height={44}
+ centerAlt="Forbes"
  logos={[
  { src: "/images/content/forbes.png", alt: "Forbes", ratio: 3.2, scale: 1.2, href: "https://www.forbes.com/profile/sakib-hossain/" },
  { src: "/images/content/prothom-alo.png", alt: "Prothom Alo", ratio: 3.4, href: "https://www.prothomalo.com/technology/87em2f464t" },
  { src: "/images/content/daily-star.png", alt: "The Daily Star", ratio: 3.6, href: "https://www.thedailystar.net/tech-startup/news/agri-tech-startup-fashol-secures-tk-10-crore-pre-seed-investment-3296201" },
  { src: "/images/content/tech-in-asia.png", alt: "Tech in Asia", ratio: 3.4, href: "https://www.techinasia.com/bangladeshbased-startup-bags-1m-solve-agrisupply-problems" },
  { src: "/images/content/business-standard.png", alt: "The Business Standard", ratio: 2.6, href: "https://www.tbsnews.net/economy/corporates/ditech-signs-capital-investment-agreement-fasholcom-limited-317146" },
- { src: "/images/content/agfunder-transparent.png", alt: "AgFunder", ratio: 2.6, scale: 1.45, href: "https://agfundernews.com/bangladeshs-fashol-tackles-the-agrifood-supply-chain-to-stabilize-food-prices-for-farmers-and-reduce-food-waste" },
+ { src: "/images/content/agfunder-transparent.png", alt: "AgFunder", ratio: 2.6, scale: 1.8, href: "https://agfundernews.com/bangladeshs-fashol-tackles-the-agrifood-supply-chain-to-stabilize-food-prices-for-farmers-and-reduce-food-waste" },
  { src: "/images/content/orbit-startups-transparent.png", alt: "Orbit Startups", ratio: 2.5, scale: 1.2, href: "https://orbitstartups.com/cutting-out-the-middleman-how-fashol-is-changing-the-game-for-farmers-and-retailers-in-bangladesh/" },
  { src: "/images/content/dhaka-tribune.png", alt: "Dhaka Tribune", ratio: 9.4, scale: 0.55, href: "https://www.dhakatribune.com/business/283477/agritech-startup-fashol-gets-1m-pre-seed" },
  { src: "/images/content/financial-express.png", alt: "The Financial Express", ratio: 17.8, scale: 0.4, href: "https://thefinancialexpress.com.bd/home/ditech-fasholcom-join-hands-to-ensure-better-supply-chain-of-perishables-1634385038" },

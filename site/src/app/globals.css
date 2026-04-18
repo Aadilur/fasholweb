@@ -310,6 +310,7 @@ body {
   align-items: center;
 }
 .marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track.marquee-track-js { animation: none !important; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ------------------------------------------------------------------
