@@ -1,0 +1,192 @@
+# Fashol — Rebuild Progress
+
+**Last updated:** 2026-04-18 (pm)
+**Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
+**Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
+
+---
+
+## 1 · What's been done
+
+### Scaffold & stack
+- Project scaffolded at [`site/`](site/) — Next.js 16.2.4 (App Router, Turbopack), React 19.2, TypeScript, Tailwind v4, Framer Motion, `@iconify/react`.
+- Fonts wired via `next/font/google`: Plus Jakarta Sans (display, primary), Geist Mono (retained for editorial tables/stat figures), Hind Siliguri (Bengali).
+- Design tokens in [`site/src/app/globals.css`](site/src/app/globals.css) **now aligned to Fashol brand guidelines** (see §5 Brand colors).
+
+### All 22 routes live
+`/`, `/about`, `/services`, `/career`, `/contact`, `/case-study`, `/data`, `/news`, `/news/news-1` … `/news/news-10`, `/bn` (Bengali home), `/privacy`, `/terms`, `not-found` (404).
+
+Production build passes with 24 statically-rendered routes (`npm run build`).
+
+### Components
+- **UI**: [`Button`](site/src/components/ui/Button.tsx), [`Eyebrow`](site/src/components/ui/Eyebrow.tsx), [`Section`](site/src/components/ui/Section.tsx), [`Reveal`](site/src/components/ui/Reveal.tsx) (self-unmounts after first animation to reduce layer count).
+- **Site**: [`Nav`](site/src/components/site/Nav.tsx) (Voiceflow-style floating pill, see §4 Nav), [`Footer`](site/src/components/site/Footer.tsx), [`PageHeader`](site/src/components/site/PageHeader.tsx), [`Accordion`](site/src/components/site/Accordion.tsx), [`LogoMarquee`](site/src/components/site/LogoMarquee.tsx), [`Figure`](site/src/components/site/Figure.tsx), [`StatCard`](site/src/components/site/StatCard.tsx).
+- **SVG figures**: [`SupplyChain`](site/src/components/figures/SupplyChain.tsx), [`BangladeshMap`](site/src/components/figures/BangladeshMap.tsx), [`PriceBars`](site/src/components/figures/PriceBars.tsx), [`CropCalendar`](site/src/components/figures/CropCalendar.tsx), [`OnboardingCurve`](site/src/components/figures/OnboardingCurve.tsx) (40,120 endpoint), [`OnionPrice`](site/src/components/figures/OnionPrice.tsx), [`RouteEfficiency`](site/src/components/figures/RouteEfficiency.tsx).
+
+### Images & assets
+- 69 images from `content-export/assets/images/` copied to [`site/public/images/content/`](site/public/images/content/).
+- 1 Pexels image sourced to replace the missing `news-9-orbit.png` — see [`SOURCED_IMAGES.md`](SOURCED_IMAGES.md) and [`MISMATCHED_IMAGES.md`](MISMATCHED_IMAGES.md).
+- Oversized images resized to 1920w max with `sips`: `gallery01.jpg` went **18.6 MB → 991 KB**; also `farmer-cabbage`, `sakib-hossain`, `gallery06`, `market-aerial-bd`.
+- **New brand assets** in [`site/public/`](site/public/): `fashol-logo-full.png` (full logo = icon + green wordmark) and `fashol-icon-green.png` (icon only, used as favicon).
+- **Hero video**: [`site/public/herovideo2.mp4`](site/public/herovideo2.mp4) now plays autoplay/muted/looped as the home-page hero background; static paddy-aerial image is the poster + fallback.
+
+### Scroll-perf overhaul
+1. Removed **Lenis** smooth-scroll library entirely.
+2. Removed `backdrop-filter: blur` from Nav and hero stat tiles (expensive per-frame compositing).
+3. Collapsed `--shadow-layered` from 3 stacked shadows to 1.
+4. `Reveal` self-detaches (`onAnimationComplete → setDone(true)`) so the home page stops holding ~91 motion layers forever.
+5. Marquee: `content-visibility: auto`; swapped `transition-all` + `grayscale` for `transition-opacity`.
+
+### Hero readability pass (2026-04-18)
+- **Removed muddy black text-shadows** on the headline and subhead. Replaced with a layered text-shadow system briefly (deep-green undershadow + creamy paper bloom), then removed entirely in favor of an overlay approach per user direction.
+- **Added a glossy brand scrim** between the hero video and the text content (`pointer-events-none`, `absolute inset-0`):
+  1. Bottom-anchored deep-green wash (`#065E3A`) — heavy at the floor, tapers up.
+  2. Inner creamy "wet glass" bloom in the lower-mid band.
+  3. Thin emerald sheen line at the scrim's top edge for the gloss highlight.
+- **Iterated overlay density and ceiling**: final stop at `transparent 62%` (caps below the sun in the hero photo, doesn't wash out the sky), with floor at `rgba(6,94,58,1.0)` for max contrast under the stat tiles. Sheen and gloss layers tracked the new ceiling at 50/56/62% and 18/40%.
+- **Hero copy anchored to the bottom**: hero copy container switched from `justify-center` to `justify-end pb-4 tablet:pb-6`, so the headline + CTAs sit just above the stat tiles rather than vertically centered.
+- **Subhead temporarily commented out** ("Fashol moves perishable produce…") at the user's request — only the headline + CTAs render in the hero copy block now.
+- **Body lede color** swapped to creamy paper at 94% (`rgba(255,251,234,0.94)`) for warmer unification with the headline (when it returns).
+
+### Logo grids — partners & investors (2026-04-18)
+- Removed `grayscale hover:grayscale-0` and the `opacity-70/80 hover:opacity-100` muting from both the partners grid ([page.tsx:438](site/src/app/page.tsx#L438)) and the investors grid ([page.tsx:448](site/src/app/page.tsx#L448)) on the home page. Logos now render at full color and full opacity by default.
+
+### "As featured in" section pass (2026-04-18)
+- **Uniform logo heights**: removed the per-logo `scale` multipliers on the home-page "As featured in" `LogoMarquee` (Prothom Alo 1.35 / Daily Star 1.45 / Tech in Asia 1.2 → all 1.0) so every outlet renders at the same pixel height on one straight baseline. Base height nudged `48 → 44px`.
+- **Section height trimmed**: Section block padding overridden from the default `section-y` (`72/96/123px`) down to `!py-[14px] tablet:!py-[21px] desktop:!py-7` (roughly 14/21/28px). Inner `gap-6 → gap-2`. Net section height ≈ 30–35% of the prior version.
+- **Transparent logo backgrounds**: AgFunder (`investor02.png`) and Orbit Startups (`investor03.png`) had white rectangles baked in. Stripped white to alpha=0 with a Pillow pass (threshold 240); all four corners verified transparent. Couldn't find clean transparent PNGs online — official AgFunder site now serves a black-only wordmark (no plant), and Orbit rebranded to Orbit Ventures with a white-on-dark SVG — so in-place alpha strip was the pragmatic call. If AgFunder News branding ("AFN" mark) is preferred going forward, source `black-e1742824364136.png` from `agfundernews.com/wp-content/uploads/2025/03/`.
+
+### "As featured in" moved directly under the hero (2026-04-18 pm)
+- **Removed "The full network" partner marquee** that sat between the hero and "Chapter I — The argument" ([page.tsx:102-111](site/src/app/page.tsx#L102-L111), old). This was the Kiam / AsiaTech / Upay / Dutch-Bangla Bank / Syngenta / Foodpanda strip driven by `PARTNERS`.
+- **Promoted the "As featured in" press-logo band** (Forbes, Prothom Alo, Daily Star, Tech in Asia, Business Standard, AgFunder, Orbit Startups, Dhaka Tribune, Financial Express, UNB, Daily Observer, Future Startup) from its previous position between SDG alignment and the Join CTA into that slot — directly under the hero.
+- Preserved the condensed padding (`!py-[14px] tablet:!py-[21px] desktop:!py-7`) and per-logo `scale` overrides for uneven-baseline outlets (Dhaka Tribune 0.55 / Financial Express 0.4 / AgFunder 1.45 etc.).
+- Dropped the now-unused `Link` import from [page.tsx](site/src/app/page.tsx). `PARTNERS` is still imported and used in the Trust-register grid further down; nothing else broke. `npx tsc --noEmit` passes clean.
+
+### Home-page iterations (from user feedback)
+- **Masthead strip** ("Issue 001 · Friday …") **deleted** across all 13 pages. Component file deleted.
+- **"Latest news" 3-card section** on home → replaced with a **10-logo "Featured in" grid** (Forbes, Prothom Alo, Daily Star, Tech in Asia, Business Standard, AgFunder, Orbit Startups, Daily Sun, Foodpanda, SOSV). Each links to the article.
+- **Hero** now **exactly viewport-height** (`h-svh`, with internal `pt-[72px] tablet:pt-[96px]`), `flex flex-col justify-between` — headline+lede+CTAs centred, 4 stat tiles anchored to the floor.
+- **Stat tiles**: reduced to 4 (Farmers / Hubs / Waste cut / Food loss prevented). `Pre-seed raised` and `Cycle time` removed.
+- **"A supply chain for" eyebrow** and **"At a glance — The register, 2026" eyebrow** + `Audited quarterly →` link: removed.
+- **`Fig. 01 — Rice paddies…` caption** and all other `Fig. NN` labels: removed across every editorial page.
+- **§ NN · ০N — LABEL eyebrows** (§ 06 Trust register, § 07 SDG alignment, etc.) and the two `Chapter I — § …` / `Chapter II — § …` eyebrows: removed. Kept only where `§ NN` is the actual H2 heading (privacy / terms).
+- **Trust-register eyebrows** (Partners — 20 of record / Investors — 05 of record / In the press — selected / Trust register · 20 of record): removed.
+- **Farmer count updated from 25,000+ → 40,000+** everywhere: hero headline, stat tiles, About lede and specs, timeline, services specs, data narrative, onboarding curve endpoint (now **40,120 · Apr 2026**, y-axis max 40k), Bengali home, SEO title.
+
+### Navigation (Voiceflow-style) — now in place
+- Full-width fixed nav at top, with **three separate groups at Y=0** (floating over the content):
+  1. **Logo** — standalone `fashol-logo-full.png` in its own faint frosted chip.
+  2. **Center pill** — nav links (`Overview / About / Services / News / Career / Contact`; no `01 / 02 …` numeric prefixes) in a frosted pill with `backdrop-filter: blur(24px)`, dual-layer off-white tint.
+  3. **Right CTAs** — standalone `বাংলা ↗` link (own chip) + lime "Partner with Fashol" pill.
+- **On scroll > 24px**: outer container shrinks from 1360px → 880px max-width, morphs into a single **unified frosted pill** (300ms cubic-bezier). Individual chip backgrounds fade out so they merge cleanly into the outer shell.
+- **Typography**: Plus Jakarta Sans 13px medium (not mono) — same font as the "Partner with Fashol" button.
+- **Hover indicator**: 4px terracotta/orange dot slides in on the left of each nav link; label nudges 2px right.
+- **Readability over the dark hero video**: every chip (logo, center pill, বাংলা) has `rgba(255,255,255,0.78)` + dual-layer tint for high contrast against the dark paddy video.
+- **Mobile**: hamburger reveals an inline dark dropdown card (`#262626` bg, `#404040` border) — Voiceflow pattern.
+
+### Brand colors — swapped from Aeline to Fashol
+Overwrote all accent tokens in [`globals.css`](site/src/app/globals.css) to match the Fashol brand guidelines. Details in §5 below and in memory at [`memory/brand_colors.md`](~/.claude/projects/-Users-ashikpw-Desktop-Ag-Doc-fashol-website-redesign-website-V2/memory/brand_colors.md).
+
+---
+
+## 2 · What's happening now
+
+Dev server running at `http://localhost:3000`. Home page has the Voiceflow-style nav, video hero, brand-aligned colors, and all editorial furniture stripped per the user's feedback. Most recent pass (2026-04-18 pm) repositioned the "As featured in" press-logo band directly under the hero and killed the "The full network" partner marquee that previously occupied that slot. The partner logos still exist in the Trust-register grid further down the page. Hero subhead is still commented out and will need to be reinstated or replaced.
+
+---
+
+## 3 · User directions (durable, apply going forward)
+
+### Content
+- **Never rewrite or "improve" copy.** Use the exact text from `content-export/pages/*.md` verbatim.
+- **Don't invent content.** No lorem ipsum, no placeholder text.
+- **Preserve the stale dates** on privacy/terms ("Last updated 2024.12") — flagged for legal review, not to be silently updated.
+- **Preserve the composite farmer disclaimer** on `/case-study`.
+- **Farmer count is 40,000+** (updated from 25,000+). Don't regress.
+
+### Design / layout
+- **Keep the site uncluttered.** Remove visually redundant or overlapping copy aggressively. Strip editorial furniture (Fig. NN labels, § NN section markers, "X of record" eyebrows) unless the label IS the direct headline.
+- **Hero sections must fit exactly within the viewport** — no more, no less. Use `100svh` (small viewport height) to avoid mobile-browser-chrome clipping.
+- **Simpler is better.** When a section feels text-heavy, prefer a logo grid / single image / tight eyebrow-and-cta over a multi-card layout.
+- **Nav is Voiceflow-style**: three separate floating groups at Y=0 (logo / center pill / CTAs) that merge into a single shrinking frosted pill on scroll. Never revert to a full-width solid bar.
+- **No white band under the nav.** Content (hero, page headers) must flow under the floating pill, not sit in a separate padded strip. Each page owns its own top clearance (typically `pt-[112px] tablet:pt-[144px]` on `PageHeader`).
+- **No black text-shadows for readability over photos/video.** Use a brand-color overlay/scrim instead (deep-green is the workhorse; emerald/creamy paper for sheen). Black drop shadows look muddy on warm imagery — green is the optical complement and reads cleaner.
+
+### Typography
+- **Body/headline font**: Plus Jakarta Sans (primary display).
+- **Nav text**: Plus Jakarta Sans — **not** Geist Mono. Secondary font (Geist Mono) is retained only for editorial tables, tabular stat figures, and data captions.
+- **Bengali**: Hind Siliguri.
+
+### Brand colors — see §5. Never hardcode hex; always use CSS tokens.
+
+### Performance
+- **Scroll perf is non-negotiable.** No smooth-scroll libraries. No `backdrop-filter: blur` stacked over large hero images. Single soft shadow only (no layered 3-stop shadows).
+- **Reveal wrappers must self-detach** after their first animation.
+- **Resize oversized images at source.** Never ship 5000px+ sources expecting Next/Image to save you.
+
+### Images
+- Track every external image in [`SOURCED_IMAGES.md`](SOURCED_IMAGES.md) with URL, credit, license, usage. Never hotlink.
+- When a PR/content image doesn't fit aesthetically, log in [`MISMATCHED_IMAGES.md`](MISMATCHED_IMAGES.md) and source a replacement from Pexels (Unsplash fallback).
+- **Logo usage**: `fashol-logo-full.png` whenever the full logo is needed as one image; `fashol-icon-green.png` when only the icon is required (favicon, compact marks).
+
+### Framework notes
+- **This is Next.js 16** — not the Next you may know from training data. Check `site/node_modules/next/dist/docs/` before writing new code. Key breaking changes: `params` and `searchParams` are Promises (`await props.params`); React 19's `JSX` namespace must be accessed as `React.JSX.IntrinsicElements`.
+
+---
+
+## 4 · Nav anatomy (reference)
+
+Two states driven by `scrolled = window.scrollY > 24`:
+
+**At Y=0** — outer wrapper is transparent. Three groups float independently with their own faint frosted chips:
+- Logo chip: `border border-[rgba(19,19,19,0.06)]` + `backdrop-blur-[24px]` + `bg-[rgba(255,255,255,0.78)]` + warm tint overlay.
+- Center pill: same treatment, wraps the 6 nav links.
+- `বাংলা ↗` chip: same treatment.
+- `Partner with Fashol`: solid emerald pill button (no frosted chip — it's a CTA).
+
+**On scroll** — outer container animates (`320ms cubic-bezier(0.22,1,0.36,1)`) to `max-w-[880px]`, `rounded-full`, gains its own frosted bg + border + shadow. Individual chip backgrounds fade to `opacity: 0` so they visually merge into the single outer pill.
+
+**Hover indicator**: `4px` terracotta dot on the left of each nav link, `opacity: 0 → 1` on `:hover` / `active`. Label nudges `translate-x-[2px]`.
+
+**Mobile**: hamburger toggle reveals a **dark inline dropdown card** (`#262626` bg, `#404040` border, rounded-2xl) — not a full-screen overlay.
+
+---
+
+## 5 · Brand colors (Fashol guideline)
+
+All tokens live in [`site/src/app/globals.css`](site/src/app/globals.css). Full spec also in memory at [`brand_colors.md`](~/.claude/projects/-Users-ashikpw-Desktop-Ag-Doc-fashol-website-redesign-website-V2/memory/brand_colors.md).
+
+| Role | Token | Hex | Usage |
+|---|---|---|---|
+| Deep Green (primary brand) | `--color-deep-green` | `#065E3A` | Logo, brand statements, key headlines, branded borders |
+| Emerald Green (vibrancy) | `--color-emerald` · `--color-lime` (alias) | `#13C171` | Primary CTA, inline highlight accents |
+| Creamy White (balance) | `--color-paper` · `--color-grain` (alias) | `#FFFBEA` | Page background, light sections |
+| Yellow (secondary) | `--color-sun` | `#FFD12C` | Pattern / graphic elements, highlight fills |
+| Orange (secondary) | `--color-orange` · `--color-terracotta` (alias) | `#FF6740` | Warm accents, hover dots, chart callouts |
+| Deep Black (anchor) | `--color-ink` | `#000000` | Dark sections (hero, footer), high-contrast text on cream |
+| Near-black text | `--color-ink-subtle` | `#0F1A12` | Body copy (slight green bias for readability on cream) |
+
+**Usage proportions (per brand pie chart):**
+- ~50% primary greens
+- ~25% secondary (orange + yellow)
+- ~15% green tints/shades
+- ~10% creamy white
+
+**Rules:**
+1. Never hardcode hex anywhere — always reference the CSS variables.
+2. CTAs default to emerald bg + black text + black border.
+3. Dark sections use `#000000`, not any charcoal.
+4. Body text uses `ink-subtle` (#0F1A12), not pure black.
+5. No blues/purples. Warm pair (orange + yellow) only.
+
+---
+
+## 6 · Known items still open (flagged for the user)
+
+1. **`news-2` and `news-5` share the same hero image** (`news-5-dhakatribune.jpeg`) — preserved from content export; consider a unique hero per article before launch.
+2. **`news-6` uses generic `warehouse.jpg`** — replace when a DITECH-partnership-specific photo is available.
+3. **`gallery08.jpeg` and `gallery09.jpeg`** sit in `public/images/content/` but aren't referenced on any page.
+4. **Legal dates** on privacy/terms: "Last updated 2024.12" — flagged for legal review.
+5. **Case-study composite farmer**: "Md. Rafiqul Islam" is a composite; a verified single-farmer case should replace before launch.
+6. **Indentation hygiene**: a UTF-8 recovery pass during editorial cleanup collapsed some 2-space indents to 1-space in a handful of files. TypeScript doesn't care but a `prettier --write` run would normalize them.
+7. **Benign Turbopack warning** at build: two package-lock.json files detected. Silence by setting `turbopack.root` in `site/next.config.ts` if desired.
