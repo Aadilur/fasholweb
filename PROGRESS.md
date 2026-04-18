@@ -1,6 +1,6 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-19
+**Last updated:** 2026-04-19 (pm)
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
 
@@ -83,19 +83,17 @@ New [`PlatformSection`](site/src/components/site/PlatformSection.tsx) — 4-prod
 
 The video-hero is gone. Replaced with a single isometric illustration + stacked editorial content.
 
-- **Video + poster swap → single static photo**: removed `<video src="/herovideo11.mp4">` and the bottom-anchored deep-green scrim overlay. The hero is now a single `<Image src="/h7-hero.webp" width={1920} height={780}>` in normal flow with `w-full h-auto` (no `fill`, no `object-cover` crop). Illustration iterated through generations h1/h2/h3/h4/h5/h6/h7 before landing on the final. Old `herovideo10.mp4` and `herovideo11.mp4` deleted; `herovideo*.mp4` gitignored.
-- **Image cropped from top**: original 1920×815 generation was trimmed 35px off the cream sky (final file 1920×780, saved as [h7-hero.webp](site/public/h7-hero.webp)) so the 4 stat cards land at the 900px viewport fold on a standard laptop.
-- **Stacked layout** (no aspect-locked frame): image → headline block (H1 + CTAs) → stat tiles row. No more absolute-positioned content overlaying the image.
+- **Video + poster swap → single static photo**: removed `<video src="/herovideo11.mp4">` and the bottom-anchored deep-green scrim overlay. The hero is now a single `<Image src="/h10.png" width={1920} height={815}>` in normal flow with `w-full h-auto` (no `fill`, no `object-cover` crop). Image iterated through many generations (illustrations h1-h7, then photography h8-h10); h10 is the current photograph at native 1920×815. Old `herovideo10.mp4` and `herovideo11.mp4` deleted; `herovideo*.mp4` gitignored.
+- **Stacked layout** (no aspect-locked frame): image → headline block (H1 + CTAs, pulled up via negative margin) → stat tiles row. No more absolute-positioned content overlaying the image.
 - **H1**: deep-green (`var(--color-deep-green)`), centered, `max-w-[900px]`, overridden from `t-hero` default (clamp 40-72) to `!text-[30px] tablet:!text-[44px] desktop:!text-[56px]`. 56px on desktop is intentionally larger than any other font on the home page (next-biggest is `t-h2` at 48px max), so the hero H1 is the visual anchor for the whole page.
 - **CTAs**: primary lime pill (`Partner with Fashol`) + secondary outlined pill (`Read the data →`) with deep-green text + deep-green border. Both shrunk to `!h-10 !px-5 !text-[13px]`. Centered row on tablet+, stacked column on mobile.
 - **Stat tiles**: compacted — `rounded-xl` border, `px-3 py-2 tablet:px-4 tablet:py-2.5` padding, figures `text-[17px] tablet:text-[22px]`, cream semi-opaque background (`rgba(255,251,234,0.92)`) with deep-green figures and ink-subtle labels. Grid stays 2-col mobile / 4-col desktop.
-- **Section bg**: flat cream (`var(--color-paper)`), no scrim, no overlay. The illustration's own cream sky at the top blends with the section bg, so the fixed nav floats over it seamlessly with no visible seam.
-- **Soft cream fade at image floor**: `h-10 tablet:h-14` bottom-to-transparent gradient sitting at the illustration's bottom edge, separating it from the H1 without inserting any structural gap. Padding above H1 is `pt-0` on all breakpoints so the headline is visually flush with the image.
-- **Headline block padding**: `pt-0 pb-4 tablet:pt-0 tablet:pb-5`.
+- **Section bg**: flat cream (`var(--color-paper)`). The existing deep-green scrim from the video era is gone.
+- **Cream fade at image floor + pulled-up headline**: the headline block is pulled up into the image's bottom with `-mt-24 tablet:-mt-32 desktop:-mt-40` (96/128/160px). A cream gradient sits at the image floor (`h-[150px] tablet:h-[190px] desktop:h-[230px]`) fading from solid `var(--color-paper)` (0→75%) to transparent at the top, so the H1 sits in a fully opaque cream band while the image's upper two-thirds remain visible untouched. This technique brings the stat cards up so all four land at the ~800-900px viewport fold on a standard laptop without cropping the image itself.
+- **Headline block**: `container-page text-center relative z-10 pt-0 pb-4 -mt-24 tablet:-mt-32 desktop:-mt-40 tablet:pb-5`. `z-10` keeps text above the gradient.
 - **Stat tiles padding**: `pb-5 tablet:pb-6`.
-- **Viewport math at 1440×900**: image renders at ~585px, headline block ~185px, stats ~80px → total hero ~850-870px, landing the 4 stat cards right at the fold. "As featured in" sits just below the fold at that size.
-- **Brand-cream fade experimentation**: green → cream → green scrim iterations are gone. The final design is scrim-free; readability comes from the deep-green H1 on the cream bg, not from overlaying the image.
-- **Nav text color**: unchanged (`var(--color-ink-subtle)` = near-black with green bias). Already readable over the cream hero.
+- **Viewport math at 1440×900**: image renders at 611px, headline pulled up 160px (overlaps the fade), stats row below. Total hero ≈ 730-760px, leaving room above the fold for "As featured in" to peek in.
+- **Nav text color**: unchanged (`var(--color-ink-subtle)` = near-black with green bias). Already readable over the cream hero and the photo's upper portion.
 
 ### "As featured in" moved directly under the hero (2026-04-18 pm)
 - **Removed "The full network" partner marquee** that sat between the hero and "Chapter I — The argument" ([page.tsx:102-111](site/src/app/page.tsx#L102-L111), old). This was the Kiam / AsiaTech / Upay / Dutch-Bangla Bank / Syngenta / Foodpanda strip driven by `PARTNERS`.
@@ -132,7 +130,7 @@ Overwrote all accent tokens in [`globals.css`](site/src/app/globals.css) to matc
 
 ## 2 · What's happening now
 
-Home page has been restructured around a static illustrated hero and an 11-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Chapter II (price bars) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, CropCash). Hero is now a single 1920×780 webp (`h7-hero.webp`) with the H1 sitting flush below it; a small cream→transparent fade softens the boundary. Hero subhead is still commented out; commit history preserves it if the user wants it back.
+Home page has been restructured around a single-photo hero and an 11-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Chapter II (price bars) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, CropCash). Hero is a single 1920×815 photo (`h10.png`); the H1 block is pulled up into the image's lower portion via negative margin, with a cream fade gradient at the image floor acting as a soft mask so deep-green headline text reads cleanly against the image. Hero subhead is still commented out; commit history preserves it if the user wants it back.
 
 A content-strategy brief lives at [`HOME_CONTENT_BRIEF.md`](HOME_CONTENT_BRIEF.md) — a snapshot of the home page's copy, voice rules, and known copy-debt for future copywriting work in a fresh chat.
 

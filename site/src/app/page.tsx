@@ -15,26 +15,26 @@ export default function HomePage() {
  {/* Illustration - natural aspect, full width */}
  <div className="relative w-full">
  <Image
- src="/h7-hero.webp"
+ src="/h10.png"
  alt=""
  width={1920}
- height={780}
+ height={815}
  priority
  sizes="100vw"
  className="block w-full h-auto"
  />
- {/* Soft cream fade at the image floor - separates illustration from headline without visible gap */}
+ {/* Deep cream fade at the image floor - lets the headline sit over the image's lower portion */}
  <div
  aria-hidden
- className="absolute inset-x-0 bottom-0 h-10 tablet:h-14 pointer-events-none"
+ className="absolute inset-x-0 bottom-0 h-[150px] tablet:h-[190px] desktop:h-[230px] pointer-events-none"
  style={{
- background: "linear-gradient(to top, var(--color-paper) 0%, rgba(255,251,234,0) 100%)",
+ background: "linear-gradient(to top, var(--color-paper) 0%, var(--color-paper) 75%, rgba(255,251,234,0) 100%)",
  }}
  />
  </div>
 
- {/* Headline block - compact, centered */}
- <div className="container-page text-center pt-0 pb-4 tablet:pt-0 tablet:pb-5">
+ {/* Headline block - pulled up into the image's faded floor so 4 stat cards land at the viewport fold */}
+ <div className="container-page text-center relative z-10 pt-0 pb-4 -mt-24 tablet:-mt-32 desktop:-mt-40 tablet:pb-5">
  <Reveal as="h1" className="t-hero !text-[30px] tablet:!text-[44px] desktop:!text-[56px] !text-[var(--color-deep-green)] max-w-[900px] mx-auto">
  Building a better food supply chain
  </Reveal>
