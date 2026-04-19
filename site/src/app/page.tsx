@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Reveal, StaggerChildren, StaggerItem } from "@/components/ui/Reveal";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
 import { PlatformSection } from "@/components/site/PlatformSection";
-import { PriceBarsFigure } from "@/components/figures/PriceBars";
-import { BangladeshMapFigure } from "@/components/figures/BangladeshMap";
+import { GlobeFigure } from "@/components/figures/Globe";
 import { PARTNERS, INVESTORS } from "@/data/site";
 
 export default function HomePage() {
@@ -165,104 +164,205 @@ export default function HomePage() {
  </Section>
 
  {/* ───────────── Operations register ───────────── */}
- <Section tone="surface">
- <div className="grid desktop:grid-cols-12 gap-10 mt-10">
- <Reveal as="h2" className="t-h2 desktop:col-span-7">
- Forty-plus hubs. Nine districts. One platform behind every farmer.
+ <Section tone="surface" size="sm" className="!py-10 tablet:!py-12 desktop:!py-14">
+ <div className="grid desktop:grid-cols-12 gap-8 items-end">
+ <Reveal as="h2" className="t-h2 desktop:col-span-5">
+ One network behind every farmer.
  </Reveal>
- <Reveal delay={0.08} className="desktop:col-span-5 t-body">
- A partial index of current operating districts. Numbers are reported internally and audited quarterly.
+ <Reveal delay={0.08} className="desktop:col-span-7 t-body">
+ A farmer on Jogaan does not sell to one buyer. They sell into a network of 40 Fashol hubs, 200+ wholesale markets across 50 Bangladeshi locations, plus cross-border buyers in Singapore, the UAE, and Thailand. Fashol owns the cold chain, the grading, and the route. The farmer gets the reach.
  </Reveal>
  </div>
 
- <div className="grid desktop:grid-cols-12 gap-10 mt-14 items-start">
- {/* Map */}
- <div className="desktop:col-span-5">
- <Reveal>
- <BangladeshMapFigure />
- </Reveal>
- <p className="t-caption mt-4">
- Fashol operating districts, Bangladesh - 2026 Q1.
- </p>
- </div>
-
- {/* Table */}
- <div className="desktop:col-span-7 overflow-x-auto">
- <Reveal>
- <table className="t-table min-w-[720px]">
- <thead>
- <tr>
- <th>№</th>
- <th>District</th>
- <th>Division</th>
- <th>Hubs</th>
- <th>Farmers</th>
- <th>Vol / mo</th>
- <th>Since</th>
- <th>Leading crops</th>
- </tr>
- </thead>
- <tbody>
+ {/* Scoreboard + hub table - two-column dense row */}
+ <div className="grid desktop:grid-cols-12 gap-8 desktop:gap-10 mt-8 items-start">
+ {/* Scoreboard - vertical compact list */}
+ <Reveal className="desktop:col-span-5 flex flex-col">
+ <p className="text-[10px] text-[var(--color-terracotta)] uppercase mb-2" style={{ fontWeight: 500, letterSpacing: "0.08em" }}>At a glance</p>
+ <dl className="flex flex-col gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-xl overflow-hidden">
  {[
- ["01","Satkhira","Khulna","06","4,820","180 MT","2019","Paddy, Cabbage, Potato"],
- ["02","Jashore","Khulna","05","3,610","142 MT","2020","Cabbage, Tomato, Chilli"],
- ["03","Rajshahi","Rajshahi","05","3,210","128 MT","2021","Paddy, Mango, Onion"],
- ["04","Bogura","Rajshahi","04","2,940","110 MT","2021","Potato, Cauliflower"],
- ["05","Khulna","Khulna","04","2,180","96 MT","2022","Paddy, Aubergine"],
- ["06","Mymensingh","Mymensingh","04","2,060","84 MT","2022","Tomato, Gourd, Okra"],
- ["07","Comilla","Chattogram","04","1,980","78 MT","2023","Paddy, Chilli, Bottle Gourd"],
- ["08","Dhaka (Savar)","Dhaka","05","1,540","74 MT","2019","Leafy greens, Radish"],
- ["09","Sylhet","Sylhet","03","1,280","62 MT","2024","Tea, Lemon, Ginger"],
- ].map((r) => (
- <tr key={r[0]}>
- {r.map((c, i) => <td key={i}>{c}</td>)}
- </tr>
- ))}
- </tbody>
- <tfoot>
- <tr>
- <td colSpan={3}>Total, reported 2026 Q1</td>
- <td>40+</td>
- <td>40,000+</td>
- <td>~1,050 MT</td>
- <td colSpan={2} />
- </tr>
- </tfoot>
- </table>
- </Reveal>
+ { v: "40+", l: "Hubs" },
+ { v: "200+", l: "Markets" },
+ { v: "50", l: "Locations" },
+ { v: "60K+", l: "Farmers" },
+ { v: "3.5K+ MT", l: "Volume / mo" },
+ { v: "4", l: "Countries" },
+ ].map((s) => (
+ <div key={s.l} className="bg-[var(--color-grain)] px-4 py-2.5 flex items-baseline justify-between gap-3">
+ <dd className="t-tabular text-[15px] !text-[var(--color-deep-green)]" style={{ fontWeight: 500 }}>{s.v}</dd>
+ <dt className="t-caption !text-[var(--color-ink-muted)] text-right">{s.l}</dt>
  </div>
+ ))}
+ </dl>
+ </Reveal>
+
+ {/* Hub footprint - editorial directory list */}
+ <Reveal delay={0.08} className="desktop:col-span-7">
+ <p className="text-[10px] text-[var(--color-terracotta)] uppercase mb-3" style={{ fontWeight: 500, letterSpacing: "0.08em" }}>Hub footprint</p>
+ <ul className="divide-y divide-[var(--color-line)] border-t border-b border-[var(--color-line)]">
+ {[
+ { hubs: "15", name: "Khulna", crops: "Paddy, Cabbage, Tomato" },
+ { hubs: "09", name: "Rajshahi", crops: "Paddy, Mango, Potato" },
+ { hubs: "04", name: "Mymensingh", crops: "Tomato, Gourd, Okra" },
+ { hubs: "04", name: "Chattogram", crops: "Paddy, Chilli, Bottle Gourd" },
+ { hubs: "05", name: "Dhaka", crops: "Leafy greens, Radish" },
+ { hubs: "03", name: "Sylhet", crops: "Tea, Lemon, Ginger" },
+ { hubs: "-", name: "Barishal", crops: "Onboarding, 2026 Q2" },
+ ].map((d) => (
+ <li key={d.name} className="grid grid-cols-12 gap-3 items-baseline py-2.5">
+ <span className="col-span-2 t-tabular text-[18px] !text-[var(--color-deep-green)]" style={{ fontWeight: 500 }}>
+ {d.hubs}
+ </span>
+ <span className="col-span-4 text-[14px]" style={{ fontWeight: 500 }}>
+ {d.name}
+ </span>
+ <span className="col-span-6 t-caption">
+ {d.crops}
+ </span>
+ </li>
+ ))}
+ </ul>
+ </Reveal>
  </div>
  </Section>
 
- {/* ───────────── Chapter II - The evidence ───────────── */}
- <Section tone="paper">
+ {/* ───────────── Use cases - Four kinds of buyers ───────────── */}
+ <Section tone="surface">
  <div className="grid desktop:grid-cols-12 gap-10">
  <Reveal as="h2" className="t-h2 desktop:col-span-7">
- What a farmer actually earns for one kilo of cabbage.
+ Four kinds of buyers. One platform, built around each.
  </Reveal>
- <Reveal delay={0.08} className="desktop:col-span-5 t-body">
- Comparison between the traditional aratdar chain and Fashol direct procurement.
- Figures are averages across Jashore and Satkhira, 2024 harvest season.
+ <Reveal delay={0.08} className="desktop:col-span-5 t-body-lg">
+ <p>
+ Fashol is not a one-size marketplace. What a restaurant needs from us is different from what a wholesaler needs, or an exporter. The platform delivers differently to each, on the same infrastructure.
+ </p>
  </Reveal>
  </div>
 
- <div className="mt-14">
- <Reveal>
- <h3 className="t-h5 max-w-2xl mb-6" style={{ fontWeight: 500 }}>
- Farmer share of end-consumer price, BDT per kg. Lower bars = less to the grower.
+ <div className="mt-14 grid grid-cols-1 desktop:grid-cols-2 gap-6 desktop:gap-8">
+ {[
+ {
+ num: "01",
+ title: "Restaurants",
+ img: "/c1.webp",
+ body: "Fresh produce at your kitchen door before morning service, ordered the night before through Hyperfarm. No more 4am runs to the wholesale market.",
+ standout: "Same-day or next-day delivery, Dhaka",
+ },
+ {
+ num: "02",
+ title: "Quick-commerce",
+ img: "/c2.webp",
+ body: "Real-time stock visibility and daily pricing on Hyperfarm, with cold-chain fulfillment to your distribution centers. Traceability runs from farmer to final order.",
+ standout: "The produce layer behind multiple operators in Dhaka",
+ },
+ {
+ num: "03",
+ title: "Wholesalers",
+ img: "/c3.webp",
+ body: "Direct-from-hub bulk pricing with quality grading applied at intake, not at the urban wholesale market. Operations managed through Banijjo.",
+ standout: "The volume of aratdar, with transparency aratdar never had",
+ },
+ {
+ num: "04",
+ title: "Exporters",
+ img: "/c4.webp",
+ body: "Grade A selection at hub intake, dedicated cold-chain routing to airports, and export documentation handled end-to-end. Produce in the destination market while it is still in peak freshness.",
+ standout: "Farm-to-airport in under 24 hours",
+ },
+ ].map((c) => (
+ <Reveal key={c.num}>
+ <article className="flex flex-col h-full p-4 tablet:p-5 bg-[var(--color-paper)] rounded-xl border-b border-[var(--color-line-strong)]">
+ <div className="relative aspect-[2/1] w-full rounded-lg overflow-hidden bg-[var(--color-grain)]">
+ <Image
+ src={c.img}
+ alt=""
+ fill
+ sizes="(min-width: 1200px) 520px, 100vw"
+ className="object-cover"
+ />
+ </div>
+ <span className="t-mono text-[10px] text-[var(--color-ink-muted)] mt-4">
+ {c.num}
+ </span>
+ <h3 className="t-h5 mt-1.5" style={{ fontWeight: 500 }}>
+ {c.title}
  </h3>
- <PriceBarsFigure />
+ <p className="t-body-sm mt-2">{c.body}</p>
+ <p className="text-[12px] tracking-[-0.005em] text-[var(--color-terracotta)] mt-auto pt-3" style={{ fontWeight: 500 }}>
+ {c.standout}
+ </p>
+ </article>
  </Reveal>
- <ol className="mt-6 t-caption space-y-1 max-w-3xl">
- <li>1. Traditional chain assumes five intermediaries: farmer → local trader → aratdar → urban wholesaler → retailer → consumer.</li>
- <li>2. Fashol chain: farmer → field agent → hub → buyer → consumer. Cold-chain loss and quality grading applied at intake.</li>
- <li>3. Averages for Grade A cabbage, Jashore &amp; Satkhira, Nov 2024 - Feb 2025. Internal reporting; figures rounded to the nearest BDT.</li>
- </ol>
+ ))}
+ </div>
+ </Section>
+
+ {/* ───────────── Global capability ───────────── */}
+ <Section tone="paper">
+ <div className="grid desktop:grid-cols-12 gap-10">
+ <Reveal as="h2" className="t-h2 desktop:col-span-6">
+ The operation is Bangladeshi. The reach is regional.
+ </Reveal>
+ <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
+ <p>
+ Fashol runs offices in four countries and delivers across borders from a single platform. The operation that starts at a farm gate in Jashore ends at a restaurant in Bangkok, a retailer in Dubai, or a grocery shelf in Singapore.
+ </p>
+ </Reveal>
  </div>
 
- <div className="mt-14 flex flex-col tablet:flex-row gap-3">
- <Button variant="primary" href="/case-study">One farmer, twelve harvests →</Button>
- <Button variant="secondary" href="/data">Full impact data, 2019 → 2026</Button>
+ {/* Bento grid - globe tile on top, three stat tiles below */}
+ <div className="mt-12 grid grid-cols-1 desktop:grid-cols-3 gap-4 desktop:gap-5">
+ {/* Tile 1 - full-width globe */}
+ <Reveal className="desktop:col-span-3">
+ <div className="relative bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 desktop:p-10 min-h-[560px] desktop:min-h-[600px] flex flex-col items-center justify-start gap-6">
+ <h3 className="t-h3 text-center max-w-[560px]" style={{ fontWeight: 500 }}>
+ Four countries. One operating system.
+ </h3>
+ <div className="w-full max-w-[440px]">
+ <GlobeFigure />
+ </div>
+ </div>
+ </Reveal>
+
+ {/* Tile 2 - Offices */}
+ <Reveal delay={0.06}>
+ <div className="h-full bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 flex flex-col min-h-[220px]">
+ <span className="t-mono text-[10px] text-[var(--color-ink-muted)] tracking-[0.12em]">OFFICES</span>
+ <div className="t-tabular text-[56px] leading-none !text-[var(--color-deep-green)] mt-4" style={{ fontWeight: 500 }}>4</div>
+ <ul className="mt-5 flex flex-col gap-1.5 t-body">
+ <li>Dhaka</li>
+ <li>Singapore</li>
+ <li>Dubai</li>
+ <li>Bangkok</li>
+ </ul>
+ </div>
+ </Reveal>
+
+ {/* Tile 3 - Export */}
+ <Reveal delay={0.12}>
+ <div className="h-full bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 flex flex-col min-h-[220px]">
+ <span className="t-mono text-[10px] text-[var(--color-ink-muted)] tracking-[0.12em]">EXPORT</span>
+ <h4 className="t-h4 mt-4" style={{ fontWeight: 500 }}>
+ Grade A, ready for retail
+ </h4>
+ <p className="t-body-sm mt-4 !text-[var(--color-ink-subtle)]">
+ Four-tier grading applied at hub intake. Cold-chain dispatch to airports and ports. Export documentation handled end to end. Produce arrives at the destination market ready for retail shelf.
+ </p>
+ </div>
+ </Reveal>
+
+ {/* Tile 4 - Platform */}
+ <Reveal delay={0.18}>
+ <div className="h-full bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 flex flex-col min-h-[220px]">
+ <span className="t-mono text-[10px] text-[var(--color-ink-muted)] tracking-[0.12em]">PLATFORM</span>
+ <h4 className="t-h4 mt-4" style={{ fontWeight: 500 }}>
+ One system. Every market.
+ </h4>
+ <p className="t-body-sm mt-4 !text-[var(--color-ink-subtle)]">
+ Hyperfarm serves a buyer in Dhaka the same way it serves a buyer in Bangkok. Same stock visibility. Same pricing logic. Same settlement engine.
+ </p>
+ </div>
+ </Reveal>
  </div>
  </Section>
 

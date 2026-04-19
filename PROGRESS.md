@@ -1,6 +1,6 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-19 (pm)
+**Last updated:** 2026-04-19 (late pm)
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
 
@@ -79,6 +79,19 @@ New [`PlatformSection`](site/src/components/site/PlatformSection.tsx) — 4-prod
 - **Stage cards removed** (the three-card Stage 01/02/03 row).
 - **Field photo removed** (cabbage-field `Figure` with Adil Ahnaf photo credit).
 
+### Use Cases card grid, Global Capability section, Ops Register cleanup (2026-04-19 late pm)
+
+Structural rewrite of three home-page sections plus a Globe component extraction.
+
+- **Use Cases rebuilt as a 2x2 card grid** ([page.tsx:229-297](site/src/app/page.tsx#L229-L297)). Replaced the four full-width stripe layout (which had labeled "What they need / What Fashol delivers / The outcome" columns per buyer type) with a tight 2x2 bento of compact cards. Each card: square-to-landscape illustration (`/c1-c4.webp`) → mono number tag (01-04) → display title → 2-sentence body → terracotta accent "standout" line. Cards iterated twice — first full-size (`aspect-square` image, `t-h3` title, `p-6 tablet:p-8`), then shrunk to roughly half-height on user request (`aspect-[2/1]`, `t-h5`, `t-body-sm`, `p-4 tablet:p-5`). Headline unchanged ("Four kinds of buyers. One platform, built around each."), body paragraph tightened to one sentence naming the pillar. Grid collapses to single column below `desktop`.
+- **Operations Register globe removed and restructured** ([page.tsx:167](site/src/app/page.tsx#L167)). The 3-column layout (globe + at-a-glance stats + hub footprint) is now a clean 2-column split (`col-span-5` stats + `col-span-7` hub table). Globe extracted untouched for reuse in the new Global Capability section below.
+- **Globe component updated** ([Globe.tsx](site/src/components/figures/Globe.tsx)). Added a fourth office pin for Thailand (Bangkok · ITF Tower, Silom · lat 13.75 / lon 100.5 · positioned at top: 72% / left: 18%). Made the `phone` field optional and removed it from the rendered callout cards — the new spec only asks for Country / City / Location. "DIFC, Sheikh Zayed Rd" expanded to "DIFC, Sheikh Zayed Road".
+- **Global Capability section added** ([page.tsx:300](site/src/app/page.tsx#L300)). New paper-tone section titled "The operation is Bangladeshi. The reach is regional." with a bento grid: full-width globe tile on top (headline "Four countries. One operating system." + the extracted `GlobeFigure`) and three stat tiles below — OFFICES (4 · Dhaka/Singapore/Dubai/Bangkok), EXPORT ("Grade A, ready for retail"), PLATFORM ("One system. Every market."). Each sub-tile: thin `var(--color-line)` border, rounded-2xl, min-h-[220px].
+- **Section order swapped** ([page.tsx:229, 300](site/src/app/page.tsx#L229)). On user request, Use Cases now precedes Global Capability. Final flow in this region: Ops Register (surface) → Use Cases (surface) → Global Capability (paper) → Founder Letter (surface). Ops + Use Cases share `surface` tone but their layouts (dense stats list + hub table vs. 2x2 card grid) are visually distinct enough that the tone match doesn't blur the boundary.
+- **`cobe` dependency added** to [site/package.json](site/package.json) for the WebGL globe.
+- **New image assets** in [`site/public/`](site/public/): `c1.webp`, `c2.webp`, `c3.webp`, `c4.webp` (isometric illustrations for each buyer type).
+- No em-dashes or en-dashes anywhere in [page.tsx](site/src/app/page.tsx) or [Globe.tsx](site/src/components/figures/Globe.tsx). Single-hyphen rule enforced end-to-end. `npx tsc --noEmit` passes clean.
+
 ### Hero — complete rebuild around a static illustration (2026-04-19)
 
 The video-hero is gone. Replaced with a single isometric illustration + stacked editorial content.
@@ -130,7 +143,7 @@ Overwrote all accent tokens in [`globals.css`](site/src/app/globals.css) to matc
 
 ## 2 · What's happening now
 
-Home page has been restructured around a single-photo hero and an 11-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Chapter II (price bars) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, CropCash). Hero is a single 1920×815 photo (`h10.png`); the H1 block is pulled up into the image's lower portion via negative margin, with a cream fade gradient at the image floor acting as a soft mask so deep-green headline text reads cleanly against the image. Hero subhead is still commented out; commit history preserves it if the user wants it back.
+Home page has been restructured around a single-photo hero and a 12-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Use Cases (four buyer types) · Global Capability (rotating globe + offices) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, CropCash). Hero is a single 1920×815 photo (`h10.png`); the H1 block is pulled up into the image's lower portion via negative margin, with a cream fade gradient at the image floor acting as a soft mask so deep-green headline text reads cleanly against the image. Hero subhead is still commented out; commit history preserves it if the user wants it back.
 
 A content-strategy brief lives at [`HOME_CONTENT_BRIEF.md`](HOME_CONTENT_BRIEF.md) — a snapshot of the home page's copy, voice rules, and known copy-debt for future copywriting work in a fresh chat.
 
