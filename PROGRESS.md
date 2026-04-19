@@ -6,6 +6,48 @@
 
 ---
 
+## 2026-04-20 evening - Products hub page
+
+Replaced the `/products` "Coming soon" placeholder with a full five-section editorial hub, mirroring the Solutions hub's structural rhythm.
+
+### New page ([products/page.tsx](site/src/app/products/page.tsx))
+
+Single-file server component, five sections stacked:
+
+1. **Hero** (`tone="ink"`): `PRODUCTS` eyebrow, H1 *"Four products. One operating system."*, one-paragraph subhead naming Jogaan / Hyperfarm / Banijjo / CropCash, single "Work with Fashol →" link anchoring to `#work-with-fashol`. Typography and spacing copied from the Solutions hub hero so the two pages read as siblings.
+2. **Stack diagram** (`tone="paper"`): `HOW IT FITS TOGETHER` eyebrow + H2 *"Each product does one job. Together they make the platform."* + the new `ProductStack` figure + a muted centered caption beneath.
+3. **Four product blocks** (alternating `surface`/`paper`/`surface`/`paper`): each block is its own `<Section>` with a `border-t border-[var(--color-line)]` between blocks 2-4, so the tone break and the divider line double up at each boundary. Two-column grid-12 layout (`col-span-4` left, `col-span-8 col-start-6` right). Left column is `desktop:sticky desktop:top-[120px]` with the number tag, product name (`t-h2`), Bengali form (`lang-bn`) where applicable, and the "For [audience]" line. Right column runs: editorial headline (`t-h3`) → body (`t-body-lg`) → "Who uses it" line with an inline `t-mono` eyebrow → status line (`t-mono` uppercase, tracked) → "Learn more about [Product] →" link using the existing `.link-arrow` class.
+4. **CTA band** (`tone="ink"`, `id="work-with-fashol"`): `WORK WITH FASHOL` eyebrow + H2 *"Three ways in."* + three-card StaggerChildren grid. Cards (Partner with Fashol / Work with us / Read the data) reuse the Solutions-hub card chrome verbatim (`rounded-3xl border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.04)]` with `<Button variant="on-dark">`).
+5. **Footer**: shared component via the root layout, untouched.
+
+Nav "Products" active state already handled by [Nav.tsx](site/src/components/site/Nav.tsx)'s `pathname?.startsWith(menu.href)` check - no nav code change needed.
+
+### Stack diagram component (new) ([ProductStack.tsx](site/src/components/figures/ProductStack.tsx))
+
+Inline SVG, no external assets, two variants driven by the `tablet` breakpoint:
+
+- **Desktop** (`hidden tablet:block`): single `viewBox="0 0 900 420"` SVG. Three `<rect>` boxes across the top (Jogaan · Banijjo · Hyperfarm, evenly spaced at x=60/340/620, all w=220 h=90 rx=8) and one centered below (CropCash at x=340 y=290). Horizontal flow lines between the top boxes at y=125 and three converging polylines down into CropCash (straight drop from Banijjo, L-shapes from Jogaan and Hyperfarm meeting CropCash's top edge at x=400/450/500). Single `<marker id="product-stack-arrow">` definition reused on every line's `markerEnd`. Strokes use `currentColor` driven by a parent `color: var(--color-deep-green)`; box fills use `var(--color-paper)`; `<text>` labels set `font-family` to `var(--font-plus-jakarta)` inline so SVG text picks up the same loaded font as the rest of the page.
+- **Mobile** (`tablet:hidden`): plain flex-column stack of four bordered cards (Jogaan → Banijjo → Hyperfarm → CropCash) with a small downward-chevron SVG between each. Same deep-green stroke, same `.lang-bn`-compatible typography.
+
+The diagram is intentionally unframed (no wrapping card / no surrounding border) so it reads as a diagram on the paper tone, not a boxed-in illustration.
+
+### Metadata
+
+- `title: "Products"` (hits the layout template `%s · Fashol` → "Products · Fashol").
+- `description: "Four products, one operating system. Jogaan, Hyperfarm, Banijjo, and CropCash make up Fashol's platform for the food supply chain."`
+
+### Verified
+
+- `npx tsc --noEmit` clean, ESLint clean.
+- `curl http://localhost:3000/products` → HTTP 200. All four product names, both Bengali strings (যোগান, বাণিজ্য), all status lines (AVAILABLE ON GOOGLE PLAY / iOS, ANDROID, AND WEB / LAUNCHING 2026), the SVG `<rect>` boxes and the `product-stack-arrow` marker all present in the rendered HTML.
+- Nav active-state class (`bg-[rgba(19,19,19,0.06)]`) fires on `/products`.
+
+### Side notes
+
+- Cleared the 572 MB `.next/` cache mid-session after a prior Turbopack compile wedged the dev server. Unrelated to the page code; just ops.
+
+---
+
 ## 2026-04-20 pm - Products/Solutions nav dropdowns, Solutions hub, green links
 
 ### Nav dropdowns (new) ([Nav.tsx](site/src/components/site/Nav.tsx), [NavDropdown.tsx](site/src/components/site/NavDropdown.tsx), [data/nav.ts](site/src/data/nav.ts))
