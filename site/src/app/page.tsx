@@ -7,6 +7,71 @@ import { PlatformSection } from "@/components/site/PlatformSection";
 import { GlobeFigure } from "@/components/figures/Globe";
 import { PARTNERS, INVESTORS } from "@/data/site";
 
+const VOICES: ReadonlyArray<{
+  eyebrow: string;
+  quote: string;
+  name: string;
+  role: string;
+  image: string;
+}> = [
+  {
+    eyebrow: "FARMER · JESSORE",
+    quote: `"Before Fashol, I used to take my cauliflower to the mahajan and accept whatever price he gave that morning. Now I see the price on my phone the night before. If it's not good, I wait a day."`,
+    name: "Abdul Karim",
+    role: "Farmer",
+    image: "/images/voices/voice-01.jpg",
+  },
+  {
+    eyebrow: "FARMER · RANGPUR",
+    quote: `"The money reaches my bKash by evening. On the old system I would wait two weeks, and sometimes the mahajan would deduct for transport that never happened."`,
+    name: "Shahinur Begum",
+    role: "Farmer",
+    image: "/images/voices/voice-02.jpg",
+  },
+  {
+    eyebrow: "RESTAURANT · DHAKA",
+    quote: `"I run six branches in Dhaka. I place one order at 10 PM and it reaches all six kitchens by 6 AM. My head chef does not even come in for receiving anymore."`,
+    name: "Tanvir Ahmed",
+    role: "Chef-Owner",
+    image: "/images/voices/voice-03.jpg",
+  },
+  {
+    eyebrow: "FARMER · BOGURA",
+    quote: `"They came and weighed the brinjals in front of me, showed me the Grade A and Grade B on the scale, and I got the paper receipt. No arguments."`,
+    name: "Mohammad Rafiq",
+    role: "Farmer",
+    image: "/images/voices/voice-04.jpg",
+  },
+  {
+    eyebrow: "IMPORTER · SINGAPORE",
+    quote: `"We import about 40 tons of fresh produce a month. The cold-chain reading on the dashboard is what our food safety team logs. It saves us a full QA step."`,
+    name: "Priya Menon",
+    role: "Head of Supply",
+    image: "/images/voices/voice-05.jpg",
+  },
+  {
+    eyebrow: "FARMER · COMILLA",
+    quote: `"We grow pointed gourd for export. Earlier we had no idea where it went after we sold it. Now the field agent shows us which country it goes to and how much each crate is worth."`,
+    name: "Roushan Ara",
+    role: "Farmer",
+    image: "/images/voices/voice-06.jpg",
+  },
+  {
+    eyebrow: "WHOLESALER · DUBAI",
+    quote: `"The grade on the invoice matches the grade in the crate. That sounds obvious. In this industry it is not."`,
+    name: "Mohammad Al-Hassan",
+    role: "Procurement",
+    image: "/images/voices/voice-07.jpg",
+  },
+  {
+    eyebrow: "FIELD AGENT · JESSORE",
+    quote: `"I used to cover three villages on a motorbike with a notebook. Now the app handles the weighing, the pricing, and the payment. I cover nine villages, and the farmers trust the numbers more than they trust me."`,
+    name: "Mizanur Rahman",
+    role: "Field Agent",
+    image: "/images/voices/voice-08.jpg",
+  },
+];
+
 export default function HomePage() {
  return (
  <>{/* ───────────── Hero ───────────── */}
@@ -161,6 +226,81 @@ export default function HomePage() {
  </div>
  </Reveal>
 
+ </Section>
+
+ {/* ───────────── Farmer Value ───────────── */}
+ <Section tone="surface" className="!py-6 tablet:!py-8 desktop:!py-10">
+ <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
+ <Reveal className="desktop:col-span-6">
+ <span className="t-mono text-[11px] tracking-[0.14em] uppercase text-[var(--color-ink-muted)] block mb-5">
+ FARMER VALUE
+ </span>
+ <h2 className="t-h2">
+ Four things a farmer on Fashol has, that a farmer off it usually does not.
+ </h2>
+ </Reveal>
+ <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
+ <p>
+ A farmer in Bangladesh has traditionally had one buyer, one price, and no access to credit or modern inputs. Fashol changes that on four fronts at once. Every farmer registered on Jogaan gets all four.
+ </p>
+ </Reveal>
+ </div>
+
+ <div className="mt-6 tablet:mt-8 grid grid-cols-1 tablet:grid-cols-2 gap-6">
+ {[
+ {
+ img: "/images/farmer-value/value-01.png",
+ alt: "A fair price, benchmarked against the live market",
+ product: "JOGAAN",
+ headline: "A fair price, benchmarked against the live market.",
+ body: "For every crop a farmer brings in, Fashol's pricing is benchmarked against live data from 200-plus wholesale markets across Bangladesh. The farmer sees the price on the app before they leave the house. If the offered price is lower than the market, the farmer waits. If it is higher, they sell.",
+ },
+ {
+ img: "/images/farmer-value/value-02.png",
+ alt: "Payment in hours, not weeks",
+ product: "JOGAAN",
+ headline: "Payment in hours, not weeks.",
+ body: "Payment lands in the farmer's mobile money wallet within 24 hours of weighing at the hub. No invoices, no deductions by middlemen, no follow-up trips. The settlement is automatic and the receipt is in the app.",
+ },
+ {
+ img: "/images/farmer-value/value-03.png",
+ alt: "Seed, feed, and machinery on the same app",
+ product: "JOGAAN",
+ headline: "Seed, feed, and machinery on the same app.",
+ body: "Jogaan carries a marketplace for quality-verified seed, pesticide, livestock feed, and farm machinery. Registered farmers order from the same app they use to sell their produce, at prices negotiated by Fashol on behalf of the network.",
+ },
+ {
+ img: "/images/farmer-value/value-04.png",
+ alt: "Working capital, underwritten by transaction history",
+ product: "CROPCASH · LAUNCHING 2026",
+ headline: "Working capital, underwritten by transaction history.",
+ body: "CropCash, launching in 2026, will offer input financing and working capital loans to Fashol farmers. Lending decisions are based on the farmer's sales history already recorded in Jogaan. No collateral, no paperwork, no bank visits.",
+ },
+ ].map((c) => (
+ <Reveal key={c.img} className="h-full">
+ <article className="h-full flex flex-col tablet:flex-row bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] overflow-hidden">
+ <div className="relative w-full aspect-square tablet:aspect-auto tablet:w-[42%] desktop:w-[40%] tablet:shrink-0 bg-[var(--color-grain)]">
+ <Image
+ src={c.img}
+ alt={c.alt}
+ fill
+ sizes="(min-width: 810px) 25vw, 100vw"
+ className="object-contain p-2"
+ />
+ </div>
+ <div className="p-6 desktop:p-7 flex flex-col gap-3 flex-1 min-w-0">
+ <span className="t-mono text-[11px] tracking-[0.12em] uppercase !text-[var(--color-ink-muted)]">
+ {c.product}
+ </span>
+ <h3 className="t-h5" style={{ fontWeight: 500 }}>
+ {c.headline}
+ </h3>
+ <p className="t-body-sm">{c.body}</p>
+ </div>
+ </article>
+ </Reveal>
+ ))}
+ </div>
  </Section>
 
  {/* ───────────── Operations register ───────────── */}
@@ -373,42 +513,114 @@ export default function HomePage() {
  </Reveal>
  </Section>
 
- {/* ───────────── Editorial - From the founder ───────────── */}
- <Section tone="surface">
- <div className="container-narrow">
+ {/* ───────────── Customer voices (marquee) ───────────── */}
+ <Section tone="ink">
+ <style>{`
+ @keyframes voices-scroll {
+ from { transform: translateX(0); }
+ to { transform: translateX(-50%); }
+ }
+ .voices-track {
+ animation: voices-scroll 60s linear infinite;
+ will-change: transform;
+ }
+ .voices-viewport:hover .voices-track {
+ animation-play-state: paused;
+ }
+ @media (prefers-reduced-motion: reduce) {
+ .voices-viewport {
+ overflow-x: auto;
+ }
+ .voices-track {
+ animation: none;
+ }
+ }
+ `}</style>
+
  <Reveal>
- <p className="t-mono text-[11px] text-[var(--color-ink-muted)] mt-3">
- From the founder · Sakib Hossain · Dhaka, April 2026
+ <div className="grid desktop:grid-cols-12 gap-8 desktop:gap-10 items-end">
+ <h2 className="t-h2 desktop:col-span-7 !text-[var(--color-paper)]">
+ The network, in the words of the people on it.
+ </h2>
+ <p className="desktop:col-span-5 t-mono text-[12px] leading-[1.6] !text-[rgba(255,251,234,0.55)]">
+ Composite quotes drawn from farmer, buyer, and field-agent interviews conducted across 2024 and 2025. Names have been changed.
  </p>
+ </div>
  </Reveal>
- <Reveal as="h2" delay={0.08} className="t-h2 italic mt-8">
- What we talk about when we talk about a supply chain.
+
+ {/* Full-bleed marquee viewport - breaks out of container-page padding so cards bleed off both edges */}
+ <div
+ aria-label="Customer voices"
+ className="voices-viewport relative mt-6 tablet:mt-8 left-1/2 -translate-x-1/2 w-screen overflow-hidden"
+ >
+ <div className="voices-track flex gap-6 w-max py-1">
+ {[...VOICES, ...VOICES].map((v, i) => (
+ <figure
+ key={`${v.name}-${i}`}
+ className="shrink-0 w-[320px] tablet:w-[380px] bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8 flex flex-col gap-6 min-h-[280px]"
+ >
+ <span className="t-mono text-[11px] tracking-[0.12em] uppercase !text-[var(--color-ink-muted)]">
+ {v.eyebrow}
+ </span>
+ <blockquote className="text-[15px] leading-[1.55] !text-[var(--color-ink)] flex-1">
+ {v.quote}
+ </blockquote>
+ <figcaption className="flex items-center gap-3 mt-auto">
+ {/* Dev placeholder: cream 400x400 jpg clipped to a circle with a hair border so the slot is visible against the cream card. Swap the jpg files for real portraits without touching the markup. */}
+ <div className="shrink-0 w-10 h-10 rounded-full overflow-hidden border border-[rgba(19,19,19,0.08)] bg-[var(--color-grain)]">
+ <Image
+ src={v.image}
+ alt=""
+ width={40}
+ height={40}
+ className="block w-full h-full object-cover"
+ />
+ </div>
+ <div className="flex flex-col">
+ <span className="text-[13px] !text-[var(--color-ink)]" style={{ fontWeight: 500 }}>
+ {v.name}
+ </span>
+ <span className="text-[12px] !text-[var(--color-ink-muted)] mt-0.5">
+ {v.role}
+ </span>
+ </div>
+ </figcaption>
+ </figure>
+ ))}
+ </div>
+ </div>
+ </Section>
+
+ {/* ───────────── Trust register grids ───────────── */}
+ <Section tone="paper">
+ <Reveal as="h2" className="t-h2 max-w-[900px]">
+ The buyers on the platform. The investors behind it.
  </Reveal>
- <Reveal delay={0.16} className="mt-10 t-body-lg space-y-6 !text-[var(--color-ink-subtle)]">
- <p>
- I grew up in a country where the farmer who fed half the city couldn&apos;t feed his own children
- through a bad season. That isn&apos;t an essay, it is a balance sheet. The price a grower of tomatoes
- in Jashore receives is roughly one-fifth of what a customer pays at a Dhaka supermarket. The other
- four-fifths lives in the five to seven people who sit between the field and the shelf. Most of them
- add nothing - not cold-chain, not grading, not a trade service, not even a receipt.
+
+ <div className="mt-14 tablet:mt-16">
+ <p className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mb-4">
+ PARTNERS
  </p>
- <p>
- We built Fashol to remove as many of those layers as we could, and to replace them with a platform
- that earns its place. Software where the farmer owns the record. Cold-chain in districts that had
- none. A four-tier grade applied at hub intake. Settlement in twenty-four hours. None of these ideas
- are clever. The work is doing them, every day, in nine districts, across a seasonal economy that
- doesn&apos;t wait.
+ <div className="grid grid-cols-3 tablet:grid-cols-4 desktop:grid-cols-6 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
+ {PARTNERS.map((p) => (
+ <div key={p.alt} className="bg-white aspect-[4/3] flex items-center justify-center p-4 tablet:p-5">
+ <Image src={p.src} alt={p.alt} width={240} height={120} className="max-h-[64px] w-auto max-w-[82%] object-contain" />
+ </div>
+ ))}
+ </div>
+ </div>
+
+ <div className="mt-12 tablet:mt-14">
+ <p className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mb-4">
+ INVESTORS
  </p>
- <p>
- We are <strong className="text-[var(--color-ink)]">40,000 farmers, 40-plus hubs, 26 percent less waste</strong>,
- and a few early numbers that say the model holds. We are also a long way from done. If you are a farmer,
- a buyer, an engineer, or a policy person who thinks Bangladesh deserves a properly-designed agricultural
- chain, you should be working on this with us.
- </p>
- </Reveal>
- <Reveal delay={0.24} className="mt-10 t-mono text-[11px] text-[var(--color-ink-muted)]">
- - Sakib Hossain - Founder &amp; CEO - Kawran Bazar, Dhaka
- </Reveal>
+ <div className="grid grid-cols-2 tablet:grid-cols-5 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
+ {INVESTORS.map((p) => (
+ <div key={p.alt} className="bg-white aspect-[4/3] flex items-center justify-center p-6">
+ <Image src={p.src} alt={p.alt} width={160} height={60} className="max-h-[52px] w-auto object-contain" />
+ </div>
+ ))}
+ </div>
  </div>
  </Section>
 
@@ -438,73 +650,6 @@ export default function HomePage() {
  </div>
  ))}
  </div>
- </Section>
-
- {/* ───────────── Voice from the field ───────────── */}
- <Section tone="ink" size="sm">
- <div className="grid desktop:grid-cols-12 gap-10 items-center">
- <div className="desktop:col-span-7">
- <blockquote className="t-h3 mt-8 max-w-3xl" style={{ fontWeight: 500 }}>
- &ldquo;Fashol has changed the shape of my farming. Prices are{" "}
- <span className="text-[var(--color-lime)]">25 percent higher</span> than what the aratdar paid me
- - and the money is in my mobile wallet within a day, not a month.&rdquo;
- </blockquote>
- <p className="t-mono text-[11px] !text-[rgba(255,255,255,0.65)] mt-10">
- - Mohammad Rahim Uddin - Vegetable farmer, Satkhira - Onboarded 2023
- </p>
- </div>
- <div className="desktop:col-span-5">
- <div className="relative aspect-[4/5] rounded-3xl overflow-hidden">
- <Image
- src="/images/content/farmer-sowing.jpg"
- alt="A farmer in an orange shirt with a checked headscarf sows rice seed from a metal bowl while standing in a young paddy at mid-morning."
- fill
- sizes="(min-width: 1200px) 440px, 90vw"
- className="object-cover"
- />
- <div className="absolute inset-x-0 bottom-0 p-5 text-white/80 text-[11px] font-mono bg-gradient-to-t from-black/60 to-transparent">
- A registered farmer sowing. Rice paddy, South Asia, 2024.
- </div>
- </div>
- </div>
- </div>
- </Section>
-
- {/* ───────────── Trust register grids ───────────── */}
- <Section tone="paper">
- <div className="grid desktop:grid-cols-12 gap-8 desktop:gap-10 items-start mt-10">
- <Reveal className="desktop:col-span-3">
- <span className="text-[16px] font-medium tracking-[-0.005em] text-[var(--color-terracotta)]">
- Our Network
- </span>
- </Reveal>
- <div className="desktop:col-span-9">
- <Reveal as="h2" className="t-h2">
- Trusted by 7,000+ customers: Market leaders, Global organizations, and The best in the business.
- </Reveal>
- </div>
- </div>
-
- <div className="mt-16">
- <div className="grid grid-cols-3 tablet:grid-cols-4 desktop:grid-cols-6 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
- {PARTNERS.map((p) => (
- <div key={p.alt} className="bg-white aspect-[4/3] flex items-center justify-center p-4 tablet:p-5">
- <Image src={p.src} alt={p.alt} width={240} height={120} className="max-h-[64px] w-auto max-w-[82%] object-contain" />
- </div>
- ))}
- </div>
- </div>
-
- <div className="mt-10">
- <div className="grid grid-cols-2 tablet:grid-cols-5 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
- {INVESTORS.map((p) => (
- <div key={p.alt} className="bg-white aspect-[4/3] flex items-center justify-center p-6">
- <Image src={p.src} alt={p.alt} width={160} height={60} className="max-h-[52px] w-auto object-contain" />
- </div>
- ))}
- </div>
- </div>
-
  </Section>
 
  {/* ───────────── Join - CTA triad ───────────── */}

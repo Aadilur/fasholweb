@@ -1,8 +1,36 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-19 (evening)
+**Last updated:** 2026-04-20
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
+
+---
+
+## 2026-04-20 - Farmer Value section + footer restructure
+
+### Footer rewrite ([site/src/components/site/Footer.tsx](site/src/components/site/Footer.tsx))
+- Restructured to a 5-column layout: brand column (~33%) left, four link columns (Platform, Company, Offices, Connect) in a nested 8-col grid on the right.
+- Added the Bangkok office row (`TH - ITF Tower, Silom, Bangkok`) alongside BD/SG/AE.
+- Fixed Bengali rendering: `ফসল` now wrapped in `<span className="lang-bn">` so the Hind Siliguri font actually applies. Replaced the em-dash in the tagline with a hyphen per the single-hyphen rule.
+- Newsletter form, Fashol wordmark, and the legal bar untouched.
+- Platform column links use `/#platform-jogaan`, `/#platform-hyperfarm`, `/#platform-banijjo`, `/#platform-cropcash`. Matching `id` attributes still need to be added to [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx) for those anchors to actually land.
+
+### New "Farmer Value" home section ([site/src/app/page.tsx](site/src/app/page.tsx))
+- Inserted between "We buy direct from farmers" and "Operations register" as a `<Section tone="surface">`.
+- Header reuses the Platform section's two-column pattern: `FARMER VALUE` eyebrow above the H2 on the left, intro paragraph on the right.
+- Iterated through four layouts this session:
+  1. Horizontal stripes separated by `divide-y`.
+  2. 2x2 card grid, image-on-top (1:1).
+  3. Same 2x2, image aspect tightened to 4:3 then 3:1 to pull the grid into a single viewport.
+  4. 3:1 was slicing the top half off the square illustrations, so the final pass moves each card to a horizontal layout — image column on the left (~40% width on desktop) in a `aspect-square` box on mobile, stretched column on tablet+, using `object-contain` on a `var(--color-grain)` backdrop so the whole illustration always renders. Grain padding above/below reads as a gallery frame rather than a crop. Body set to `t-body-sm` so two rows fit inside a single viewport on 1080p+ laptops.
+- Card chrome matches Customer Voices (`bg-[var(--color-paper)]`, `rounded-[4px]`, no border/shadow).
+
+### Assets
+- Moved four illustrations from `site/public/value-0{1..4}.png` into [site/public/images/farmer-value/](site/public/images/farmer-value/) to match the brief's referenced path.
+
+### Open items
+- Add `id="platform-jogaan"` / `-hyperfarm` / `-banijjo` / `-cropcash` to [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx) tiles so the footer Platform column actually deep-links.
+- At 900-tall viewports (13" MacBook) the Farmer Value section still spills slightly — card 01 body is the height driver. Next lever if needed: tighter image column width, or a smaller body font.
 
 ---
 
