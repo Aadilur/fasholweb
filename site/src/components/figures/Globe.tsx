@@ -53,7 +53,7 @@ const OFFICES: Office[] = [
   },
 ];
 
-export function GlobeFigure() {
+export function GlobeFigure({ showOffices = true }: { showOffices?: boolean } = {}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const phiRef = useRef(0);
   const [mounted, setMounted] = useState(false);
@@ -112,7 +112,7 @@ export function GlobeFigure() {
         aria-hidden
       />
 
-      {OFFICES.map((o) => (
+      {showOffices && OFFICES.map((o) => (
         <div
           key={o.country}
           className="absolute -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-[var(--color-paper)]/95 backdrop-blur-sm border border-[var(--color-line)] px-4 py-3 shadow-[0_8px_24px_-12px_rgba(19,19,19,0.25)] pointer-events-none"

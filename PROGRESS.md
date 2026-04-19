@@ -1,6 +1,6 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-19 (late pm)
+**Last updated:** 2026-04-19 (evening)
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
 
@@ -78,6 +78,22 @@ New [`PlatformSection`](site/src/components/site/PlatformSection.tsx) — 4-prod
 - **Supply-chain visual**: the `SupplyChainFigure` SVG was replaced with a single isometric illustration (`/images/content/card-image-10.png`) inside a `card-plain` container, plus an inline 5-node horizontal key (FARMER → DISTRICT HUB → PLATFORM → LAST MILE → BUYER'S DOOR) with per-node stats (60,000+ growers, 40+ hubs, 24h payout, 1,050+ MT/month, 7,000+ buyers).
 - **Stage cards removed** (the three-card Stage 01/02/03 row).
 - **Field photo removed** (cabbage-field `Figure` with Adil Ahnaf photo credit).
+
+### Global Capability notch-halo redesign + hero max-height cap (2026-04-19 evening)
+
+Second pass on the Global Capability section - switched from a flat bento grid to a notch-and-halo composition inspired by PromptPal-style cards, and capped the hero image's growth on wide viewports.
+
+- **Globe cleaned, pin callouts made optional** ([Globe.tsx](site/src/components/figures/Globe.tsx)). Added a `showOffices?: boolean` prop (defaults to `true`). When `false`, the four absolute-positioned office callout cards are suppressed and only the rotating canvas sphere renders. The Ops Register still has no globe; only the Global Capability section calls the globe now, and it does so with `showOffices={false}` for a clean sphere.
+- **Notch-and-halo composition** ([page.tsx:302-372](site/src/app/page.tsx#L302-L372)). The Global Capability section is now three stacked layers:
+  1. A deep-green top panel with an eyebrow (`GLOBAL CAPABILITY`), centered H2, and a one-line subhead. Bottom padding sized precisely so the halo does not overlap text.
+  2. A paper-colored `rounded-full` halo disk (`w-[280px] tablet:[340px] desktop:[400px]`) absolutely positioned at the top panel's bottom edge, translated `60%` below. Same color as the section background - punches a visible circular cutout through the green top panel AND the ink bottom tiles at their inner corners, giving the illusion the cards are cut around the globe.
+  3. A clean `GlobeFigure` at `z-10` sitting on top of the halo, `w-[260/320/380]`.
+- **Three-tile bottom row** (was two). Desktop grid `grid-cols-3`, mobile/tablet single column (a tablet 3-col layout would have let the halo cover the whole middle tile). Each tile uses `p-8 tablet:p-10` (~40px internal padding), `rounded-[32px]`, and a `pt-[190/230/260]` reservation for the globe's protrusion.
+  - **OFFICES** tile: big `4` numeral (`64/72/80px`) paired with a `<dl>` city-role directory (`DHAKA - Headquarters and operations`, etc.) replacing the previous plain city list. The old `BANGLADESH · SINGAPORE · UAE · THAILAND` footer line was deleted (duplicated the list).
+  - **EXPORT** tile (new, middle slot - sits directly under the globe): headline *"Four corridors out of Dhaka."* + body on air/sea routes and customs handling.
+  - **TECHNOLOGY** tile (replaces the previous PLATFORM tile): headline *"The eagle-eye view of your supply."* + body on four-tier grading, cold-chain readings, and the buyer dashboard.
+- **Copy refresh on the top panel**: H2 swapped from *"The operation is Bangladeshi. The reach is regional."* to *"We source in Bangladesh. We deliver across the region."*; subhead to *"Four offices run on a single operating system. Every order moves on the same stock, pricing, and settlement engine."* Typography restructured to explicit sizes (`28/38/46px` H2, `14/15/16px` body) with tighter tracking to keep the title zone compact above the halo.
+- **Hero image capped** ([page.tsx:14-25](site/src/app/page.tsx#L14-L25)). The hero `Image` had `w-full h-auto` with no max-height, so on viewports wider than ~1440px the image scaled up proportionally and pushed the headline + stat tiles + "As featured in" below the fold. Added `max-h-[520px] tablet:max-h-[560px] desktop:max-h-[600px]` to both the wrapper and the image, plus `object-cover object-center` so the image crops cleanly from the top/bottom when the viewport wants more height than the cap permits. On a 1440×900 viewport the hero now stays at the same visual size as before; on a 1920×1080 or 2K monitor the headline and stats no longer slip past the fold.
 
 ### Use Cases card grid, Global Capability section, Ops Register cleanup (2026-04-19 late pm)
 

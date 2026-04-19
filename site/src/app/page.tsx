@@ -11,8 +11,8 @@ export default function HomePage() {
  return (
  <>{/* ───────────── Hero ───────────── */}
  <section className="relative bg-[var(--color-paper)] text-[var(--color-deep-green)]">
- {/* Illustration - natural aspect, full width */}
- <div className="relative w-full">
+ {/* Illustration - natural aspect, width-capped so wider viewports do not push the fold below the stat tiles */}
+ <div className="relative w-full max-h-[520px] tablet:max-h-[560px] desktop:max-h-[600px] overflow-hidden">
  <Image
  src="/h10.png"
  alt=""
@@ -20,7 +20,7 @@ export default function HomePage() {
  height={815}
  priority
  sizes="100vw"
- className="block w-full h-auto"
+ className="block w-full h-auto max-h-[520px] tablet:max-h-[560px] desktop:max-h-[600px] object-cover object-center"
  />
  {/* Deep cream fade at the image floor - lets the headline sit over the image's lower portion */}
  <div
@@ -299,71 +299,78 @@ export default function HomePage() {
 
  {/* ───────────── Global capability ───────────── */}
  <Section tone="paper">
- <div className="grid desktop:grid-cols-12 gap-10">
- <Reveal as="h2" className="t-h2 desktop:col-span-6">
- The operation is Bangladeshi. The reach is regional.
- </Reveal>
- <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
- <p>
- Fashol runs offices in four countries and delivers across borders from a single platform. The operation that starts at a farm gate in Jashore ends at a restaurant in Bangkok, a retailer in Dubai, or a grocery shelf in Singapore.
+ <Reveal>
+ <div className="relative max-w-[1120px] mx-auto">
+ {/* Top hero card - vertical padding tightened (~25%); title zone sits above a reserved globe zone so text never collides with the halo */}
+ <div className="relative bg-[var(--color-deep-green)] rounded-[32px] px-6 tablet:px-10 desktop:px-14 pt-10 tablet:pt-14 desktop:pt-16 pb-[125px] tablet:pb-[150px] desktop:pb-[175px] text-center overflow-visible">
+ <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.55)] block mb-4 tablet:mb-5 uppercase">
+ GLOBAL CAPABILITY
+ </span>
+ <h2 className="!text-[var(--color-paper)] max-w-[720px] mx-auto text-[28px] tablet:text-[38px] desktop:text-[46px] leading-[1.08] tracking-[-0.015em]" style={{ fontWeight: 500 }}>
+ We source in Bangladesh. We deliver across the region.
+ </h2>
+ <p className="mt-4 tablet:mt-5 text-[14px] tablet:text-[15px] desktop:text-[16px] leading-[1.55] !text-[rgba(255,251,234,0.75)] max-w-[560px] mx-auto">
+ Four offices run on a single operating system. Every order moves on the same stock, pricing, and settlement engine.
  </p>
- </Reveal>
+
+ {/* Cutout halo - paper-colored disk that punches a circle through both the top card and the flanking cards below, so they appear to wrap around the globe */}
+ <div
+ aria-hidden
+ className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[60%] w-[280px] h-[280px] tablet:w-[340px] tablet:h-[340px] desktop:w-[400px] desktop:h-[400px] rounded-full bg-[var(--color-paper)] pointer-events-none z-[5]"
+ />
+
+ {/* Clean globe - sits on top of the halo, anchored to bottom of the top card */}
+ <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[60%] w-[260px] h-[260px] tablet:w-[320px] tablet:h-[320px] desktop:w-[380px] desktop:h-[380px] pointer-events-none z-10">
+ <GlobeFigure showOffices={false} />
+ </div>
  </div>
 
- {/* Bento grid - globe tile on top, three stat tiles below */}
- <div className="mt-12 grid grid-cols-1 desktop:grid-cols-3 gap-4 desktop:gap-5">
- {/* Tile 1 - full-width globe */}
- <Reveal className="desktop:col-span-3">
- <div className="relative bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 desktop:p-10 min-h-[560px] desktop:min-h-[600px] flex flex-col items-center justify-start gap-6">
- <h3 className="t-h3 text-center max-w-[560px]" style={{ fontWeight: 500 }}>
- Four countries. One operating system.
+ {/* Three flanking tiles - ink tone, 40px internal padding; top padding reserves the globe protrusion zone. Globe sits centered over the middle (EXPORT) tile */}
+ <div className="grid grid-cols-1 desktop:grid-cols-3 gap-4 tablet:gap-5 mt-4 tablet:mt-5">
+ {/* OFFICES - big 4 paired with a city/role directory */}
+ <div className="bg-[var(--color-ink)] rounded-[32px] p-8 tablet:p-10 pt-[190px] tablet:pt-[230px] desktop:pt-[260px] flex flex-col">
+ <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.5)] uppercase">OFFICES</span>
+ <div className="mt-6 flex items-start gap-5 tablet:gap-6">
+ <div className="t-tabular text-[64px] tablet:text-[72px] desktop:text-[80px] leading-[0.9] !text-[var(--color-paper)] flex-shrink-0" style={{ fontWeight: 500 }}>
+ 4
+ </div>
+ <dl className="flex-1 pt-1 grid grid-cols-[auto_1fr] gap-x-3 tablet:gap-x-4 gap-y-2 text-[13px] leading-[1.35]">
+ <dt className="tracking-[0.05em] uppercase !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>Dhaka</dt>
+ <dd className="!text-[rgba(255,251,234,0.55)]">Headquarters and operations</dd>
+ <dt className="tracking-[0.05em] uppercase !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>Singapore</dt>
+ <dd className="!text-[rgba(255,251,234,0.55)]">Regional trade desk</dd>
+ <dt className="tracking-[0.05em] uppercase !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>Dubai</dt>
+ <dd className="!text-[rgba(255,251,234,0.55)]">Middle East gateway</dd>
+ <dt className="tracking-[0.05em] uppercase !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>Bangkok</dt>
+ <dd className="!text-[rgba(255,251,234,0.55)]">Southeast Asia desk</dd>
+ </dl>
+ </div>
+ </div>
+
+ {/* EXPORT - middle tile, sits directly beneath the globe */}
+ <div className="bg-[var(--color-ink)] rounded-[32px] p-8 tablet:p-10 pt-[190px] tablet:pt-[230px] desktop:pt-[260px] flex flex-col">
+ <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.5)] uppercase">EXPORT</span>
+ <h3 className="mt-6 text-[24px] tablet:text-[28px] desktop:text-[32px] leading-[1.1] tracking-[-0.015em] !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>
+ Four corridors out of Dhaka.
  </h3>
- <div className="w-full max-w-[440px]">
- <GlobeFigure />
- </div>
- </div>
- </Reveal>
-
- {/* Tile 2 - Offices */}
- <Reveal delay={0.06}>
- <div className="h-full bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 flex flex-col min-h-[220px]">
- <span className="t-mono text-[10px] text-[var(--color-ink-muted)] tracking-[0.12em]">OFFICES</span>
- <div className="t-tabular text-[56px] leading-none !text-[var(--color-deep-green)] mt-4" style={{ fontWeight: 500 }}>4</div>
- <ul className="mt-5 flex flex-col gap-1.5 t-body">
- <li>Dhaka</li>
- <li>Singapore</li>
- <li>Dubai</li>
- <li>Bangkok</li>
- </ul>
- </div>
- </Reveal>
-
- {/* Tile 3 - Export */}
- <Reveal delay={0.12}>
- <div className="h-full bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 flex flex-col min-h-[220px]">
- <span className="t-mono text-[10px] text-[var(--color-ink-muted)] tracking-[0.12em]">EXPORT</span>
- <h4 className="t-h4 mt-4" style={{ fontWeight: 500 }}>
- Grade A, ready for retail
- </h4>
- <p className="t-body-sm mt-4 !text-[var(--color-ink-subtle)]">
- Four-tier grading applied at hub intake. Cold-chain dispatch to airports and ports. Export documentation handled end to end. Produce arrives at the destination market ready for retail shelf.
+ <p className="mt-5 text-[14px] tablet:text-[15px] leading-[1.55] !text-[rgba(255,251,234,0.72)]">
+ Air and sea routes from Bangladesh to buyers in Singapore, the Gulf, and Southeast Asia. Fresh produce, grading-verified and cold-chain handled from the farm gate through customs.
  </p>
  </div>
- </Reveal>
 
- {/* Tile 4 - Platform */}
- <Reveal delay={0.18}>
- <div className="h-full bg-[var(--color-paper)] border border-[var(--color-line)] rounded-2xl p-6 tablet:p-8 flex flex-col min-h-[220px]">
- <span className="t-mono text-[10px] text-[var(--color-ink-muted)] tracking-[0.12em]">PLATFORM</span>
- <h4 className="t-h4 mt-4" style={{ fontWeight: 500 }}>
- One system. Every market.
- </h4>
- <p className="t-body-sm mt-4 !text-[var(--color-ink-subtle)]">
- Hyperfarm serves a buyer in Dhaka the same way it serves a buyer in Bangkok. Same stock visibility. Same pricing logic. Same settlement engine.
+ {/* TECHNOLOGY - replaces the prior PLATFORM tile */}
+ <div className="bg-[var(--color-ink)] rounded-[32px] p-8 tablet:p-10 pt-[190px] tablet:pt-[230px] desktop:pt-[260px] flex flex-col">
+ <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.5)] uppercase">TECHNOLOGY</span>
+ <h3 className="mt-6 text-[24px] tablet:text-[28px] desktop:text-[32px] leading-[1.1] tracking-[-0.015em] !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>
+ The eagle-eye view of your supply.
+ </h3>
+ <p className="mt-5 text-[14px] tablet:text-[15px] leading-[1.55] !text-[rgba(255,251,234,0.72)]">
+ Every kilogram is traced, graded on a four-tier scale, and QC-checked before it leaves our hub. On the other side, buyers follow the full picture on one live dashboard: order status, grade results, cold-chain readings, and settlement.
  </p>
  </div>
- </Reveal>
  </div>
+ </div>
+ </Reveal>
  </Section>
 
  {/* ───────────── Editorial - From the founder ───────────── */}
