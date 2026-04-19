@@ -113,20 +113,14 @@ export default function ProductsHubPage() {
       {/* Section 1 - Hero */}
       <Section tone="ink">
         <div className="pt-[64px] tablet:pt-[88px] pb-4 tablet:pb-8">
-          <Reveal>
-            <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[rgba(255,251,234,0.55)] block">
-              PRODUCTS
-            </span>
-          </Reveal>
           <Reveal
-            delay={0.08}
             as="h1"
-            className="t-hero mt-6 !text-[var(--color-paper)] max-w-[900px]"
+            className="t-hero !text-[var(--color-paper)] max-w-[900px]"
           >
             Four products. One operating system.
           </Reveal>
           <Reveal
-            delay={0.16}
+            delay={0.08}
             as="p"
             className="t-body-lg mt-6 max-w-2xl !text-[rgba(255,251,234,0.75)]"
           >
@@ -136,12 +130,12 @@ export default function ProductsHubPage() {
             working capital that moves across all three. Four products, built to work together,
             run on the same data.
           </Reveal>
-          <Reveal delay={0.24} className="mt-8">
+          <Reveal delay={0.16} className="mt-8">
             <Link
               href="#work-with-fashol"
               className="inline-flex items-center gap-1.5 text-[14px] font-medium !text-[var(--color-lime)] hover:!text-[var(--color-emerald)] transition-colors"
             >
-              Work with Fashol <span aria-hidden="true">→</span>
+              Work with Fashol
             </Link>
           </Reveal>
         </div>
@@ -149,12 +143,7 @@ export default function ProductsHubPage() {
 
       {/* Section 2 - The stack diagram */}
       <Section tone="paper">
-        <Reveal>
-          <span className="t-mono text-[11px] tracking-[0.14em] uppercase text-[var(--color-ink-muted)] block">
-            HOW IT FITS TOGETHER
-          </span>
-        </Reveal>
-        <Reveal delay={0.06} as="h2" className="t-h2 mt-6 max-w-[880px]">
+        <Reveal as="h2" className="t-h2 max-w-[880px]">
           Each product does one job. Together they make the platform.
         </Reveal>
         <Reveal delay={0.14} className="mt-14 tablet:mt-20 mx-auto max-w-[960px]">
@@ -225,7 +214,7 @@ export default function ProductsHubPage() {
               </Reveal>
               <Reveal delay={0.2} className="mt-10">
                 <Link href={block.href} className="link-arrow">
-                  {block.linkLabel} <span aria-hidden="true">→</span>
+                  {block.linkLabel}
                 </Link>
               </Reveal>
             </div>

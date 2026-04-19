@@ -6,6 +6,43 @@
 
 ---
 
+## 2026-04-20 late - Hero eyebrow removal + H2 alignment fix
+
+Two structural cleanup passes across the Products and Solutions page trees. All changes are layout-only; no copy, no tokens, no animation rewrites.
+
+### Fix 1 - Hero eyebrows removed
+
+Stripped the narrating kicker above each hero H1 so the title is now the first element inside the hero. Hero top padding (`pt-[64px] tablet:pt-[88px]`) is preserved on every page so the hero doesn't collapse vertically; the H1 simply moves up into the vertical position the eyebrow used to occupy. H1's `mt-6` (which had been spacing it from the eyebrow) was also removed. Reveal animation delays on H1 and following body copy were shifted up one step (`0.08 → 0`, `0.16 → 0.08`, `0.24 → 0.16`) so the H1 is now the first-to-animate element and doesn't sit idle for 80ms.
+
+- **Farmers page** ([solutions/farmers/page.tsx](site/src/app/solutions/farmers/page.tsx)): `SUPPLIERS` eyebrow removed from the left column of the hero. H1 *"Farmers."* is now flush with the hero top padding.
+- **Solutions hub** ([solutions/page.tsx](site/src/app/solutions/page.tsx)): `SOLUTIONS` eyebrow removed. H1 *"One supply chain. Every role on it."* moved up.
+- **Products hub** ([products/page.tsx](site/src/app/products/page.tsx)): `PRODUCTS` eyebrow removed. H1 *"Four products. One operating system."* moved up.
+- **Stakeholder placeholder template** ([solutions/[slug]/page.tsx](site/src/app/solutions/[slug]/page.tsx)): `<Eyebrow>Solutions / {item.name}</Eyebrow>` removed from the "Coming soon" hero. The import is pruned. This template renders every stakeholder slug under `/solutions/*` that doesn't yet have its own page, so this one edit covers all of them.
+- **Product placeholder template** ([products/[slug]/page.tsx](site/src/app/products/[slug]/page.tsx)): same treatment - `<Eyebrow>Products / {item.name}</Eyebrow>` removed, import pruned.
+
+### Fix 2 - Leftover `mt-6` on H2s where section eyebrows were previously removed
+
+Prior edits removed narrating eyebrows from several section headers (WHAT WE DO FOR FARMERS, POWERED BY, THE TRADITIONAL CHAIN, GETTING ON THE PLATFORM, IN THEIR WORDS, OTHER ROLES ON THE CHAIN, HOW IT FITS TOGETHER, THE COMMON STACK). The H2s in those sections kept a `mt-6` that had been positioning them below the (now gone) eyebrow, which left the H2 sitting visibly lower than the first line of the right-column intro paragraph in the same two-column row. Removed the `mt-6` so the H2 and the right-column paragraph now both start at the top of their columns and align to the same baseline.
+
+- **Farmers page** five sections: problem, what-we-do, powered-by, how-it-starts, other-roles - all `<Reveal as="h2" className="t-h2 mt-6">` → `<Reveal as="h2" className="t-h2">` (single `replace_all` Edit since the pattern was identical across all five).
+- **Products hub** stack-diagram section H2: `t-h2 mt-6 max-w-[880px]` → `t-h2 max-w-[880px]`.
+- **Solutions hub** common-stack section: the leftover `mt-6` was on the **grid container** (`<div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 mt-6">`), not on the H2 itself, because the eyebrow in that section had lived outside the grid. Grid's `mt-6` removed.
+
+### Did not change
+
+- Copy, layout structure, Section tones, or Reveal stagger patterns beyond the delay shift-up noted above.
+- Nav dropdowns (column-group eyebrows there are groupers, not narrators).
+- Home-page section eyebrows (FARMER VALUE, THE PLATFORM, etc.) which categorise sections on a dense single-page nav.
+- Trust register eyebrows (PARTNERS / INVESTORS) which label two distinct logo sets.
+- Products hub CTA band - `WORK WITH FASHOL` eyebrow stays and its H2 keeps `mt-6` because the eyebrow is still there.
+- Footer.
+
+### Verified
+
+- `npx tsc --noEmit` clean - no new type errors, no broken imports after pruning `Eyebrow` from the two placeholder templates.
+
+---
+
 ## 2026-04-20 evening - Products hub page
 
 Replaced the `/products` "Coming soon" placeholder with a full five-section editorial hub, mirroring the Solutions hub's structural rhythm.

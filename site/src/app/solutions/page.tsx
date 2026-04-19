@@ -151,20 +151,14 @@ export default function SolutionsHubPage() {
       {/* Section 1 - Hero */}
       <Section tone="ink">
         <div className="pt-[64px] tablet:pt-[88px] pb-4 tablet:pb-8">
-          <Reveal>
-            <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[rgba(255,251,234,0.55)] block">
-              SOLUTIONS
-            </span>
-          </Reveal>
           <Reveal
-            delay={0.08}
             as="h1"
-            className="t-hero mt-6 !text-[var(--color-paper)] max-w-[900px]"
+            className="t-hero !text-[var(--color-paper)] max-w-[900px]"
           >
             One supply chain. Every role on it.
           </Reveal>
           <Reveal
-            delay={0.16}
+            delay={0.08}
             as="p"
             className="t-body-lg mt-6 max-w-2xl !text-[rgba(255,251,234,0.75)]"
           >
@@ -173,7 +167,7 @@ export default function SolutionsHubPage() {
             importer in Singapore. Pick your role below. We are already working with people like
             you.
           </Reveal>
-          <Reveal delay={0.24} className="mt-8">
+          <Reveal delay={0.16} className="mt-8">
             <Link
               href="#work-with-fashol"
               className="inline-flex items-center text-[14px] font-medium !text-[var(--color-lime)] hover:!text-[var(--color-emerald)] transition-colors"
@@ -218,12 +212,7 @@ export default function SolutionsHubPage() {
 
       {/* Section 3 - The common stack */}
       <Section tone="surface">
-        <Reveal>
-          <span className="t-mono text-[11px] tracking-[0.14em] uppercase text-[var(--color-ink-muted)] block">
-            THE COMMON STACK
-          </span>
-        </Reveal>
-        <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 mt-6">
+        <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16">
           <Reveal as="h2" className="t-h2 desktop:col-span-7">
             Every role. Same grading, same cold chain, same settlement engine.
           </Reveal>
