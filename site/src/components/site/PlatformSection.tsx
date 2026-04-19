@@ -40,7 +40,7 @@ const PRODUCTS: Product[] = [
     audience: "Farmers and field agents.",
     headline: "The grower's view of the Fashol network.",
     body: "Farmers and Fashol's field agents use Jogaan to check live buyer demand across all nine operating districts, confirm mobile-money payments within 24 hours of weighing, and keep a full record of every sale without any paperwork. The app also includes a marketplace for seed, feed, and farm equipment, plus a community feed where registered growers share advice and prices.",
-    cta: "Open Jogaan on Google Play →",
+    cta: "Open Jogaan on Google Play",
     action: { type: "link", href: "https://play.google.com/store/apps/details?id=com.fashol.agent" },
     img: "/images/content/card-image-2.jpg",
     imgAlt: "A Bangladeshi smallholder farmer in a paddy field checking the Jogaan app on a smartphone in warm morning light.",
@@ -55,7 +55,7 @@ const PRODUCTS: Product[] = [
     audience: "Restaurants, retailers, quick-commerce, wholesalers, and exporters.",
     headline: "The buyer's procurement desk.",
     body: "Hyperfarm lets buyers order fresh produce, groceries, meat, poultry, and daily staples directly from verified farmers and hubs. Prices update every morning, stock is visible before you order, and delivery runs on Fashol's own route plans rather than on a wholesaler's schedule. Setup takes about ten minutes. Available on iOS, Android, and the web.",
-    cta: "Get Hyperfarm →",
+    cta: "Get Hyperfarm",
     action: { type: "platforms" },
     img: "/images/content/platform-02-hyperfarm.jpg",
     imgAlt: "Interior of a large Bangladeshi warehouse with mounds of golden grain, workers moving product, and sacks of feed stacked in the foreground — the wholesale and procurement floor Hyperfarm digitises.",
@@ -70,7 +70,7 @@ const PRODUCTS: Product[] = [
     audience: "Wholesalers and distribution partners.",
     headline: "The operations desk for the mid-chain.",
     body: "Banijjo gives wholesalers and distributors inside the Fashol network the tools to run their shops: stock levels per store, order routing to buyers, and settlement records with farmers on one side and buyers on the other. It is the part of the platform the wholesale layer actually works in day to day.",
-    cta: "Open Banijjo on Google Play →",
+    cta: "Open Banijjo on Google Play",
     action: { type: "link", href: "https://play.google.com/store/apps/details?id=com.fashol.banijjo" },
     img: "/images/content/card-image1.jpg",
     imgAlt: "A Bangladeshi wholesale market worker moving crates of produce through the Banijjo distribution floor.",
@@ -85,7 +85,7 @@ const PRODUCTS: Product[] = [
     audience: "Farmers, distributors, and exporters.",
     headline: "Working capital for every stage of the chain.",
     body: "CropCash will offer seasonal credit to farmers, inventory finance to distributors, and trade finance to exporters shipping across borders. Because Jogaan, Hyperfarm, and Banijjo already record every transaction on the platform, credit decisions start from a real ledger rather than a paper form. Launching in 2026.",
-    cta: "Register interest →",
+    cta: "Register interest",
     action: { type: "form" },
     img: "/images/content/hero-paddy-aerial.jpg",
     imgAlt: "A golden rice field at sunrise with a stack of Bangladeshi taka notes resting on weathered wood in the foreground.",
@@ -197,7 +197,7 @@ function PlatformTile({
         {product.headline}
       </h4>
       <p className="t-body-sm text-[var(--color-ink-subtle)]">{product.body}</p>
-      <span className="mt-2 inline-flex items-center text-[13px] font-medium text-[var(--color-ink)] group-hover:text-[var(--color-deep-green)] transition-colors">
+      <span className="mt-2 inline-flex items-center text-[13px] font-medium text-[var(--color-deep-green)] group-hover:text-[var(--color-deep-green-pressed)] transition-colors">
         {product.cta}
       </span>
     </div>
@@ -234,19 +234,9 @@ function PlatformTile({
     </div>
   );
 
-  const arrow = (
-    <span
-      aria-hidden
-      className="absolute top-6 right-6 tablet:top-7 tablet:right-7 text-[20px] leading-none text-[var(--color-ink)] opacity-55 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-80"
-    >
-      ↗
-    </span>
-  );
-
   const tileInner =
     product.layout === "flagship" ? (
       <>
-        {arrow}
         <div className="flex flex-1 flex-col gap-6 tablet:gap-8">
           {imageSlot}
           <div className="flex flex-1 flex-col gap-6 tablet:gap-8">
@@ -257,7 +247,6 @@ function PlatformTile({
       </>
     ) : (
       <>
-        {arrow}
         <div className="grid grid-cols-1 desktop:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-6 desktop:gap-10 items-stretch flex-1">
           <div className="flex flex-col gap-6 tablet:gap-8 min-w-0">
             {identity}
@@ -327,12 +316,6 @@ function HyperfarmModal({ onClose }: { onClose: () => void }) {
                   {p.detail}
                 </div>
               </div>
-              <span
-                aria-hidden
-                className="text-[18px] text-[var(--color-ink-muted)] transition-all duration-200 group-hover:text-[var(--color-deep-green)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              >
-                ↗
-              </span>
             </a>
           </li>
         ))}
@@ -373,7 +356,7 @@ function CropCashModal({ onClose }: { onClose: () => void }) {
               type="submit"
               className="mt-3 inline-flex items-center justify-center rounded-full bg-[var(--color-deep-green)] text-[var(--color-paper)] px-6 py-3 font-medium hover:bg-[var(--color-ink)] transition-colors"
             >
-              Register interest →
+              Register interest
             </button>
           </form>
         </>

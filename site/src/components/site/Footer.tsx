@@ -9,6 +9,48 @@ const platformLinks = [
   { href: "/#platform-cropcash", label: "CropCash" },
 ];
 
+type SolutionsGroup = {
+  eyebrow: string;
+  links: { href: string; label: string }[];
+};
+
+const solutionsGroups: SolutionsGroup[] = [
+  {
+    eyebrow: "Urban buyers",
+    links: [
+      { href: "/solutions/restaurants", label: "Restaurants" },
+      { href: "/solutions/retailers", label: "Retailers" },
+      { href: "/solutions/quick-commerce", label: "Quick commerce" },
+      { href: "/solutions/supershops", label: "Supershops" },
+    ],
+  },
+  {
+    eyebrow: "Trade buyers",
+    links: [
+      { href: "/solutions/importers", label: "Importers" },
+      { href: "/solutions/exporters", label: "Exporters" },
+      { href: "/solutions/commission-agents", label: "Commission agents" },
+      { href: "/solutions/wholesalers", label: "Wholesalers" },
+    ],
+  },
+  {
+    eyebrow: "Suppliers",
+    links: [
+      { href: "/solutions/farmers", label: "Farmers" },
+      { href: "/solutions/agri-input-suppliers", label: "Agri input suppliers" },
+      { href: "/solutions/agri-machinery-suppliers", label: "Agri machinery suppliers" },
+    ],
+  },
+  {
+    eyebrow: "Partners & financial",
+    links: [
+      { href: "/solutions/cold-storage-operators", label: "Cold storage operators" },
+      { href: "/solutions/logistics-partners", label: "Logistics partners" },
+      { href: "/solutions/supply-chain-financing", label: "Supply chain financing" },
+    ],
+  },
+];
+
 const companyLinks = [
   { href: "/", label: "Overview" },
   { href: "/about", label: "About" },
@@ -76,7 +118,7 @@ export function Footer() {
                   className="flex-1 h-11 rounded-full px-4 bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.18)] text-white placeholder:text-[rgba(255,255,255,0.45)] text-[14px] focus:outline-none focus:border-[var(--color-lime)]"
                 />
                 <button type="submit" className="btn btn-primary !h-11 !px-5 !text-[13px]">
-                  Subscribe →
+                  Subscribe
                 </button>
               </form>
             </div>
@@ -145,6 +187,34 @@ export function Footer() {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
+
+        {/* Solutions - full-width band below the main link grid */}
+        <div className="mt-16">
+          <Link
+            href="/solutions"
+            className={`inline-flex items-center gap-2 ${eyebrowOnDark} t-eyebrow eyebrow-bar hover:!text-white transition-colors`}
+          >
+            Solutions
+          </Link>
+          <div className="mt-6 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-10">
+            {solutionsGroups.map((group) => (
+              <div key={group.eyebrow}>
+                <p className="t-mono text-[11px] tracking-[0.12em] uppercase !text-[rgba(255,255,255,0.45)]">
+                  {group.eyebrow}
+                </p>
+                <ul className="mt-4 space-y-3 t-body-sm">
+                  {group.links.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className={linkOnDark}>
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 

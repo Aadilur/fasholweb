@@ -385,27 +385,24 @@ body {
 /* noise/grain mix for image overlays */
 .img-cover { object-fit: cover; width: 100%; height: 100%; }
 
-/* link underline */
+/* link styles - green accent signals "clickable" */
 .link {
-  color: var(--color-ink);
+  color: var(--color-deep-green);
   text-underline-offset: 3px;
-  text-decoration-color: rgba(19,19,19,0.35);
+  text-decoration-color: rgba(6, 94, 58, 0.45);
   text-decoration-thickness: 1px;
-  transition: text-decoration-color var(--dur-base) var(--ease-standard);
+  transition: color var(--dur-base) var(--ease-standard), text-decoration-color var(--dur-base) var(--ease-standard);
 }
-.link:hover { text-decoration-color: var(--color-ink); }
+.link:hover {
+  color: var(--color-deep-green-pressed);
+  text-decoration-color: var(--color-deep-green-pressed);
+}
 
 .link-arrow {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   font-weight: 500;
-  color: var(--color-ink);
+  color: var(--color-deep-green);
   transition: color var(--dur-base) var(--ease-standard);
 }
-.link-arrow::after {
-  content: '→';
-  display: inline-block;
-  transition: transform var(--dur-base) var(--ease-standard);
-}
-.link-arrow:hover::after { transform: translateX(3px); }
+.link-arrow:hover { color: var(--color-deep-green-pressed); }

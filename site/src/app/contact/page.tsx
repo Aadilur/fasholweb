@@ -112,12 +112,11 @@ export default function ContactPage() {
 
  <ul className="mt-14 border-t border-[var(--color-line-strong)]">
  {CHANNELS.map(([k, v, href]) => (
- <li key={k} className="grid tablet:grid-cols-[220px_1fr_40px] items-center py-5 border-b border-[var(--color-line)] gap-4">
+ <li key={k} className="grid tablet:grid-cols-[220px_1fr] items-center py-5 border-b border-[var(--color-line)] gap-4">
  <span className="t-mono text-[11px] text-[var(--color-ink-muted)]">{k}</span>
  <a href={href} className="t-h5 link" style={{ fontWeight: 500 }} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined}>
  {v}
  </a>
- <span className="text-right text-[var(--color-ink-muted)]">↗</span>
  </li>
  ))}
  </ul>
@@ -188,7 +187,7 @@ export default function ContactPage() {
  <h3 className="t-h4" style={{ fontWeight: 500 }}>Getting here</h3>
  <dl className="mt-8 space-y-5 border-t border-[var(--color-line-strong)] pt-6">
  {[
- ["By MRT", "Karwan Bazar station, Line 6. Exit 03 → 6-minute walk north."],
+ ["By MRT", "Karwan Bazar station, Line 6. Exit 03, 6-minute walk north."],
  ["By bus", "Any Mohakhali-bound route on Kazi Nazrul Islam Avenue. Alight at Kawran Bazar."],
  ["By rickshaw", "Any rickshaw from Dhanmondi, Banani, or Gulshan — \"Kawran Bazar wholesale market.\""],
  ["By taxi", "Uber / Pathao — drop-pin \"Fashol Dotcom Limited, Kabbokash.\""],

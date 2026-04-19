@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particles Swarm Export</title>
+    <style>html, body { margin: 0; overflow: hidden; background: transparent; }</style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // CONFIG
+        const COUNT = 4000;
+        const SPEED_MULT = 0.1;
+        const AUTO_SPIN = true;
+        // Radius tuned to fill ~99% of the viewport at camera z=100, FOV=60, so
+        // the particle sphere visually matches the cream halo circle behind it.
+        const SPHERE_RADIUS = 57;
+        // Deep green token color - strong contrast against the cream halo behind.
+        const DOT_COLOR = 0x065E3A;
+
+        // SETUP
+        const scene = new THREE.Scene();
+        // No fog - keeps back-facing particles visible and avoids blending against
+        // a specific background color (iframe is transparent).
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 0, 100);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true, premultipliedAlpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.autoRotate = AUTO_SPIN;
+        controls.autoRotateSpeed = 2.0;
+        controls.enableZoom = false;
+        controls.enablePan = false;
+
+        // SWARM OBJECTS
+        const dummy = new THREE.Object3D();
+        const color = new THREE.Color();
+        const target = new THREE.Vector3();
+        const pColor = new THREE.Color(); // Kept for safety, for potential references
+        
+        // INSTANCED MESH - each particle is a soft-edged filled disc.
+        const geometry = new THREE.PlaneGeometry(1.0, 1.0);
+        const material = new THREE.ShaderMaterial({
+    vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vColor;
+        void main() {
+            vUv = uv;
+            vColor = instanceColor;
+            vec4 mvPosition = modelViewMatrix * instanceMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    `,
+    fragmentShader: `
+        varying vec2 vUv;
+        varying vec3 vColor;
+        void main() {
+            float dist = distance(vUv, vec2(0.5));
+            // Solid filled circle with soft antialiased edge.
+            float alpha = smoothstep(0.5, 0.38, dist);
+            if (alpha < 0.02) discard;
+            gl_FragColor = vec4(vColor, alpha);
+        }
+    `,
+    transparent: true,
+    depthWrite: false,
+    side: 2 // DoubleSide
+});
+        
+        const instancedMesh = new THREE.InstancedMesh(geometry, material, COUNT);
+        instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+        scene.add(instancedMesh);
+
+        // DATA ARRAYS
+        const positions = [];
+        for(let i=0; i<COUNT; i++) {
+            positions.push(new THREE.Vector3((Math.random()-0.5)*100, (Math.random()-0.5)*100, (Math.random()-0.5)*100));
+            instancedMesh.setColorAt(i, color.setHex(DOT_COLOR)); // Init Color
+        }
+
+        // CONTROL STUBS
+        const PARAMS = {};
+        const addControl = (id, label, min, max, val) => {
+            return PARAMS[id] !== undefined ? PARAMS[id] : val;
+        };
+        const setInfo = () => {};
+        const annotate = () => {};
+
+        // ANIMATION LOOP
+        const clock = new THREE.Clock();
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // SWARM LOGIC
+            const count = COUNT; // Alias for user code compatibility
+            for(let i=0; i<COUNT; i++) {
+                 // USER CODE INJECTION START
+                 const r = SPHERE_RADIUS;
+                 const phi = Math.acos(-1 + (2 * i) / count);
+                 const theta = Math.sqrt(count * Math.PI) * phi;
+                 target.set(r * Math.cos(theta) * Math.sin(phi), r * Math.sin(theta) * Math.sin(phi), r * Math.cos(phi));
+                 color.setHex(DOT_COLOR);
+                 // USER CODE INJECTION END
+
+                 // LERP & UPDATE
+                 positions[i].lerp(target, 0.1);
+                 dummy.position.copy(positions[i]);
+                 dummy.updateMatrix();
+                 instancedMesh.setMatrixAt(i, dummy.matrix);
+                 instancedMesh.setColorAt(i, color); // Fix: Use 'color' which user modifies
+            }
+            instancedMesh.instanceMatrix.needsUpdate = true;
+            instancedMesh.instanceColor.needsUpdate = true;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

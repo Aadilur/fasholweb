@@ -1,95 +1,98 @@
 /**
- * Schematic map of Bangladesh with 9 hub markers across 8 divisions.
- * Coordinates are rough geographic proportions — this is an editorial
- * schematic, not a GIS-accurate render.
+ * Bangladesh map figure: country outline with pulsing hub markers.
+ * Coordinates are derived from real lat/lon (88.0-92.7 E, 26.6-20.7 N)
+ * mapped into a 100 x 125 viewBox. Boundary is a hand-tuned approximation,
+ * not GIS-grade.
  */
 
-type Hub = { name: string; x: number; y: number; hq?: boolean; division: string };
+type Hub = { name: string; x: number; y: number; hq?: boolean };
 
 const HUBS: Hub[] = [
-  { name: "Rangpur",     division: "Rangpur",     x: 36, y: 18 },
-  { name: "Rajshahi",    division: "Rajshahi",    x: 26, y: 40 },
-  { name: "Bogura",      division: "Rajshahi",    x: 38, y: 34 },
-  { name: "Mymensingh",  division: "Mymensingh",  x: 54, y: 38 },
-  { name: "Sylhet",      division: "Sylhet",      x: 78, y: 36 },
-  { name: "Dhaka · HQ",  division: "Dhaka",       x: 52, y: 54, hq: true },
-  { name: "Jashore",     division: "Khulna",      x: 32, y: 64 },
-  { name: "Khulna",      division: "Khulna",      x: 38, y: 72 },
-  { name: "Satkhira",    division: "Khulna",      x: 28, y: 76 },
-  { name: "Comilla",     division: "Chattogram",  x: 62, y: 62 },
-  { name: "Barishal",    division: "Barishal",    x: 48, y: 72 },
-  { name: "Chattogram",  division: "Chattogram",  x: 74, y: 76 },
+  { name: "Rajshahi",   x: 13, y: 47 },
+  { name: "Bogura",     x: 29, y: 37 },
+  { name: "Mymensingh", x: 51, y: 39 },
+  { name: "Sylhet",     x: 82, y: 36 },
+  { name: "Dhaka",      x: 51, y: 59, hq: true },
+  { name: "Comilla",    x: 68, y: 66 },
+  { name: "Jashore",    x: 26, y: 73 },
+  { name: "Barishal",   x: 50, y: 83 },
+  { name: "Khulna",     x: 33, y: 80 },
+  { name: "Satkhira",   x: 23, y: 82 },
+  { name: "Chattogram", x: 80, y: 90 },
 ];
+
+const BANGLADESH_PATH =
+  "M 16 2 L 18 10 L 20 18 L 26 22 L 32 18 L 38 14 L 44 16 L 50 12 L 56 16 L 62 14 L 68 18 L 74 14 L 80 12 L 86 16 L 92 22 L 96 28 L 94 34 L 88 36 L 82 38 L 78 40 L 74 36 L 70 40 L 70 46 L 74 50 L 78 54 L 76 60 L 78 66 L 82 72 L 84 78 L 86 84 L 88 92 L 90 100 L 92 110 L 90 118 L 86 122 L 82 116 L 78 108 L 76 100 L 72 92 L 68 88 L 62 90 L 58 88 L 54 92 L 48 94 L 42 92 L 36 94 L 30 90 L 24 92 L 18 90 L 12 86 L 10 80 L 14 74 L 18 68 L 14 60 L 16 52 L 10 46 L 12 38 L 8 32 L 10 24 L 12 16 Z";
 
 export function BangladeshMapFigure() {
   return (
-    <div className="card-plain p-4 tablet:p-8 bg-[var(--color-grain)]">
-      <div className="relative aspect-[4/5] tablet:aspect-[1/1] max-w-[560px] mx-auto">
-        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" aria-hidden>
-          {/* Abstract country shape */}
+    <div className="card-plain p-4 tablet:p-8 bg-[var(--color-grain)] w-full">
+      <div className="relative aspect-[4/5] w-full max-w-[520px] mx-auto">
+        <svg
+          viewBox="0 0 100 125"
+          className="absolute inset-0 w-full h-full"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden
+        >
+          <defs>
+            <radialGradient id="hubGlow">
+              <stop offset="0%" stopColor="var(--color-deep-green)" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="var(--color-deep-green)" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="hqGlow">
+              <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.65" />
+              <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Country outline */}
           <path
-            d="M22 22 L40 10 L56 12 L70 18 L78 22 L82 32 L86 40 L78 48 L82 58 L80 68 L74 78 L66 86 L54 90 L44 88 L34 80 L28 72 L24 62 L18 54 L14 44 L14 32 Z"
-            fill="rgba(19,19,19,0.04)"
-            stroke="rgba(19,19,19,0.25)"
-            strokeWidth="0.3"
+            d={BANGLADESH_PATH}
+            fill="rgba(19,19,19,0.045)"
+            stroke="rgba(19,19,19,0.32)"
+            strokeWidth="0.45"
+            strokeLinejoin="round"
+            strokeLinecap="round"
           />
-          {/* Subtle division lines */}
-          <path d="M18 40 L86 40" stroke="rgba(19,19,19,0.08)" strokeWidth="0.2" strokeDasharray="1 1" />
-          <path d="M50 12 L50 90" stroke="rgba(19,19,19,0.08)" strokeWidth="0.2" strokeDasharray="1 1" />
 
-          {/* Hub markers */}
-          {HUBS.map((h) => (
-            <g key={h.name}>
-              <circle cx={h.x} cy={h.y} r={h.hq ? 1.6 : 1.1}
-                fill={h.hq ? "var(--color-terracotta)" : "var(--color-ink)"} />
-              {h.hq && (
-                <circle cx={h.x} cy={h.y} r={2.6}
-                  fill="none" stroke="var(--color-terracotta)" strokeWidth="0.3" opacity="0.6" />
-              )}
-            </g>
-          ))}
-
-          {/* N compass */}
-          <g transform="translate(88 12)">
-            <text fontSize="2.4" fill="rgba(19,19,19,0.55)" fontFamily="monospace">N</text>
-            <line x1="0.8" y1="2.2" x2="0.8" y2="4.5" stroke="rgba(19,19,19,0.55)" strokeWidth="0.2" />
-            <polygon points="0.3,2.2 0.8,1.2 1.3,2.2" fill="rgba(19,19,19,0.55)" />
-          </g>
-
-          {/* Scale bar */}
-          <g transform="translate(14 92)">
-            <line x1="0" y1="0" x2="12" y2="0" stroke="rgba(19,19,19,0.45)" strokeWidth="0.3" />
-            <line x1="0" y1="-0.8" x2="0" y2="0.8" stroke="rgba(19,19,19,0.45)" strokeWidth="0.3" />
-            <line x1="6" y1="-0.8" x2="6" y2="0.8" stroke="rgba(19,19,19,0.45)" strokeWidth="0.3" />
-            <line x1="12" y1="-0.8" x2="12" y2="0.8" stroke="rgba(19,19,19,0.45)" strokeWidth="0.3" />
-            <text x="0" y="-2" fontSize="1.6" fill="rgba(19,19,19,0.55)" fontFamily="monospace">0</text>
-            <text x="5" y="-2" fontSize="1.6" fill="rgba(19,19,19,0.55)" fontFamily="monospace">100</text>
-            <text x="10.5" y="-2" fontSize="1.6" fill="rgba(19,19,19,0.55)" fontFamily="monospace">200 km</text>
-          </g>
+          {/* Hub markers: outer pulsing halo + solid center */}
+          {HUBS.map((h, i) => {
+            const delay = (i * 0.35) % 2.6;
+            const halo = h.hq ? { from: 3, to: 8 } : { from: 2, to: 5.5 };
+            const dotR = h.hq ? 1.8 : 1.2;
+            const fill = h.hq ? "var(--color-terracotta)" : "var(--color-deep-green)";
+            const gradId = h.hq ? "hqGlow" : "hubGlow";
+            return (
+              <g key={h.name}>
+                <circle cx={h.x} cy={h.y} r={halo.from} fill={`url(#${gradId})`}>
+                  <animate
+                    attributeName="r"
+                    values={`${halo.from};${halo.to};${halo.from}`}
+                    dur="2.8s"
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="0.15;0.85;0.15"
+                    dur="2.8s"
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle cx={h.x} cy={h.y} r={dotR} fill={fill}>
+                  <animate
+                    attributeName="opacity"
+                    values="0.7;1;0.7"
+                    dur="2.8s"
+                    begin={`${delay}s`}
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </g>
+            );
+          })}
         </svg>
-
-        {/* Labels layer (HTML for better typography) */}
-        <div className="absolute inset-0 pointer-events-none">
-          {HUBS.map((h) => (
-            <div
-              key={h.name}
-              className="absolute t-mono text-[10px] whitespace-nowrap translate-x-2 -translate-y-1/2"
-              style={{ left: `${h.x}%`, top: `${h.y}%`, color: h.hq ? "var(--color-terracotta)" : "var(--color-ink)" }}
-            >
-              {h.name}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-4 t-mono text-[10px] text-[var(--color-ink-muted)] justify-center">
-        <span className="inline-flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[var(--color-terracotta)]" /> HQ · Dhaka
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[var(--color-ink)]" /> District hub
-        </span>
-        <span>08 divisions · 09 listed</span>
       </div>
     </div>
   );

@@ -129,7 +129,7 @@ export default function AboutPage() {
  Sakib Hossain · Founder &amp; CEO — Photographed at the Satkhira collection centre, 2024.
  </Reveal>
  <Reveal delay={0.2} className="mt-10">
- <Button variant="secondary" href="/case-study">Read the 12-month case study →</Button>
+ <Button variant="secondary" href="/case-study">Read the 12-month case study</Button>
  </Reveal>
  </div>
  </div>
@@ -217,7 +217,7 @@ export default function AboutPage() {
  <h3 className="t-h4" style={{ fontWeight: 500 }}>{c.t}</h3>
  <p className="t-body !text-[rgba(255,255,255,0.7)]">{c.b}</p>
  <div className="mt-auto pt-4">
- <Button variant="on-dark" href={c.href}>Continue →</Button>
+ <Button variant="on-dark" href={c.href}>Continue</Button>
  </div>
  </div>
  ))}

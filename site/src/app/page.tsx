@@ -120,7 +120,7 @@ export default function HomePage() {
  href="/data"
  className="!h-10 !px-5 !text-[13px] !text-[var(--color-deep-green)] !border-[var(--color-deep-green)] hover:!bg-[rgba(6,94,58,0.06)]"
  >
- Read the data →
+ Read the data
  </Button>
  </Reveal>
  </div>
@@ -660,9 +660,9 @@ export default function HomePage() {
 
  <StaggerChildren className="grid tablet:grid-cols-3 gap-6 mt-14" stagger={0.1}>
  {[
- { n: "01", t: "Farmer onboarding", b: "WhatsApp a field agent. Bring your last season's records, if available.", cta: "Farmer onboarding →", href: "https://wa.me/+8801810187230?text=Hello%21%20I%E2%80%99d%20like%20to%20register%20as%20a%20farmer%20with%20Fashol." },
- { n: "02", t: "Buyer account", b: "MSMEs, quick-commerce, exporters, wholesalers. Ten-minute setup.", cta: "Buyer account →", href: "https://wa.me/+8801810187230?text=Hello%21%20I%E2%80%99d%20like%20to%20buy%20produce%20through%20Fashol." },
- { n: "03", t: "Work with us", b: "Open roles in engineering, logistics, field operations, and data.", cta: "Work with us →", href: "/career" },
+ { n: "01", t: "Farmer onboarding", b: "WhatsApp a field agent. Bring your last season's records, if available.", cta: "Farmer onboarding", href: "https://wa.me/+8801810187230?text=Hello%21%20I%E2%80%99d%20like%20to%20register%20as%20a%20farmer%20with%20Fashol." },
+ { n: "02", t: "Buyer account", b: "MSMEs, quick-commerce, exporters, wholesalers. Ten-minute setup.", cta: "Buyer account", href: "https://wa.me/+8801810187230?text=Hello%21%20I%E2%80%99d%20like%20to%20buy%20produce%20through%20Fashol." },
+ { n: "03", t: "Work with us", b: "Open roles in engineering, logistics, field operations, and data.", cta: "Work with us", href: "/career" },
  ].map((c) => (
  <StaggerItem key={c.n} className="rounded-3xl border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.04)] p-8 flex flex-col gap-4">
  <span className="t-mono text-[11px] !text-[rgba(255,255,255,0.55)]">{c.n}</span>

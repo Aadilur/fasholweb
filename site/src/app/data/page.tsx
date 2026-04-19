@@ -9,7 +9,7 @@ import { OnionPriceFigure } from "@/components/figures/OnionPrice";
 import { RouteEfficiencyFigure } from "@/components/figures/RouteEfficiency";
 
 export const metadata: Metadata = {
- title: "Impact data, 2019 → 2026",
+ title: "Impact data, 2019 - 2026",
  description:
  "Three charts describing six-and-a-half years of Fashol's operation: the monthly farmer onboarding curve, the 2023 onion-shortage price comparison, and route efficiency by district.",
 };
@@ -18,7 +18,7 @@ export default function DataPage() {
  return (
  <><PageHeader
  eyebrow="§ Report 02 — Impact"
- title="Impact data, 2019 → 2026."
+ title="Impact data, 2019 - 2026."
  lede="Three charts that describe what six and a half years of platform work has added up to. The growth curve, the price test, and the logistics map. No rounding of inconvenient numbers; no claim without the method below it."
  />
 
@@ -32,7 +32,7 @@ export default function DataPage() {
 
  <div className="mt-10">
  <h3 className="t-h5 mb-6" style={{ fontWeight: 500 }}>
- Cumulative registered farmers, Jan 2019 → Mar 2026. Monthly granularity.
+ Cumulative registered farmers, Jan 2019 - Mar 2026. Monthly granularity.
  </h3>
  <Reveal><OnboardingCurve /></Reveal>
  </div>
@@ -171,7 +171,7 @@ export default function DataPage() {
  </div>
 
  <div className="mt-10 t-body-sm">
- <Link href="/case-study" className="link-arrow">Companion: one farmer&apos;s year — case study</Link>
+ <Link href="/case-study" className="link-arrow">Companion: one farmer&apos;s year case study</Link>
  </div>
  </Section>
  </>

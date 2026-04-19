@@ -61,7 +61,7 @@ const DAY = [
  { time: "06:12", place: "Satkhira", img: "gallery04", alt: "A Fashol field agent walks between rows of young paddy at first light, holding a tablet.", body: "First registration of the morning. Field agent Rafiqul Mondol walks the farmer through the Jogaan onboarding flow — ID, photo, plot sketch, bank account. Forty minutes per farmer, on average." },
  { time: "07:40", place: "Dumuria collection centre", img: "gallery05", alt: "A collection-point weighing station with cabbage sacks stacked beside a digital scale and clipboard.", body: "Weigh-in station. Every crate is tagged to the farmer's ID before it reaches the grading lane. Grade A cabbage (firm, 800 g minimum) gets the first pallet slot." },
  { time: "09:05", place: "Hub office, Satkhira", img: "gallery03", alt: "A hub team member in a Fashol branded shirt checks a paperback register against a handheld device.", body: "Slips reconcile against the Jogaan log. Every farmer receives an SMS with their weigh-in total and the BDT amount before the dispatch truck leaves the hub." },
- { time: "11:20", place: "Jashore → Dhaka route", img: "gallery06", alt: "Workers load white sacks of fresh vegetables into the back of a refrigerated truck parked at a rural hub gate.", body: "Cold-chain dispatch. Temperature and dwell-time are logged per crate; target cabin temp is 4–6°C; a Grade A cabbage reaches Karwan Bazar with under 2% shrinkage." },
+ { time: "11:20", place: "Jashore - Dhaka route", img: "gallery06", alt: "Workers load white sacks of fresh vegetables into the back of a refrigerated truck parked at a rural hub gate.", body: "Cold-chain dispatch. Temperature and dwell-time are logged per crate; target cabin temp is 4–6°C; a Grade A cabbage reaches Karwan Bazar with under 2% shrinkage." },
  { time: "14:50", place: "Dumuria village circuit", img: "gallery02", alt: "A group of farmers in the field speak with a Fashol agent beside a cabbage patch.", body: "Walk-around with the next day's growers. Tomorrow's offer price is locked at 19:00 tonight; growers who plan to sell are walked through grading one more time." },
  { time: "18:45", place: "Hub debrief, Satkhira", img: "gallery07", alt: "A Fashol hub team sits around a long table for a debrief at end of day.", body: "End-of-day reconciliation. Total farmers served, total MT dispatched, total BDT settled. The 19:00 price publish goes out to every registered farmer's phone five minutes later." },
 ];
@@ -137,7 +137,7 @@ export default function CareerPage() {
  </div>
  <div className="mt-10">
  <Button variant="primary" href="https://hr.fashol.com/jobs" external>
- Browse open positions on hr.fashol.com ↗
+ Browse open positions on hr.fashol.com
  </Button>
  </div>
  </Section>
@@ -158,7 +158,7 @@ export default function CareerPage() {
 
  {/* A day in the field */}
  <Section tone="paper">
- <Reveal as="h2" className="t-h2 mt-6 max-w-3xl">Six moments, 06:00 → 19:00.</Reveal>
+ <Reveal as="h2" className="t-h2 mt-6 max-w-3xl">Six moments, 06:00 - 19:00.</Reveal>
  <p className="t-body-lg mt-4 max-w-2xl">
  What the work looks like between field gate and dispatch dock. Satkhira collection centre and the Jashore route, one Thursday in October 2025.
  </p>
@@ -206,7 +206,7 @@ export default function CareerPage() {
  <h3 className="t-h4" style={{ fontWeight: 500 }}>{c.t}</h3>
  <p className="t-body !text-[rgba(255,255,255,0.7)]">{c.b}</p>
  <div className="mt-auto pt-4">
- <Button variant="on-dark" href={c.href} external={c.external}>Open →</Button>
+ <Button variant="on-dark" href={c.href} external={c.external}>Open</Button>
  </div>
  </div>
  ))}

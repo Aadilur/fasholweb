@@ -6,6 +6,65 @@
 
 ---
 
+## 2026-04-20 pm - Products/Solutions nav dropdowns, Solutions hub, green links
+
+### Nav dropdowns (new) ([Nav.tsx](site/src/components/site/Nav.tsx), [NavDropdown.tsx](site/src/components/site/NavDropdown.tsx), [data/nav.ts](site/src/data/nav.ts))
+
+- **New nav order**: Overview - Products - Solutions - About - Career - Contact. "Services" nav item removed. "Partner with Fashol" CTA untouched. `/services` page file kept on disk (no nav link).
+- **Two dropdowns**: Products (4 items) and Solutions (14 items grouped as Urban buyers / Trade buyers / Suppliers / Partners / Financial). Data lives in [site/src/data/nav.ts](site/src/data/nav.ts) with `name` / `descriptor` / `description` per item. Solutions is rendered as a 3-column layout at desktop; `buildSolutionsColumns` splits Buyers into two halves ("Urban buyers" and "Trade buyers") at the rendering layer without restructuring the source data so the mobile accordion still shows a single Buyers group.
+- **Trigger is a Link, not a button** ([Nav.tsx:244](site/src/components/site/Nav.tsx#L244)). Click navigates to `/products` or `/solutions` hub page; hover opens the dropdown panel; chevron rotates; Arrow Down opens and focuses the first item; Escape closes and returns focus to the trigger. `aria-haspopup`, `aria-expanded`, `aria-controls` all wired up.
+- **Cream dropdown panel**: `bg-[var(--color-paper)]` with `border-[rgba(19,19,19,0.08)]` and a light drop shadow. Preview column shows a placeholder illustration (`/images/nav/placeholder.png`, generated in-repo via `sharp`), item name, short descriptor (Products) or long description (Solutions), and a "Learn more" link in deep green. Panel is `grid-cols-[11fr_9fr]` for both menus (Products left column simply has more whitespace).
+- **Identical panel dimensions** between Products and Solutions so they read as siblings from the same system. `flattenMenu` injects the menu label as the first group's eyebrow when the data has none, so `Jogaan` in Products sits at the same vertical y-position as `Restaurants` in Solutions.
+- **Left-column items are name-only** for both dropdowns (the Products descriptor is now only shown in the preview panel, matching the Solutions pattern). Secondary group eyebrows in Solutions Col 1 (`PARTNERS`) and Col 3 (`FINANCIAL`) aligned to the same vertical baseline using `min-h-[192px]` on primary groups.
+- **Backdrop blur behind nav** ([Nav.tsx:151](site/src/components/site/Nav.tsx#L151)). When a dropdown is open, a fixed `z-30` overlay fades in over the page content with `backdrop-blur-[10px]` and `bg-[rgba(0,0,0,0.25)]`. The nav and dropdown stay sharp at `z-40`. Clicking the overlay closes the dropdown. `transition-opacity` is zeroed by the global `prefers-reduced-motion` rule.
+- **Mobile accordion**: tap on Products or Solutions expands an inline list inside the drawer; no preview panel on mobile. Grouped eyebrows render for Solutions.
+
+### Placeholder product & solution routes
+
+- `/products` and `/solutions` hub pages, plus 18 dynamic detail pages under `/products/[slug]` and `/solutions/[slug]` via `generateStaticParams` that reads from `NAV_MENUS`. Each detail page pulls `name` + `description` from the data file, renders a "Coming soon" placeholder, and links back to its hub.
+- All 22 routes statically pre-render at build; renaming a slug in `data/nav.ts` automatically updates the generated set (e.g. `modern-retail` → `supershops` and `arotdars` → `commission-agents`, both done in this session).
+
+### Solutions hub page ([solutions/page.tsx](site/src/app/solutions/page.tsx))
+
+Replaced the placeholder `/solutions` hub with a five-section editorial page:
+
+1. **Hero** (`tone="ink"`): `SOLUTIONS` eyebrow, H1 *"One supply chain. Every role on it."*, two-sentence subhead, single "Work with Fashol" link anchoring to `#work-with-fashol`.
+2. **Stakeholder directory** (`tone="paper"`): five grouped bands (URBAN BUYERS × 4, TRADE BUYERS × 4, SUPPLIERS × 3, PARTNERS × 2, FINANCIAL × 1). Each group: eyebrow + 60%-width intro paragraph + responsive card grid (4/4/3/2/1 cols on desktop). Card chrome matches Customer Voices: `bg-[var(--color-paper)] rounded-[4px]` with no border/shadow. Hover gives a subtle `-translate-y-1` lift. All 14 cards link to their `/solutions/[slug]` placeholder page.
+3. **The common stack** (`tone="surface"`): `THE COMMON STACK` eyebrow, H2 *"Every role. Same grading, same cold chain, same settlement engine."*, single paragraph. Two-column grid-12 pattern (col-span-7 H2, col-span-5 body).
+4. **CTA band** (`tone="ink"`, `id="work-with-fashol"`): three-card grid mirroring the home-page Join section's chrome (rounded-3xl, white-alpha border + fill, `on-dark` button). Cards: Partner with Fashol (`/contact`), Work with us (`/career`), Read the data (`/data`).
+5. **Footer**: shared component, no changes there.
+
+### Footer - Solutions section added ([Footer.tsx](site/src/components/site/Footer.tsx))
+
+Below the existing 4-column grid (Platform / Company / Offices / Connect), a new full-width band renders all 14 solution links grouped as: Urban buyers / Trade buyers / Suppliers / Partners & financial. The band's heading links to `/solutions`.
+
+### Green-link cleanup (arrows stripped site-wide)
+
+- **CSS**: `.link` and `.link-arrow` now both render in `--color-deep-green` with `--color-deep-green-pressed` on hover. `.link-arrow::after { content: '→' }` removed entirely.
+- **All button CTAs stripped of ` →` / ` ↗`**: home hero, home CTA triad, solutions hub CTAs, about, career, services, not-found, footer Subscribe, PlatformSection product tiles and Hyperfarm platform list, contact external-link column.
+- **Inline text-link arrows** removed from NavDropdown and Solutions hub cards' "Learn more" links, Nav mobile drawer rows, case-study eyebrow kickers.
+- **Body-text `→` ranges** converted to hyphens per the project single-hyphen rule: `2019 - 2026`, `Jan 2019 - Mar 2026`, `Jashore - Dhaka route`, `06:00 - 19:00`, `2024-12-02 - 2025-12-01`, `Exit 03, 6-minute walk north`.
+- Remaining `→` in the codebase are source-code comments only (globals.css token aliases, OnboardingCurve JSDoc) - not rendered.
+
+### Particle globe experiment (reverted)
+
+- Added `public/sphere.html` with a three.js particle-sphere as an alternative to the cobe globe (loaded via iframe into the Global Capability section). Iterated on background transparency (removed UnrealBloomPass since it doesn't preserve alpha), particle count, dot size, sphere radius, and the halo/container circle sizing to align.
+- User preferred the original cobe globe. Reverted [Globe.tsx](site/src/components/figures/Globe.tsx) to the cobe implementation and restored original halo/container sizes (280/340/400 halo, 260/320/380 container). `public/sphere.html` left on disk, unused.
+
+### Nav data / placeholder assets
+
+- Generated cream `/images/nav/placeholder.png` (600×450, cream token hex) via `sharp` for all dropdown preview cards until real illustrations ship.
+- [site/src/data/nav.ts](site/src/data/nav.ts) is the single source of truth for both menus. Renaming an item updates the dropdown, mobile accordion, hub page index, footer section, and the dynamic `[slug]` static params in one place.
+
+### Open items (this pass)
+
+- `.link-arrow` CSS class name is now a misnomer (no arrow any more). Works fine but could be renamed to `.link-accent` in a future cleanup.
+- `public/sphere.html` can be deleted when confirmed unused.
+- `cobe` stays as a dep (used by [Globe.tsx](site/src/components/figures/Globe.tsx)); three.js was never added to `package.json` (sphere.html loaded three.js from unpkg).
+- Pre-existing lint warnings in [Globe.tsx](site/src/components/figures/Globe.tsx) and [Nav.tsx](site/src/components/site/Nav.tsx) (`setState-in-effect`) unchanged; build still passes.
+
+---
+
 ## 2026-04-20 - Farmer Value section + footer restructure
 
 ### Footer rewrite ([site/src/components/site/Footer.tsx](site/src/components/site/Footer.tsx))

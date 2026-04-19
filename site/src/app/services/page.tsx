@@ -244,7 +244,7 @@ export default function ServicesPage() {
  </div>
  <div className="mt-10">
  <Button variant="primary" href="https://play.google.com/store/apps/details?id=com.fashol.agent" external>
- Install on Google Play ↗
+ Install on Google Play
  </Button>
  </div>
  </div>
@@ -274,7 +274,7 @@ export default function ServicesPage() {
  <h3 className="t-h4" style={{ fontWeight: 500 }}>{c.t}</h3>
  <p className="t-body">{c.b}</p>
  <div className="mt-auto pt-4">
- <Button variant="primary" href={c.href} external={c.href.startsWith("http")}>Continue →</Button>
+ <Button variant="primary" href={c.href} external={c.href.startsWith("http")}>Continue</Button>
  </div>
  </div>
  ))}

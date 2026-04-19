@@ -26,7 +26,7 @@ const REGISTER: [string, string][] = [
  ["Hub", "Dumuria Collection Centre"],
  ["Agent", "Md. Khaled Pramanik"],
  ["Farmer ID", "BD-KHU-0046-3182"],
- ["Report window", "12 months · 2024-12-02 → 2025-12-01"],
+ ["Report window", "12 months · 2024-12-02 - 2025-12-01"],
 ];
 
 const LEDGER = [
@@ -231,7 +231,7 @@ export default function CaseStudyPage() {
  </tbody>
  <tfoot>
  <tr>
- <td colSpan={3}>Twelve-month total, 2024.12.02 → 2025.12.01</td>
+ <td colSpan={3}>Twelve-month total, 2024.12.02 - 2025.12.01</td>
  <td>5,460 kg</td>
  <td> — </td>
  <td>27.03 avg</td>
@@ -328,13 +328,13 @@ export default function CaseStudyPage() {
  <Eyebrow>Related &amp; next</Eyebrow>
  <div className="grid tablet:grid-cols-2 gap-6 mt-10">
  <Link href="/data" className="card-plain p-8 hover:shadow-[var(--shadow-card)] transition-shadow flex flex-col gap-3">
- <div className="t-mono text-[11px] text-[var(--color-ink-muted)]">Companion report →</div>
- <h3 className="t-h3">Impact data, 2019 → 2026</h3>
+ <div className="t-mono text-[11px] text-[var(--color-ink-muted)]">Companion report</div>
+ <h3 className="t-h3">Impact data, 2019 - 2026</h3>
  <p className="t-body mt-2">Three charts: monthly farmer onboarding, the 2023 onion-shortage price comparison, and route efficiency per district.</p>
  <span className="link-arrow text-[13px] mt-4">Read the data essay</span>
  </Link>
  <Link href="/services" className="card-plain p-8 hover:shadow-[var(--shadow-card)] transition-shadow flex flex-col gap-3">
- <div className="t-mono text-[11px] text-[var(--color-ink-muted)]">Operating model →</div>
+ <div className="t-mono text-[11px] text-[var(--color-ink-muted)]">Operating model</div>
  <h3 className="t-h3">The six services Rafiqul sees at the field gate</h3>
  <p className="t-body mt-2">Farm-gate onboarding · cold logistics and grading · settlement · platform order book · matching · Jogaan app.</p>
  <span className="link-arrow text-[13px] mt-4">See services</span>

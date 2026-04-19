@@ -3,31 +3,68 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
+import { NavDropdown } from "@/components/site/NavDropdown";
+import { NAV_MENUS, allItems, type NavMenu } from "@/data/nav";
 
-const LINKS = [
-  { href: "/", label: "Overview" },
+type MenuId = (typeof NAV_MENUS)[number]["id"];
+
+const LEAD_LINKS = [{ href: "/", label: "Overview" }];
+const TAIL_LINKS = [
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/career", label: "Career" },
   { href: "/contact", label: "Contact" },
 ];
 
-/**
- * Voiceflow nav, two states:
- *  • AT Y=0 — outer is transparent (no white band). Three visually-separate
- *    groups: [Logo naked] [Center pill with links (its own frosted bg)] [CTAs naked].
- *  • ON SCROLL — outer container shrinks to ~880px, morphs into a single
- *    frosted pill that unifies all three groups. The center pill's own
- *    background fades out so it merges cleanly into the outer shell.
- */
+const CLOSE_DELAY_MS = 200;
+
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // mobile drawer
+  const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
+  const [activeSlugs, setActiveSlugs] = useState<Record<MenuId, string>>(() => {
+    const entries = NAV_MENUS.map((m) => [m.id, allItems(m)[0].slug] as const);
+    return Object.fromEntries(entries) as Record<MenuId, string>;
+  });
+  const [mobileExpanded, setMobileExpanded] = useState<MenuId | null>(null);
+
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const triggerRefs = useRef<Record<MenuId, HTMLAnchorElement | null>>({
+    products: null,
+    solutions: null,
+  });
+  const panelListRef = useRef<HTMLDivElement | null>(null);
+
+  const clearCloseTimer = useCallback(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    clearCloseTimer();
+    closeTimerRef.current = setTimeout(() => {
+      setOpenMenu(null);
+    }, CLOSE_DELAY_MS);
+  }, [clearCloseTimer]);
+
+  const openMenuFor = useCallback(
+    (id: MenuId) => {
+      clearCloseTimer();
+      setOpenMenu(id);
+    },
+    [clearCloseTimer]
+  );
+
+  const closeAllMenus = useCallback(() => {
+    clearCloseTimer();
+    setOpenMenu(null);
+  }, [clearCloseTimer]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -41,11 +78,82 @@ export function Nav() {
     return () => cancelAnimationFrame(id);
   }, []);
 
+  // Close drawers and dropdowns on route change
   useEffect(() => {
     setOpen(false);
+    setOpenMenu(null);
+    setMobileExpanded(null);
   }, [pathname]);
 
+  // Escape key closes any open dropdown
+  useEffect(() => {
+    if (!openMenu) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeAllMenus();
+        triggerRefs.current[openMenu]?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [openMenu, closeAllMenus]);
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => clearCloseTimer();
+  }, [clearCloseTimer]);
+
+  const setActiveSlug = useCallback((id: MenuId, slug: string) => {
+    setActiveSlugs((prev) => (prev[id] === slug ? prev : { ...prev, [id]: slug }));
+  }, []);
+
+  const handleMenuKeydown = useCallback(
+    (e: React.KeyboardEvent, menu: NavMenu) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (openMenu !== menu.id) {
+          openMenuFor(menu.id);
+          // Focus first item after panel renders
+          requestAnimationFrame(() => {
+            const first = panelListRef.current?.querySelector<HTMLAnchorElement>(
+              "[data-nav-item]"
+            );
+            first?.focus();
+          });
+          return;
+        }
+        const items = Array.from(
+          panelListRef.current?.querySelectorAll<HTMLAnchorElement>(
+            "[data-nav-item]"
+          ) ?? []
+        );
+        if (items.length === 0) return;
+        const currentIdx = items.findIndex((el) => el === document.activeElement);
+        const nextIdx =
+          e.key === "ArrowDown"
+            ? (currentIdx + 1) % items.length
+            : (currentIdx - 1 + items.length) % items.length;
+        items[nextIdx]?.focus();
+      }
+      // Enter/Space on the link falls through to default navigation
+    },
+    [openMenu, openMenuFor]
+  );
+
+  const activeMenu = openMenu ? NAV_MENUS.find((m) => m.id === openMenu) : null;
+
   return (
+    <>
+      {/* Backdrop blur + overlay - closes dropdown when clicked outside */}
+      <div
+        aria-hidden="true"
+        onClick={closeAllMenus}
+        className={clsx(
+          "hidden desktop:block fixed inset-0 z-30 transition-opacity duration-300 ease-out",
+          "bg-[rgba(0,0,0,0.25)] backdrop-blur-[10px]",
+          activeMenu ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+      />
     <header
       className={clsx(
         "fixed inset-x-0 top-0 z-40 py-3 tablet:py-5 transition-opacity duration-700",
@@ -62,7 +170,7 @@ export function Nav() {
           "w-[calc(100%-16px)] tablet:w-[calc(100%-40px)]"
         )}
       >
-        {/* Outer frosted background — ONLY visible when scrolled/open */}
+        {/* Outer frosted background */}
         <span
           aria-hidden
           className={clsx(
@@ -76,8 +184,7 @@ export function Nav() {
         </span>
 
         <div className="relative flex items-center justify-between gap-4 h-12 tablet:h-14 px-4 tablet:px-5">
-
-          {/* ── LEFT — logo (naked, no chip) ── */}
+          {/* Logo */}
           <Link
             href="/"
             aria-label="Fashol home"
@@ -93,17 +200,15 @@ export function Nav() {
             />
           </Link>
 
-          {/* ── CENTER — nav pill. Has its own frosted bg at Y=0, fades into outer on scroll ── */}
+          {/* Center nav pill */}
           <nav
             className={clsx(
               "hidden desktop:flex items-center gap-1 relative rounded-full px-2 py-1",
               "transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-              scrolled
-                ? "border border-transparent"
-                : "border border-[rgba(19,19,19,0.06)]"
+              scrolled ? "border border-transparent" : "border border-[rgba(19,19,19,0.06)]"
             )}
+            onMouseLeave={scheduleClose}
           >
-            {/* Inner center-pill frosted bg — fades OUT on scroll */}
             <span
               aria-hidden
               className={clsx(
@@ -116,35 +221,83 @@ export function Nav() {
               <span className="absolute inset-0" style={{ background: "rgba(228, 231, 231, 0.35)" }} />
             </span>
 
-            {LINKS.map((l) => {
-              const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
+            {LEAD_LINKS.map((l) => (
+              <DesktopLink
+                key={l.href}
+                href={l.href}
+                label={l.label}
+                active={pathname === l.href}
+                onHoverOther={closeAllMenus}
+              />
+            ))}
+
+            {NAV_MENUS.map((menu) => {
+              const isOpen = openMenu === menu.id;
+              const sectionActive = pathname?.startsWith(menu.href);
+              const panelId = `nav-panel-${menu.id}`;
               return (
                 <Link
-                  key={l.href}
-                  href={l.href}
+                  key={menu.id}
+                  ref={(el) => {
+                    triggerRefs.current[menu.id] = el;
+                  }}
+                  href={menu.href}
+                  aria-haspopup="true"
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onMouseEnter={() => openMenuFor(menu.id)}
+                  onKeyDown={(e) => handleMenuKeydown(e, menu)}
                   className={clsx(
-                    "group relative font-[var(--font-display)] text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors duration-200 tracking-tight",
-                    active
+                    "group relative inline-flex items-center gap-1 font-[var(--font-display)] text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors duration-200 tracking-tight cursor-pointer",
+                    isOpen || sectionActive
                       ? "text-[var(--color-ink)] bg-[rgba(19,19,19,0.06)]"
                       : "text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)]"
                   )}
                 >
-                  <span className="relative inline-block">
-                    {l.label}
-                  </span>
+                  <span>{menu.label}</span>
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 10 6"
+                    className={clsx(
+                      "w-[9px] h-[5px] transition-transform duration-200",
+                      isOpen ? "rotate-180" : "rotate-0"
+                    )}
+                  >
+                    <path
+                      d="M1 1l4 4 4-4"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </Link>
+              );
+            })}
+
+            {TAIL_LINKS.map((l) => {
+              const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
+              return (
+                <DesktopLink
+                  key={l.href}
+                  href={l.href}
+                  label={l.label}
+                  active={!!active}
+                  onHoverOther={closeAllMenus}
+                />
               );
             })}
           </nav>
 
-          {/* ── RIGHT — standalone CTAs ── */}
+          {/* Right CTA */}
           <div className="hidden desktop:flex items-center gap-2 shrink-0">
             <Button variant="primary" href="/contact" className="!h-9 !px-4 !text-[12px]">
               Partner with Fashol
             </Button>
           </div>
 
-          {/* ── Mobile hamburger ── */}
+          {/* Mobile hamburger */}
           <button
             type="button"
             aria-label="Toggle menu"
@@ -153,8 +306,18 @@ export function Nav() {
             onClick={() => setOpen((v) => !v)}
           >
             <span className="flex flex-col gap-[4px]">
-              <span className={clsx("block w-4 h-[1.5px] bg-[var(--color-ink)] transition-transform duration-300", open && "translate-y-[2.75px] rotate-45")} />
-              <span className={clsx("block w-4 h-[1.5px] bg-[var(--color-ink)] transition-transform duration-300", open && "-translate-y-[2.75px] -rotate-45")} />
+              <span
+                className={clsx(
+                  "block w-4 h-[1.5px] bg-[var(--color-ink)] transition-transform duration-300",
+                  open && "translate-y-[2.75px] rotate-45"
+                )}
+              />
+              <span
+                className={clsx(
+                  "block w-4 h-[1.5px] bg-[var(--color-ink)] transition-transform duration-300",
+                  open && "-translate-y-[2.75px] -rotate-45"
+                )}
+              />
             </span>
           </button>
         </div>
@@ -163,37 +326,166 @@ export function Nav() {
         <div
           className={clsx(
             "desktop:hidden overflow-hidden transition-[max-height,opacity] duration-400 ease-out",
-            open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
+            open ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0"
           )}
         >
           <div className="px-3 pb-3 pt-1">
-            <div className="rounded-2xl bg-[#262626] border border-[#404040] p-4">
+            <div className="rounded-2xl bg-[var(--color-ink)] border border-[rgba(255,251,234,0.12)] p-4 overflow-y-auto max-h-[80vh]">
               <ul className="flex flex-col">
-                {LINKS.map((l) => {
-                  const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
+                {LEAD_LINKS.map((l) => (
+                  <MobileLink key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
+                ))}
+
+                {NAV_MENUS.map((menu) => {
+                  const expanded = mobileExpanded === menu.id;
+                  const sectionActive = pathname?.startsWith(menu.href);
                   return (
-                    <li key={l.href}>
-                      <Link
-                        href={l.href}
+                    <li key={menu.id}>
+                      <button
+                        type="button"
+                        aria-expanded={expanded}
+                        onClick={() =>
+                          setMobileExpanded((prev) => (prev === menu.id ? null : menu.id))
+                        }
                         className={clsx(
-                          "flex items-center justify-between py-2.5 transition-colors",
-                          active ? "text-white" : "text-[rgba(255,255,255,0.6)] hover:text-white"
+                          "w-full flex items-center justify-between py-2.5 transition-colors cursor-pointer",
+                          sectionActive ? "text-[var(--color-paper)]" : "text-[rgba(255,251,234,0.6)] hover:text-[var(--color-paper)]"
                         )}
                       >
-                        <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">{l.label}</span>
-                        <span aria-hidden className="text-[13px]">→</span>
-                      </Link>
+                        <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">
+                          {menu.label}
+                        </span>
+                        <svg
+                          aria-hidden
+                          viewBox="0 0 10 6"
+                          className={clsx(
+                            "w-[10px] h-[6px] transition-transform duration-200",
+                            expanded ? "rotate-180" : "rotate-0"
+                          )}
+                        >
+                          <path
+                            d="M1 1l4 4 4-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <div
+                        className={clsx(
+                          "overflow-hidden transition-[max-height,opacity] duration-300 ease-out",
+                          expanded ? "max-h-[1500px] opacity-100" : "max-h-0 opacity-0"
+                        )}
+                      >
+                        <div className="pl-2 pb-3 pt-1 flex flex-col gap-4">
+                          {menu.groups.map((group, gi) => (
+                            <div key={gi} className="flex flex-col">
+                              {group.eyebrow && (
+                                <div
+                                  className="t-eyebrow mb-2"
+                                  style={{ color: "rgba(255,251,234,0.5)" }}
+                                >
+                                  {group.eyebrow}
+                                </div>
+                              )}
+                              <ul className="flex flex-col">
+                                {group.items.map((item) => (
+                                  <li key={item.slug}>
+                                    <Link
+                                      href={item.href}
+                                      className="block py-1.5 text-[14px] font-medium text-[rgba(255,251,234,0.75)] hover:text-[var(--color-paper)] transition-colors"
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </li>
                   );
                 })}
+
+                {TAIL_LINKS.map((l) => {
+                  const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
+                  return (
+                    <MobileLink key={l.href} href={l.href} label={l.label} active={!!active} />
+                  );
+                })}
               </ul>
-              <div className="mt-4 pt-4 border-t border-[#404040] flex flex-col gap-2">
-                <Button variant="primary" href="/contact">Partner with Fashol</Button>
+              <div className="mt-4 pt-4 border-t border-[rgba(255,251,234,0.12)] flex flex-col gap-2">
+                <Button variant="primary" href="/contact">
+                  Partner with Fashol
+                </Button>
               </div>
             </div>
           </div>
         </div>
+
       </div>
+
+      {/* Desktop dropdown panel - outside the morphing container so it spans full site width */}
+      {activeMenu && (
+        <NavDropdown
+          menu={activeMenu}
+          activeSlug={activeSlugs[activeMenu.id]}
+          onActiveChange={(slug) => setActiveSlug(activeMenu.id, slug)}
+          onPanelEnter={clearCloseTimer}
+          onPanelLeave={scheduleClose}
+          panelId={`nav-panel-${activeMenu.id}`}
+          listRef={panelListRef}
+        />
+      )}
     </header>
+    </>
+  );
+}
+
+function DesktopLink({
+  href,
+  label,
+  active,
+  onHoverOther,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  onHoverOther: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onMouseEnter={onHoverOther}
+      className={clsx(
+        "group relative font-[var(--font-display)] text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors duration-200 tracking-tight",
+        active
+          ? "text-[var(--color-ink)] bg-[rgba(19,19,19,0.06)]"
+          : "text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)]"
+      )}
+    >
+      <span className="relative inline-block">{label}</span>
+    </Link>
+  );
+}
+
+function MobileLink({ href, label, active }: { href: string; label: string; active: boolean }) {
+  return (
+    <li>
+      <Link
+        href={href}
+        className={clsx(
+          "flex items-center justify-between py-2.5 transition-colors",
+          active ? "text-[var(--color-paper)]" : "text-[rgba(255,251,234,0.6)] hover:text-[var(--color-paper)]"
+        )}
+      >
+        <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">
+          {label}
+        </span>
+      </Link>
+    </li>
   );
 }
