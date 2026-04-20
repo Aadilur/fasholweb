@@ -6,6 +6,37 @@
 
 ---
 
+## 2026-04-21 latest - Exporters solutions page + reusable Talk-to-sales CTA
+
+Shipped `/solutions/exporters` with a bespoke **sticky Journey scroll** section and introduced a **reusable `TalkToSalesButton`** component used across the page and meant to replace ad-hoc CTAs site-wide.
+
+### JourneyStickyScroll — sticky photo panel + scrolling 12-stop bento
+- New component at [JourneyStickyScroll.tsx](site/src/components/site/JourneyStickyScroll.tsx). Desktop splits 45% / 55%: the left photo panel is `sticky top-8` while the right column scrolls through 4 phases × 3 stops each (Inquiry, Sourcing, Processing, Delivery).
+- Phase detection via `IntersectionObserver` with `rootMargin: "-30% 0px -40% 0px"` picks the phase whose mid-point is closest to the viewport mid — drives the 4-segment progress bar on the sticky panel.
+- Phase headings fade in via `Reveal`; stop cards use framer-motion `whileInView` with a 0.2s delay so the number glyph doesn't pop before the body copy lands. Each card is a fixed-height (220px desktop) two-column layout: oversized display numeral (180px, `clipPath: "inset(0 0 24% 0)"` to trim descenders) + headline/body.
+- Left panel: hero photo `journey3.jpg` (1350×1800, mozjpeg q78, 477KB — down from a 3.1MB 2845×3793 source). Content stack goes top→bottom: "Journey." h2 at `clamp(72px, 10vw, 120px)`, a 74%-wide progress bar indented by `clamp(28px, 4.2vw, 52px)` (visually aligned with the "O" in Journey), then a 36-letter subtitle "RFQ to retail shelf in twelve precise stops." The CTA pins to the bottom of the panel via `justify-between`.
+
+### TalkToSalesButton — reusable CTA
+- New component at [TalkToSalesButton.tsx](site/src/components/site/TalkToSalesButton.tsx). Calendly URL and label are exported as constants so future call sites don't duplicate strings.
+- Structure matches the Uiverse "cssbuttons-io" pattern: pill-shaped anchor with an absolute-positioned cream icon box on the right that expands to `calc(100% - 0.6em)` on hover (arrow slides, icon square morphs into a full-width "press" bar). Style defined in [globals.css:274-327](site/src/app/globals.css#L274-L327) under `.tts-btn` / `.tts-icon`.
+- Colors: deep-green background `#065E3A` with white text (matches the brand forest-green, passes contrast on the image hero and on paper backgrounds). Icon box stays cream with a deep-green arrow. `!important` set on bg/color because prior iterations showed Tailwind utility specificity fighting the plain class.
+- Opens Calendly (`https://calendly.com/sakibhossain`) in a new tab via `target="_blank" rel="noopener noreferrer"`.
+
+### Exporters page structure ([page.tsx](site/src/app/solutions/exporters/page.tsx))
+- **Hero**: full-bleed `/images/solutions/exporters/hero.jpg` with stacked overlays. Dark-ink horizontal wash + deep-green vertical gradient to keep left-column text legible. H1 "Exporters." at 56/72/88px, subtitle pulled up to `mt-2` (was `mt-6`), stats row `mt-[17px] tablet:mt-[25px]` (was `mt-8/10`), CTA `mt-[9px] tablet:mt-[17px]`. Stats: 60,000+ farmers · 4 regional corridors · 24/7 buyer desk.
+- **Nav**: added `/solutions/exporters` to `DARK_HERO_PATHS` in [Nav.tsx:29](site/src/components/site/Nav.tsx#L29) for light-on-dark nav tokens over the hero.
+- Sections follow the farmers/restaurants template: problem → hinge → four-reason benefit grid → Hyperfarm product block → testimonial → **Journey** (replaces the old "How it starts" 4-step section — removed along with its `STEPS` constant) → related roles (Importers, Wholesalers, Commission agents).
+
+### Iteration highlights
+- "How it starts" section was deleted mid-iteration and its CTA absorbed into the Journey sticky panel — then moved out of the panel, back in, and finally styled as the reusable `TalkToSalesButton` (which also replaced the hero Button). The button went through ~10 visual revisions (compact pill → frosted glass → lime/cream → `.tts-btn` with expanding icon). Net: one canonical CTA across the page, driven from one component.
+- Subtitle under "Journey." was iterated against letter-count targets (43 → 38 → 35 → 36 letters) to match the width of the progress bar below it.
+
+### Assets
+- `/images/solutions/exporters/journey3.jpg` — hero sticky-panel photo, optimized from 3.1MB → 477KB.
+- `/images/solutions/exporters/journey.jpg`, `/images/solutions/exporters/i3.jpg` — legacy/other-section photos.
+
+---
+
 ## 2026-04-21 later - Restaurants stat label fix
 
 First hero stat's caption was wrapping to two lines and breaking the stat-row rhythm. Shortened from "Restaurants, including Domino's Pizza" → "Restaurants including Domino's" — comma dropped, "Pizza" dropped (Domino's reads unambiguously in this context). Figure and other two stats untouched.

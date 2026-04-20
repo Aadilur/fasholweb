@@ -26,6 +26,7 @@ const CLOSE_DELAY_MS = 200;
 const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
   "/solutions/farmers",
   "/solutions/restaurants",
+  "/solutions/exporters",
 ]);
 
 export function Nav() {
