@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import clsx from "clsx";
 import type { NavItem, NavMenu } from "@/data/nav";
-import { allItems, findMenuItem } from "@/data/nav";
+import { allItems, findMenuItem, PRODUCT_LOGOS } from "@/data/nav";
 
 type Props = {
   menu: NavMenu;
@@ -29,6 +29,7 @@ export function NavDropdown({
 }: Props) {
   const activeItem = findMenuItem(menu, activeSlug) ?? allItems(menu)[0];
   const isSolutions = menu.id === "solutions";
+  const isProducts = menu.id === "products";
   const columns: Column[] = isSolutions ? buildSolutionsColumns(menu) : [flattenMenu(menu)];
 
   return (
@@ -50,69 +51,113 @@ export function NavDropdown({
             "grid grid-cols-1 p-8 gap-8 desktop:grid-cols-[11fr_9fr]"
           )}
         >
-          {/* Left area - item list (1 column for Products, 3 columns for Solutions) */}
-          <div
-            ref={listRef}
-            className={clsx(
-              isSolutions
-                ? "grid grid-cols-1 desktop:grid-cols-3 gap-8"
-                : "flex flex-col gap-6"
-            )}
-          >
-            {columns.map((column, ci) => {
-              const hasSecondary = column.length > 1;
-              return (
-              <div key={ci} className="flex flex-col gap-10">
-                {column.map((group, gi) => (
-                  <div
-                    key={gi}
-                    className={clsx(
-                      // Reserve space of a 4-item primary group so secondary
-                      // eyebrows in Col 1 (Partners) and Col 3 (Financial)
-                      // align to the same vertical baseline.
-                      gi === 0 && isSolutions && hasSecondary && "desktop:min-h-[192px]"
-                    )}
-                  >
-                    {group.eyebrow && (
-                      <div className="t-eyebrow mb-4">{group.eyebrow}</div>
-                    )}
-                    <ul className="flex flex-col">
-                      {group.items.map((item) => {
-                        const isActive = item.slug === activeItem.slug;
-                        return (
-                          <li key={item.slug}>
-                            <Link
-                              href={item.href}
-                              role="menuitem"
-                              data-nav-item
-                              data-slug={item.slug}
-                              onMouseEnter={() => onActiveChange(item.slug)}
-                              onFocus={() => onActiveChange(item.slug)}
-                              className={clsx(
-                                "block rounded-xl px-3 py-2 transition-colors duration-200",
-                                "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-lime)]",
-                                isActive
-                                  ? "bg-[rgba(19,19,19,0.08)]"
-                                  : "hover:bg-[rgba(19,19,19,0.05)]"
-                              )}
-                            >
-                              <div className="font-[var(--font-display)] text-[15px] font-medium tracking-tight text-[var(--color-ink)]">
-                                {item.name}
-                              </div>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
+          {/* Left area - logo tile grid for Products, text columns for Solutions */}
+          {isProducts ? (
+            <div ref={listRef} className="flex flex-col">
+              <div className="t-eyebrow mb-4">{menu.label}</div>
+              <div className="grid grid-cols-2 gap-3">
+                {allItems(menu).map((item) => {
+                  const logo = PRODUCT_LOGOS[item.slug];
+                  if (!logo) return null;
+                  const isActive = item.slug === activeItem.slug;
+                  return (
+                    <Link
+                      key={item.slug}
+                      href={item.href}
+                      role="menuitem"
+                      data-nav-item
+                      data-slug={item.slug}
+                      onMouseEnter={() => onActiveChange(item.slug)}
+                      onFocus={() => onActiveChange(item.slug)}
+                      className={clsx(
+                        "group relative flex items-center justify-center overflow-hidden",
+                        "aspect-[2/1] rounded-2xl",
+                        "transition-colors duration-200",
+                        isActive
+                          ? "bg-white"
+                          : "bg-[rgba(19,19,19,0.06)] hover:bg-white",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-lime)]"
+                      )}
+                      aria-label={item.name}
+                    >
+                      <Image
+                        src={logo.src}
+                        alt=""
+                        width={480}
+                        height={240}
+                        sizes="200px"
+                        style={{ transform: `scale(${logo.scale})` }}
+                        className="w-[80%] h-[80%] object-contain"
+                      />
+                    </Link>
+                  );
+                })}
               </div>
-              );
-            })}
-          </div>
+            </div>
+          ) : (
+            <div
+              ref={listRef}
+              className="grid grid-cols-1 desktop:grid-cols-3 gap-8"
+            >
+              {columns.map((column, ci) => {
+                const hasSecondary = column.length > 1;
+                return (
+                <div key={ci} className="flex flex-col gap-10">
+                  {column.map((group, gi) => (
+                    <div
+                      key={gi}
+                      className={clsx(
+                        // Reserve space of a 4-item primary group so secondary
+                        // eyebrows in Col 1 (Partners) and Col 3 (Financial)
+                        // align to the same vertical baseline.
+                        gi === 0 && isSolutions && hasSecondary && "desktop:min-h-[192px]"
+                      )}
+                    >
+                      {group.eyebrow && (
+                        <div className="t-eyebrow mb-4">{group.eyebrow}</div>
+                      )}
+                      <ul className="flex flex-col">
+                        {group.items.map((item) => {
+                          const isActive = item.slug === activeItem.slug;
+                          return (
+                            <li key={item.slug}>
+                              <Link
+                                href={item.href}
+                                role="menuitem"
+                                data-nav-item
+                                data-slug={item.slug}
+                                onMouseEnter={() => onActiveChange(item.slug)}
+                                onFocus={() => onActiveChange(item.slug)}
+                                className={clsx(
+                                  "block rounded-xl px-3 py-2 transition-colors duration-200",
+                                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-lime)]",
+                                  isActive
+                                    ? "bg-[rgba(19,19,19,0.08)]"
+                                    : "hover:bg-[rgba(19,19,19,0.05)]"
+                                )}
+                              >
+                                <div className="font-[var(--font-display)] text-[15px] font-medium tracking-tight text-[var(--color-ink)]">
+                                  {item.name}
+                                </div>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Right column - preview panel */}
           <div className="flex flex-col">
+            {/* Invisible eyebrow spacer on Products so the image aligns with the top of the tile grid */}
+            {isProducts && (
+              <div aria-hidden className="t-eyebrow mb-4 invisible">&nbsp;</div>
+            )}
             <div className="relative w-full max-w-[280px] aspect-[7/3] rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[rgba(19,19,19,0.05)]">
               <Image
                 src="/images/nav/placeholder.png"
@@ -122,12 +167,20 @@ export function NavDropdown({
                 className="object-cover"
               />
             </div>
-            <h3 className="mt-4 t-h5 text-[var(--color-ink)]" style={{ fontWeight: 500 }}>
-              {activeItem.name}
-            </h3>
-            <p className="t-body-sm mt-2 text-[var(--color-ink-subtle)]">
-              {isSolutions ? activeItem.description : activeItem.descriptor}
-            </p>
+            {isProducts ? (
+              <h3 className="mt-4 t-h5 text-[var(--color-ink)]" style={{ fontWeight: 500 }}>
+                {activeItem.descriptor}
+              </h3>
+            ) : (
+              <>
+                <h3 className="mt-4 t-h5 text-[var(--color-ink)]" style={{ fontWeight: 500 }}>
+                  {activeItem.name}
+                </h3>
+                <p className="t-body-sm mt-2 text-[var(--color-ink-subtle)]">
+                  {isSolutions ? activeItem.description : activeItem.descriptor}
+                </p>
+              </>
+            )}
             <div className="mt-3">
               <Link
                 href={activeItem.href}

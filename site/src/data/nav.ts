@@ -204,6 +204,15 @@ export const SOLUTIONS_MENU: NavMenu = {
 
 export const NAV_MENUS: NavMenu[] = [PRODUCTS_MENU, SOLUTIONS_MENU];
 
+export type ProductLogo = { src: string; alt: string; scale: number };
+
+export const PRODUCT_LOGOS: Record<string, ProductLogo> = {
+  jogaan: { src: "/jogaanlogo.png", alt: "Jogaan", scale: 0.8 },
+  hyperfarm: { src: "/images/content/hyperfarm-logo.png", alt: "Hyperfarm", scale: 1.15 },
+  banijjo: { src: "/images/content/banijjo-logo.png", alt: "Banijjo", scale: 2 },
+  myfarm: { src: "/myfarm.png", alt: "Myfarm", scale: 1.485 },
+};
+
 export function findMenuItem(menu: NavMenu, slug: string): NavItem | undefined {
   for (const group of menu.groups) {
     const item = group.items.find((it) => it.slug === slug);

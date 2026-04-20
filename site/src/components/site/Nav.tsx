@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { NavDropdown } from "@/components/site/NavDropdown";
-import { NAV_MENUS, allItems, type NavMenu } from "@/data/nav";
+import { NAV_MENUS, allItems, PRODUCT_LOGOS, type NavMenu } from "@/data/nav";
 
 type MenuId = (typeof NAV_MENUS)[number]["id"];
 
@@ -176,7 +176,7 @@ export function Nav() {
         className={clsx(
           "mx-auto relative",
           "transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled || open
+          scrolled
             ? "max-w-[880px] rounded-full border border-[rgba(19,19,19,0.08)] shadow-[0_4px_24px_-12px_rgba(19,19,19,0.14)]"
             : "max-w-[1360px] border border-transparent",
           "w-[calc(100%-16px)] tablet:w-[calc(100%-40px)]"
@@ -187,7 +187,7 @@ export function Nav() {
           aria-hidden
           className={clsx(
             "absolute inset-0 rounded-full overflow-hidden transition-opacity duration-[320ms] ease-out pointer-events-none",
-            scrolled || open ? "opacity-100" : "opacity-0",
+            scrolled ? "opacity-100" : "opacity-0",
             "backdrop-blur-[24px] saturate-[1.5]"
           )}
         >
@@ -339,110 +339,141 @@ export function Nav() {
           </button>
         </div>
 
-        {/* Mobile drawer */}
-        <div
-          className={clsx(
-            "desktop:hidden overflow-hidden transition-[max-height,opacity] duration-400 ease-out",
-            open ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0"
-          )}
-        >
-          <div className="px-3 pb-3 pt-1">
-            <div className="rounded-2xl bg-[var(--color-ink)] border border-[rgba(255,251,234,0.12)] p-4 overflow-y-auto max-h-[80vh]">
-              <ul className="flex flex-col">
-                {LEAD_LINKS.map((l) => (
-                  <MobileLink key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
-                ))}
+      </div>
 
-                {NAV_MENUS.map((menu) => {
-                  const expanded = mobileExpanded === menu.id;
-                  const sectionActive = pathname?.startsWith(menu.href);
-                  return (
-                    <li key={menu.id}>
-                      <button
-                        type="button"
-                        aria-expanded={expanded}
-                        onClick={() =>
-                          setMobileExpanded((prev) => (prev === menu.id ? null : menu.id))
-                        }
-                        className={clsx(
-                          "w-full flex items-center justify-between py-2.5 transition-colors cursor-pointer",
-                          sectionActive ? "text-[var(--color-paper)]" : "text-[rgba(255,251,234,0.6)] hover:text-[var(--color-paper)]"
-                        )}
-                      >
-                        <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">
-                          {menu.label}
-                        </span>
-                        <svg
-                          aria-hidden
-                          viewBox="0 0 10 6"
-                          className={clsx(
-                            "w-[10px] h-[6px] transition-transform duration-200",
-                            expanded ? "rotate-180" : "rotate-0"
-                          )}
-                        >
-                          <path
-                            d="M1 1l4 4 4-4"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                      <div
-                        className={clsx(
-                          "overflow-hidden transition-[max-height,opacity] duration-300 ease-out",
-                          expanded ? "max-h-[1500px] opacity-100" : "max-h-0 opacity-0"
-                        )}
-                      >
-                        <div className="pl-2 pb-3 pt-1 flex flex-col gap-4">
-                          {menu.groups.map((group, gi) => (
-                            <div key={gi} className="flex flex-col">
-                              {group.eyebrow && (
-                                <div
-                                  className="t-eyebrow mb-2"
-                                  style={{ color: "rgba(255,251,234,0.5)" }}
-                                >
-                                  {group.eyebrow}
-                                </div>
-                              )}
-                              <ul className="flex flex-col">
-                                {group.items.map((item) => (
-                                  <li key={item.slug}>
-                                    <Link
-                                      href={item.href}
-                                      className="block py-1.5 text-[14px] font-medium text-[rgba(255,251,234,0.75)] hover:text-[var(--color-paper)] transition-colors"
-                                    >
-                                      {item.name}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
+      {/* Mobile drawer - sits below the nav bar as a separate card so the nav pill
+          itself stays at its natural compact size when the drawer opens. */}
+      <div
+        aria-hidden={!open}
+        className={clsx(
+          "desktop:hidden mx-auto mt-2 w-[calc(100%-16px)] tablet:w-[calc(100%-40px)] max-w-[880px]",
+          "overflow-hidden transition-[max-height,opacity] duration-400 ease-out",
+          open ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0"
+        )}
+      >
+        <div className="rounded-2xl bg-[var(--color-paper)] shadow-[0_20px_48px_-16px_rgba(0,0,0,0.18)] p-4 overflow-y-auto max-h-[80vh]">
+          <ul className="flex flex-col">
+            {LEAD_LINKS.map((l) => (
+              <MobileLink key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
+            ))}
+
+            {NAV_MENUS.map((menu) => {
+              const expanded = mobileExpanded === menu.id;
+              const sectionActive = pathname?.startsWith(menu.href);
+              const isProducts = menu.id === "products";
+              return (
+                <li key={menu.id}>
+                  <button
+                    type="button"
+                    aria-expanded={expanded}
+                    onClick={() =>
+                      setMobileExpanded((prev) => (prev === menu.id ? null : menu.id))
+                    }
+                    className={clsx(
+                      "w-full flex items-center justify-between py-2.5 transition-colors cursor-pointer",
+                      sectionActive
+                        ? "text-[var(--color-ink)]"
+                        : "text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)]"
+                    )}
+                  >
+                    <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">
+                      {menu.label}
+                    </span>
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 10 6"
+                      className={clsx(
+                        "w-[10px] h-[6px] transition-transform duration-200",
+                        expanded ? "rotate-180" : "rotate-0"
+                      )}
+                    >
+                      <path
+                        d="M1 1l4 4 4-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    className={clsx(
+                      "overflow-hidden transition-[max-height,opacity] duration-300 ease-out",
+                      expanded ? "max-h-[1500px] opacity-100" : "max-h-0 opacity-0"
+                    )}
+                  >
+                    {isProducts ? (
+                      <div className="grid grid-cols-2 gap-2 pt-2 pb-3">
+                        {allItems(menu).map((item) => {
+                          const logo = PRODUCT_LOGOS[item.slug];
+                          if (!logo) return null;
+                          return (
+                            <Link
+                              key={item.slug}
+                              href={item.href}
+                              aria-label={item.name}
+                              className="group flex items-center justify-center overflow-hidden aspect-[2/1] rounded-2xl bg-[rgba(19,19,19,0.06)] transition-colors active:bg-white"
+                            >
+                              <Image
+                                src={logo.src}
+                                alt=""
+                                width={480}
+                                height={240}
+                                sizes="200px"
+                                style={{ transform: `scale(${logo.scale})` }}
+                                className="w-[80%] h-[80%] object-contain"
+                              />
+                            </Link>
+                          );
+                        })}
                       </div>
-                    </li>
-                  );
-                })}
+                    ) : (
+                      <div className="pl-2 pb-3 pt-1 flex flex-col gap-4">
+                        {menu.groups.map((group, gi) => (
+                          <div key={gi} className="flex flex-col">
+                            {group.eyebrow && (
+                              <div
+                                className="t-eyebrow mb-2"
+                                style={{ color: "var(--color-ink-muted)" }}
+                              >
+                                {group.eyebrow}
+                              </div>
+                            )}
+                            <ul className="grid grid-cols-2 gap-x-4">
+                              {group.items.map((item) => (
+                                <li key={item.slug}>
+                                  <Link
+                                    href={item.href}
+                                    className="block py-1.5 text-[14px] font-medium text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)] transition-colors"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
 
-                {TAIL_LINKS.map((l) => {
-                  const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
-                  return (
-                    <MobileLink key={l.href} href={l.href} label={l.label} active={!!active} />
-                  );
-                })}
-              </ul>
-              <div className="mt-4 pt-4 border-t border-[rgba(255,251,234,0.12)] flex flex-col gap-2">
-                <Button variant="primary" href="/contact">
-                  Partner with Fashol
-                </Button>
-              </div>
-            </div>
+            {TAIL_LINKS.map((l) => {
+              const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
+              return (
+                <MobileLink key={l.href} href={l.href} label={l.label} active={!!active} />
+              );
+            })}
+          </ul>
+          <div className="mt-4 pt-4 border-t border-[rgba(19,19,19,0.08)] flex flex-col gap-2">
+            <Button variant="primary" href="/contact">
+              Partner with Fashol
+            </Button>
           </div>
         </div>
-
       </div>
 
       {/* Desktop dropdown panel - outside the morphing container so it spans full site width */}
@@ -496,7 +527,9 @@ function MobileLink({ href, label, active }: { href: string; label: string; acti
         href={href}
         className={clsx(
           "flex items-center justify-between py-2.5 transition-colors",
-          active ? "text-[var(--color-paper)]" : "text-[rgba(255,251,234,0.6)] hover:text-[var(--color-paper)]"
+          active
+            ? "text-[var(--color-ink)]"
+            : "text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)]"
         )}
       >
         <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">

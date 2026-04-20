@@ -6,6 +6,68 @@
 
 ---
 
+## 2026-04-20 late - Nav dropdown redesign + mobile drawer rebuild + farmers page polish
+
+### Desktop Products dropdown — 2×2 logo grid
+
+The Products column of the nav dropdown no longer lists product names as text. Each of the four products (Jogaan / Hyperfarm / Banijjo / Myfarm) now renders as a logo tile in a 2×2 grid ([NavDropdown.tsx:61-111](site/src/components/site/NavDropdown.tsx#L61-L111)).
+
+- **Tile aspect**: `aspect-[2/1]` (cards are shorter than tall).
+- **Logo sizing**: each logo fills 80% of the tile via `w-[80%] h-[80%] object-contain`, then a per-brand `transform: scale(...)` is layered on to normalise the visual weight across logos that have different amounts of built-in whitespace. Scales: Jogaan `0.8`, Hyperfarm `1.15`, Banijjo `2.0`, Myfarm `1.485`. Stored in `PRODUCT_LOGOS` in [nav.ts](site/src/data/nav.ts) so mobile and desktop share the same values.
+- **Card state**: default `bg-[rgba(19,19,19,0.06)]` (the site-standard hover grey), active/hovered tile shifts to `bg-white`. No border, no glow, no icon-color shift on hover. Default state is the grey, hover → white is the "reveal" pattern.
+- **Active = pre-selected** — the Products dropdown pre-selects the first item (Jogaan) so the right preview panel has content to show on open. That same tile now also reads as the "active" tile (white bg) so the user can see which card the right panel corresponds to.
+
+### Right preview panel rework (Products only)
+
+- **Removed** the product name heading (`{activeItem.name}`) from the right preview panel.
+- **Promoted** the descriptor (e.g. "The buyer's procurement desk.") into the h3/heading slot.
+- **Added an invisible `t-eyebrow mb-4` spacer** at the top of the right column so the preview image aligns horizontally with the top of the tile grid (matches the left column's `PRODUCTS` eyebrow offset).
+- Solutions dropdown right panel unchanged — still name + description + Learn more.
+
+### Logo optimisation
+
+Source PNGs shrunk via `sips -Z`:
+- `jogaanlogo.png`: 3668×909 → **1000×248**, 60.8 KB → **40.3 KB** (−34%). Also updated `width`/`height` props in [farmers/page.tsx:356-357](site/src/app/solutions/farmers/page.tsx#L356-L357) to match new intrinsic dimensions so Next's srcset pipeline stays accurate.
+- `myfarm.png`: 4267×4267 → **1024×1024**, 123.7 KB → **36.2 KB** (−71%). Huge win; the source had a massive square canvas with most of it transparent whitespace.
+- Banijjo + Hyperfarm already 1024×1024 and small (~22–32 KB), left alone.
+
+### Mobile nav restructure
+
+The mobile drawer used to live inside the morphing nav container. When the drawer opened, the container grew tall, inherited `rounded-full`, and rendered as a giant vertical capsule with `backdrop-blur-[24px]` bleeding across the full screen (the "big blurry circle" bug). The drawer itself also rendered below the frosted `<span>` in the stacking order, so its dark-ink background was obscured.
+
+Full restructure ([Nav.tsx:342-467](site/src/components/site/Nav.tsx#L342-L467)):
+
+- **Drawer extracted** from inside the morphing container. Now renders as a **separate card below the nav bar**, still inside the fixed `<header>`.
+- **Drawer styling mirrors the desktop dropdown**: `bg-[var(--color-paper)]` (cream), `rounded-2xl`, no border, `shadow-[0_20px_48px_-16px_rgba(0,0,0,0.18)]` (same shadow token as the desktop dropdown card).
+- **Drawer width** matches the nav bar's responsive width: `w-[calc(100%-16px)] tablet:w-[calc(100%-40px)] max-w-[880px]`.
+- **`open` removed from the morph condition** — the nav bar pill's appearance is now independent of drawer state. Only `scrolled` triggers the pill morph.
+- **Products in mobile drawer** uses the same 2×2 logo grid pattern (shares `PRODUCT_LOGOS` via nav.ts).
+- **Solutions in mobile drawer** switched from single-column to `grid grid-cols-2 gap-x-4` so the 8-item Buyers group (plus Suppliers / Partners / Financial) fits without excessive scroll.
+- **`MobileLink` re-themed** for light bg: ink text tokens instead of paper/rgba cream.
+- **Backdrop-blur** on the outer frosted `<span>` applied responsively: the blur stays confined to the nav bar pill's `rounded-full` region (no longer bleeds outside on mobile since the drawer is a separate element).
+
+### Farmers page testimonial — orange dot-pattern
+
+Section 6 "In their words" ([farmers/page.tsx:398-443](site/src/app/solutions/farmers/page.tsx#L398-L443)) swapped from `tone="ink"` (solid dark green) to a custom `<section>` matching the hinge-section treatment: base color + radial-gradient dot pattern. Palette changed from sage (hinge) to brand orange:
+
+- Base: `#FFE0C4` (warm pale orange)
+- Dots: `#FFAF85` at 1.5px / 9px grid
+- Text inverted to `var(--color-ink)` for quote + name, `rgba(19,19,19,0.6)` for the role caption (mirrors the hinge's `rgba(6,94,58,0.75)` muted treatment, just in the ink colorway for the lighter bg).
+
+### Farmers page hero — Sell with Fashol CTA
+
+Added an `<on-dark>` variant Button below the stats row, linking to the Jogaan Play Store (`https://play.google.com/store/apps/details?id=com.fashol.agent`). Reveal delay `0.36` so the CTA fades in after the stat counters finish animating. Spacing `mt-8 tablet:mt-10` — tighter than the stats-to-paragraph gap (`mt-12`) so the button reads as part of the stats/action block rather than a separate section.
+
+### Refactors
+
+- `PRODUCT_LOGOS` **extracted to [nav.ts](site/src/data/nav.ts)** as exported constant. Both [NavDropdown.tsx](site/src/components/site/NavDropdown.tsx) (desktop) and [Nav.tsx](site/src/components/site/Nav.tsx) (mobile) now import the same source of truth.
+
+### Abandoned experiments (not in final)
+
+- **FasholIcon inline-SVG component** with 1-cycle clockwise spin animation on hover — added to "Learn more" CTAs in the RELATED section on farmers page. Reverted at user's request; the component file and associated `@keyframes fashol-spin` in globals.css were deleted.
+
+---
+
 ## 2026-04-20 - CropCash renamed to Myfarm site-wide
 
 Complete product name change from CropCash to Myfarm. The product's role and positioning are unchanged — still supply chain financing, still launching 2026. Only the name is different.

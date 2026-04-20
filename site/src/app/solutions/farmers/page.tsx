@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import {
   Reveal,
@@ -203,6 +204,15 @@ export default function FarmersPage() {
                 </div>
               ))}
             </dl>
+            <Reveal delay={0.36} className="mt-8 tablet:mt-10">
+              <Button
+                variant="on-dark"
+                href="https://play.google.com/store/apps/details?id=com.fashol.agent"
+                external
+              >
+                Sell with Fashol
+              </Button>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -353,8 +363,8 @@ export default function FarmersPage() {
               <Image
                 src="/jogaanlogo.png"
                 alt="Jogaan"
-                width={3668}
-                height={909}
+                width={1000}
+                height={248}
                 sizes="400px"
                 className="h-10 tablet:h-12 w-auto object-contain self-start"
               />
@@ -394,48 +404,58 @@ export default function FarmersPage() {
         </div>
       </Section>
 
-      {/* Section 6 - In their words */}
-      <Section
-        tone="ink"
-        className="!py-[64px] tablet:!py-[80px] desktop:!py-[96px]"
+      {/* Section 6 - In their words. Mirrors the hinge section treatment
+          (dot-pattern background) but in the brand orange palette so the
+          testimonial reads as a warm counterpoint to the sage statistic
+          section earlier in the page. */}
+      <section
+        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
+        style={{
+          backgroundColor: "#FFE0C4",
+          backgroundImage:
+            "radial-gradient(circle, #FFAF85 1.5px, transparent 1.5px)",
+          backgroundSize: "9px 9px",
+        }}
       >
-        <div className="mx-auto text-center max-w-[640px]">
-          <Reveal>
-            <div className="mx-auto relative w-[64px] h-[64px] rounded-full overflow-hidden bg-[var(--color-grain)]">
-              <Image
-                src="/images/voices/voice-01.jpg"
-                alt="Abdul Karim, farmer in Jessore"
-                fill
-                sizes="64px"
-                className="object-cover"
-              />
-            </div>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <blockquote
-              className="mt-6 tablet:mt-8 !text-[var(--color-paper)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
-            >
-              &ldquo;Before Fashol, I used to take my cauliflower to the mahajan and accept
-              whatever price he gave that morning. Now I see the price on my phone the night
-              before. If it&apos;s not good, I wait a day.&rdquo;
-            </blockquote>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <figcaption className="mt-6 flex flex-col items-center">
-              <span
-                className="text-[14px] !text-[var(--color-paper)]"
-                style={{ fontWeight: 500 }}
+        <div className="container-page">
+          <div className="mx-auto text-center max-w-[640px]">
+            <Reveal>
+              <div className="mx-auto relative w-[64px] h-[64px] rounded-full overflow-hidden bg-[var(--color-grain)]">
+                <Image
+                  src="/images/voices/voice-01.jpg"
+                  alt="Abdul Karim, farmer in Jessore"
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
+              </div>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <blockquote
+                className="mt-6 tablet:mt-8 !text-[var(--color-ink)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
+                style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
               >
-                Abdul Karim
-              </span>
-              <span className="text-[12px] !text-[rgba(255,251,234,0.6)] mt-1">
-                Farmer, Jessore
-              </span>
-            </figcaption>
-          </Reveal>
+                &ldquo;Before Fashol, I used to take my cauliflower to the mahajan and accept
+                whatever price he gave that morning. Now I see the price on my phone the night
+                before. If it&apos;s not good, I wait a day.&rdquo;
+              </blockquote>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <figcaption className="mt-6 flex flex-col items-center">
+                <span
+                  className="text-[14px] !text-[var(--color-ink)]"
+                  style={{ fontWeight: 500 }}
+                >
+                  Abdul Karim
+                </span>
+                <span className="text-[12px] !text-[rgba(19,19,19,0.6)] mt-1">
+                  Farmer, Jessore
+                </span>
+              </figcaption>
+            </Reveal>
+          </div>
         </div>
-      </Section>
+      </section>
 
       {/* Section 7 - How it starts */}
       <Section tone="surface">
