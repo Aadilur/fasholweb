@@ -165,6 +165,7 @@ function StopCard({ stop, reduce }: { stop: Stop; reduce: boolean }) {
           fontFeatureSettings: '"lnum"',
           whiteSpace: "nowrap",
           clipPath: "inset(0 0 24% 0)",
+          transform: "translateY(12%)",
         }}
       >
         {stop.n}
@@ -237,7 +238,7 @@ function LeftPanel({ currentPhase }: { currentPhase: number }) {
         className="object-cover"
         style={{ objectPosition: "center" }}
       />
-      <div className="relative h-full w-full flex flex-col items-center justify-between gap-0 p-8 tablet:p-12 desktop:p-16">
+      <div className="relative h-full w-full flex flex-col items-center p-8 tablet:p-12 desktop:p-16">
         <div className="flex flex-col">
         <h2
           style={{
@@ -274,8 +275,6 @@ function LeftPanel({ currentPhase }: { currentPhase: number }) {
           </p>
         </div>
         </div>
-
-        <TalkToSalesButton />
       </div>
     </>
   );
@@ -354,6 +353,9 @@ export function JourneyStickyScroll() {
               </div>
             </div>
           ))}
+          <div className="mt-10 flex justify-center">
+            <TalkToSalesButton />
+          </div>
         </div>
       </div>
     </section>
