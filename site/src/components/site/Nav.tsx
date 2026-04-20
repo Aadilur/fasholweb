@@ -25,6 +25,7 @@ const CLOSE_DELAY_MS = 200;
 // stakeholder pages here as their dark-hero heroes are built out.
 const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
   "/solutions/farmers",
+  "/solutions/restaurants",
 ]);
 
 export function Nav() {

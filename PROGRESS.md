@@ -1,8 +1,59 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-20
+**Last updated:** 2026-04-21
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
+
+---
+
+## 2026-04-21 - Restaurants solutions page
+
+Shipped the Restaurants page under `/solutions/restaurants`, following the farmers-page template (hero → problem → hinge → benefits → product → testimonial → how it starts → related).
+
+### Hero — pink overlay + dark ink underwash
+- Full-bleed photo (`/images/solutions/restaurants/shero2.jpg`) with two stacked overlays on tablet+:
+  - **z-5 ink wash** `rgba(19,19,19, 0.5 → 0.35 → 0)` across 0 → 30 → 60%. Added after the first pass — pink alone let bright ceiling highlights bleed through and washed out the paragraph text. The ink layer lifts contrast on the left without muddying the brand colour.
+  - **z-10 pink gradient** `rgba(254,1,134, 0.9 → 0.7 → 0.2 → 0)` across 0 → 45 → 70 → 100%, matching the stop shape of the farmers-page deep-green gradient.
+- Mobile: single top-to-bottom stack of the same two gradients (no `tablet:` branch).
+- **Hero stats** use a `HeroStat` discriminated union — `kind: "number"` routes through `CountUp`, `kind: "text"` uses a `LetterSpaceReveal`-less `Reveal`. Stats: 400+ (Restaurants, incl. Domino's Pizza) · 5AM (Morning delivery starts) · Dhaka (Every corner).
+- Nav: added `/solutions/restaurants` to `DARK_HERO_PATHS` in [Nav.tsx:27](site/src/components/site/Nav.tsx#L27) so the nav flips to light-on-dark tokens over this hero.
+
+### Section 2 — "You run the kitchen. We run procurement."
+- Paired-clause headline that frames the division-of-labor value prop before the body walks through the historical problem (4 AM Karwan Bazar runs, unposted rates, inconsistent grading, 10+ suppliers per restaurant).
+- Supporting photo `/i2.webp` (1600×1627, from [The Business Standard](https://www.tbsnews.net/features/pursuit/cook-your-career-perfection-chef-788626)) placed in the left column with the farmers-page pattern (`w-full h-auto block`, `sizes="(min-width: 1200px) 520px, 100vw"`). 10px `ink-muted` credit line below the image links to the source to cover copyright attribution.
+
+### Section 3 — "8 days a week" hinge
+- Same sage dot-pattern panel as the farmers-page hinge (`#D4DDC5` base, `#B8C4A5` radial-gradient dots at 9px grid).
+- Switched from an initial `LetterSpaceReveal("Eight days a week")` to the farmers-style `CountUp → 8` + " days a week" so the two hinges across solutions pages share one visual language. Subcopy: "A procurement team spends roughly one full workday per week on the wholesale market run. Fashol gives that day back."
+
+### Section 4 — Benefits (4 cards)
+- Fixed prices · Hub grading · One supplier · Owner-visible dashboard.
+- `StaggerChildren` / `StaggerItem` at 0.12s stagger, 2-col on tablet+. Placeholder grain tiles stand in for imagery until illustrations are commissioned.
+
+### Section 5 — Powered by (single-product block, farmers-style)
+- Re-skinned from a text-heading card to the farmers-page "two products behind this work" treatment:
+  - Layout: `grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16` with one populated cell — the empty right column reads as deliberate typographic negative space rather than a centered floater.
+  - Logo: `/hyperfarm%20logo.png` (1024×1024) at `h-20 tablet:h-24 self-start`, with `mix-blend-multiply` so the source PNG's white canvas blends into the paper bg (avoided rewriting the asset to transparent).
+- Descriptor: "The buyer's procurement desk. Order, grade, cold-chain fulfillment, and settlement on one platform." CTA `link-arrow` → `/products/hyperfarm`.
+
+### Section 6 — Testimonial (orange hinge)
+- Same orange dot-pattern treatment as farmers (`#FFE0C4` / `#FFAF85` at 9px grid). No avatar — quote from Tanvir Ahmed, chef-owner of a six-branch Dhaka group. Display-type blockquote, ink text.
+
+### Section 7 — "24 Hours from sign up to the first kitchen delivery."
+- Four process steps: sign up, map produce list, place order, receive by morning. 4-col on desktop, stacked on mobile.
+- Headline uses the digit "24 Hours" (not the spelled-out "Twenty-four hours") to match the hero's tabular-stat style, and "kitchen delivery" instead of "kitchen order" — the copy is framed around what the restaurant *receives*, not what they submit.
+
+### Section 8 — Related roles
+- Supershops · Quick commerce · Commission agents. Standard three-card cross-sell grid in grain bg with `link-arrow` CTAs.
+
+### Reveal helper
+
+Added `LetterSpaceReveal` to [Reveal.tsx:145-184](site/src/components/ui/Reveal.tsx#L145-L184) when the page was scaffolded (used in the hinge's first iteration). After the hinge was swapped to `CountUp`, it's currently unused — retained as a general-purpose motion helper.
+
+### Assets
+- `/i2.webp` — kitchen photo, TBS source credited inline.
+- `/images/solutions/restaurants/shero2.jpg` — hero photo.
+- `/hyperfarm logo.png` — existing asset, first on-site usage.
 
 ---
 

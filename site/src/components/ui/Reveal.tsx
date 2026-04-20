@@ -142,6 +142,47 @@ export function QuoteReveal({
   );
 }
 
+export function LetterSpaceReveal({
+  children,
+  className,
+  style,
+  as = "div",
+  startSpacing = "0.06em",
+  duration = 1,
+  amount = 0.4,
+}: {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  as?: "div" | "span" | "h1" | "h2" | "h3" | "p";
+  startSpacing?: string;
+  duration?: number;
+  amount?: number;
+}) {
+  const reduce = useReducedMotion();
+  const Tag = as as keyof React.JSX.IntrinsicElements;
+  if (reduce) {
+    return (
+      <Tag className={className} style={style}>
+        {children}
+      </Tag>
+    );
+  }
+  const MotionTag = motion[as] as typeof motion.div;
+  return (
+    <MotionTag
+      initial={{ opacity: 0, letterSpacing: startSpacing }}
+      whileInView={{ opacity: 1, letterSpacing: "0em" }}
+      viewport={{ once: true, amount }}
+      transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+      style={style}
+    >
+      {children}
+    </MotionTag>
+  );
+}
+
 export function DelayedFade({
   children,
   className,
