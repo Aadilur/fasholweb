@@ -6,6 +6,48 @@
 
 ---
 
+## 2026-04-20 - CropCash renamed to Myfarm site-wide
+
+Complete product name change from CropCash to Myfarm. The product's role and positioning are unchanged — still supply chain financing, still launching 2026. Only the name is different.
+
+### Scope
+
+Case-insensitive rename across the entire repo:
+- `CropCash` → `Myfarm`
+- `cropcash` → `myfarm` (slugs, href fragments, anchor ids, modal keys)
+- `CROPCASH` → `MYFARM` (eyebrow label on home page)
+
+### Route change
+
+`/products/cropcash` → `/products/myfarm`. The dynamic `[slug]` route at [products/[slug]/page.tsx](site/src/app/products/[slug]/page.tsx) reads from [`nav.ts`](site/src/data/nav.ts), so updating the slug there was enough — no page-file move needed. Footer Platform anchor `#platform-cropcash` → `#platform-myfarm` at [Footer.tsx](site/src/components/site/Footer.tsx).
+
+### File rename
+
+[`CropCashRegister.tsx`](site/src/components/site/MyfarmRegister.tsx) → `MyfarmRegister.tsx`. Component, internal `CropCashModal`, and the named export all renamed. WhatsApp message prefill text and modal `aria-label` updated. Import in [`farmers/page.tsx`](site/src/app/solutions/farmers/page.tsx) updated.
+
+### Content edits
+
+- [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx): tile 04 name + body, `ModalKey` type union, `CropCashModal` → `MyfarmModal`, `openModal === "cropcash"` check, intro paragraph reference.
+- [`ProductStack.tsx`](site/src/components/figures/ProductStack.tsx): `BOTTOM_BOX` name, aria-label, SVG comment markers.
+- [`page.tsx`](site/src/app/page.tsx) home: Farmer Value card 04 eyebrow and body.
+- [`products/page.tsx`](site/src/app/products/page.tsx): metadata description, BLOCKS[3] (name / body / href / linkLabel), hero subhead, stack-diagram caption.
+- [`solutions/page.tsx`](site/src/app/solutions/page.tsx): agri-machinery-suppliers description.
+- [`solutions/farmers/page.tsx`](site/src/app/solutions/farmers/page.tsx): tile 04 body, Image alt, component reference.
+- [`nav.ts`](site/src/data/nav.ts): Products menu 4th item (slug, href, name) and agri-machinery-suppliers descriptor.
+
+### Did not change
+
+- Other product names (Jogaan, Hyperfarm, Banijjo).
+- The product's role or positioning — still supply chain financing, still launching 2026.
+- Any layout, tokens, or component structure.
+- No redirect added for `/products/cropcash` (not required; no public bookmarks existed).
+
+### Verified
+
+Case-insensitive grep for `CropCash | cropcash | CROPCASH` across `site/src/` and repo root returns zero matches. Stale prerendered artifacts at `site/.next/server/app/products/cropcash.*` are gitignored and will clear on the next build.
+
+---
+
 ## 2026-04-20 late - Hero eyebrow removal + H2 alignment fix
 
 Two structural cleanup passes across the Products and Solutions page trees. All changes are layout-only; no copy, no tokens, no animation rewrites.
@@ -51,7 +93,7 @@ Replaced the `/products` "Coming soon" placeholder with a full five-section edit
 
 Single-file server component, five sections stacked:
 
-1. **Hero** (`tone="ink"`): `PRODUCTS` eyebrow, H1 *"Four products. One operating system."*, one-paragraph subhead naming Jogaan / Hyperfarm / Banijjo / CropCash, single "Work with Fashol →" link anchoring to `#work-with-fashol`. Typography and spacing copied from the Solutions hub hero so the two pages read as siblings.
+1. **Hero** (`tone="ink"`): `PRODUCTS` eyebrow, H1 *"Four products. One operating system."*, one-paragraph subhead naming Jogaan / Hyperfarm / Banijjo / Myfarm, single "Work with Fashol →" link anchoring to `#work-with-fashol`. Typography and spacing copied from the Solutions hub hero so the two pages read as siblings.
 2. **Stack diagram** (`tone="paper"`): `HOW IT FITS TOGETHER` eyebrow + H2 *"Each product does one job. Together they make the platform."* + the new `ProductStack` figure + a muted centered caption beneath.
 3. **Four product blocks** (alternating `surface`/`paper`/`surface`/`paper`): each block is its own `<Section>` with a `border-t border-[var(--color-line)]` between blocks 2-4, so the tone break and the divider line double up at each boundary. Two-column grid-12 layout (`col-span-4` left, `col-span-8 col-start-6` right). Left column is `desktop:sticky desktop:top-[120px]` with the number tag, product name (`t-h2`), Bengali form (`lang-bn`) where applicable, and the "For [audience]" line. Right column runs: editorial headline (`t-h3`) → body (`t-body-lg`) → "Who uses it" line with an inline `t-mono` eyebrow → status line (`t-mono` uppercase, tracked) → "Learn more about [Product] →" link using the existing `.link-arrow` class.
 4. **CTA band** (`tone="ink"`, `id="work-with-fashol"`): `WORK WITH FASHOL` eyebrow + H2 *"Three ways in."* + three-card StaggerChildren grid. Cards (Partner with Fashol / Work with us / Read the data) reuse the Solutions-hub card chrome verbatim (`rounded-3xl border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.04)]` with `<Button variant="on-dark">`).
@@ -63,15 +105,15 @@ Nav "Products" active state already handled by [Nav.tsx](site/src/components/sit
 
 Inline SVG, no external assets, two variants driven by the `tablet` breakpoint:
 
-- **Desktop** (`hidden tablet:block`): single `viewBox="0 0 900 420"` SVG. Three `<rect>` boxes across the top (Jogaan · Banijjo · Hyperfarm, evenly spaced at x=60/340/620, all w=220 h=90 rx=8) and one centered below (CropCash at x=340 y=290). Horizontal flow lines between the top boxes at y=125 and three converging polylines down into CropCash (straight drop from Banijjo, L-shapes from Jogaan and Hyperfarm meeting CropCash's top edge at x=400/450/500). Single `<marker id="product-stack-arrow">` definition reused on every line's `markerEnd`. Strokes use `currentColor` driven by a parent `color: var(--color-deep-green)`; box fills use `var(--color-paper)`; `<text>` labels set `font-family` to `var(--font-plus-jakarta)` inline so SVG text picks up the same loaded font as the rest of the page.
-- **Mobile** (`tablet:hidden`): plain flex-column stack of four bordered cards (Jogaan → Banijjo → Hyperfarm → CropCash) with a small downward-chevron SVG between each. Same deep-green stroke, same `.lang-bn`-compatible typography.
+- **Desktop** (`hidden tablet:block`): single `viewBox="0 0 900 420"` SVG. Three `<rect>` boxes across the top (Jogaan · Banijjo · Hyperfarm, evenly spaced at x=60/340/620, all w=220 h=90 rx=8) and one centered below (Myfarm at x=340 y=290). Horizontal flow lines between the top boxes at y=125 and three converging polylines down into Myfarm (straight drop from Banijjo, L-shapes from Jogaan and Hyperfarm meeting Myfarm's top edge at x=400/450/500). Single `<marker id="product-stack-arrow">` definition reused on every line's `markerEnd`. Strokes use `currentColor` driven by a parent `color: var(--color-deep-green)`; box fills use `var(--color-paper)`; `<text>` labels set `font-family` to `var(--font-plus-jakarta)` inline so SVG text picks up the same loaded font as the rest of the page.
+- **Mobile** (`tablet:hidden`): plain flex-column stack of four bordered cards (Jogaan → Banijjo → Hyperfarm → Myfarm) with a small downward-chevron SVG between each. Same deep-green stroke, same `.lang-bn`-compatible typography.
 
 The diagram is intentionally unframed (no wrapping card / no surrounding border) so it reads as a diagram on the paper tone, not a boxed-in illustration.
 
 ### Metadata
 
 - `title: "Products"` (hits the layout template `%s · Fashol` → "Products · Fashol").
-- `description: "Four products, one operating system. Jogaan, Hyperfarm, Banijjo, and CropCash make up Fashol's platform for the food supply chain."`
+- `description: "Four products, one operating system. Jogaan, Hyperfarm, Banijjo, and Myfarm make up Fashol's platform for the food supply chain."`
 
 ### Verified
 
@@ -151,7 +193,7 @@ Below the existing 4-column grid (Platform / Company / Offices / Connect), a new
 - Added the Bangkok office row (`TH - ITF Tower, Silom, Bangkok`) alongside BD/SG/AE.
 - Fixed Bengali rendering: `ফসল` now wrapped in `<span className="lang-bn">` so the Hind Siliguri font actually applies. Replaced the em-dash in the tagline with a hyphen per the single-hyphen rule.
 - Newsletter form, Fashol wordmark, and the legal bar untouched.
-- Platform column links use `/#platform-jogaan`, `/#platform-hyperfarm`, `/#platform-banijjo`, `/#platform-cropcash`. Matching `id` attributes still need to be added to [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx) for those anchors to actually land.
+- Platform column links use `/#platform-jogaan`, `/#platform-hyperfarm`, `/#platform-banijjo`, `/#platform-myfarm`. Matching `id` attributes still need to be added to [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx) for those anchors to actually land.
 
 ### New "Farmer Value" home section ([site/src/app/page.tsx](site/src/app/page.tsx))
 - Inserted between "We buy direct from farmers" and "Operations register" as a `<Section tone="surface">`.
@@ -167,7 +209,7 @@ Below the existing 4-column grid (Platform / Company / Offices / Connect), a new
 - Moved four illustrations from `site/public/value-0{1..4}.png` into [site/public/images/farmer-value/](site/public/images/farmer-value/) to match the brief's referenced path.
 
 ### Open items
-- Add `id="platform-jogaan"` / `-hyperfarm` / `-banijjo` / `-cropcash` to [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx) tiles so the footer Platform column actually deep-links.
+- Add `id="platform-jogaan"` / `-hyperfarm` / `-banijjo` / `-myfarm` to [`PlatformSection.tsx`](site/src/components/site/PlatformSection.tsx) tiles so the footer Platform column actually deep-links.
 - At 900-tall viewports (13" MacBook) the Farmer Value section still spills slightly — card 01 body is the height driver. Next lever if needed: tighter image column width, or a smaller body font.
 
 ---
@@ -186,7 +228,7 @@ Production build passes with 24 statically-rendered routes (`npm run build`).
 
 ### Components
 - **UI**: [`Button`](site/src/components/ui/Button.tsx), [`Eyebrow`](site/src/components/ui/Eyebrow.tsx), [`Section`](site/src/components/ui/Section.tsx), [`Reveal`](site/src/components/ui/Reveal.tsx) (self-unmounts after first animation to reduce layer count).
-- **Site**: [`Nav`](site/src/components/site/Nav.tsx) (Voiceflow-style floating pill, see §4 Nav), [`Footer`](site/src/components/site/Footer.tsx), [`PageHeader`](site/src/components/site/PageHeader.tsx), [`Accordion`](site/src/components/site/Accordion.tsx), [`LogoMarquee`](site/src/components/site/LogoMarquee.tsx), [`Figure`](site/src/components/site/Figure.tsx), [`StatCard`](site/src/components/site/StatCard.tsx), [`PlatformSection`](site/src/components/site/PlatformSection.tsx) (4-product bento: Jogaan, Hyperfarm, Banijjo, CropCash, with Hyperfarm/CropCash modals).
+- **Site**: [`Nav`](site/src/components/site/Nav.tsx) (Voiceflow-style floating pill, see §4 Nav), [`Footer`](site/src/components/site/Footer.tsx), [`PageHeader`](site/src/components/site/PageHeader.tsx), [`Accordion`](site/src/components/site/Accordion.tsx), [`LogoMarquee`](site/src/components/site/LogoMarquee.tsx), [`Figure`](site/src/components/site/Figure.tsx), [`StatCard`](site/src/components/site/StatCard.tsx), [`PlatformSection`](site/src/components/site/PlatformSection.tsx) (4-product bento: Jogaan, Hyperfarm, Banijjo, Myfarm, with Hyperfarm/Myfarm modals).
 - **SVG figures**: [`SupplyChain`](site/src/components/figures/SupplyChain.tsx) (no longer used on home, kept on disk), [`BangladeshMap`](site/src/components/figures/BangladeshMap.tsx), [`PriceBars`](site/src/components/figures/PriceBars.tsx), [`CropCalendar`](site/src/components/figures/CropCalendar.tsx) (no longer used on home, kept on disk), [`OnboardingCurve`](site/src/components/figures/OnboardingCurve.tsx) (40,120 endpoint), [`OnionPrice`](site/src/components/figures/OnionPrice.tsx), [`RouteEfficiency`](site/src/components/figures/RouteEfficiency.tsx).
 
 ### Images & assets
@@ -235,7 +277,7 @@ Three whole sections deleted and the section-tone rhythm re-balanced.
 
 ### Platform section added above Chapter I (2026-04-19)
 
-New [`PlatformSection`](site/src/components/site/PlatformSection.tsx) — 4-product bento ("Jogaan / Hyperfarm / Banijjo / CropCash"). Jogaan is a flagship tile (col-span-6, row-span-2); Hyperfarm and Banijjo are wide tiles; CropCash is full-width at the bottom. Jogaan and Banijjo link out to Google Play. Hyperfarm opens an iOS/Android/Web chooser modal. CropCash opens a 3-field WhatsApp lead form that prefills a message to the Fashol number. Section tone: `surface`. Slotted between "As featured in" and Chapter I.
+New [`PlatformSection`](site/src/components/site/PlatformSection.tsx) — 4-product bento ("Jogaan / Hyperfarm / Banijjo / Myfarm"). Jogaan is a flagship tile (col-span-6, row-span-2); Hyperfarm and Banijjo are wide tiles; Myfarm is full-width at the bottom. Jogaan and Banijjo link out to Google Play. Hyperfarm opens an iOS/Android/Web chooser modal. Myfarm opens a 3-field WhatsApp lead form that prefills a message to the Fashol number. Section tone: `surface`. Slotted between "As featured in" and Chapter I.
 
 ### Chapter I — figure + copy rewrite (2026-04-19)
 
@@ -325,7 +367,7 @@ Overwrote all accent tokens in [`globals.css`](site/src/app/globals.css) to matc
 
 ## 2 · What's happening now
 
-Home page has been restructured around a single-photo hero and a 12-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Use Cases (four buyer types) · Global Capability (rotating globe + offices) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, CropCash). Hero is a single 1920×815 photo (`h10.png`); the H1 block is pulled up into the image's lower portion via negative margin, with a cream fade gradient at the image floor acting as a soft mask so deep-green headline text reads cleanly against the image. Hero subhead is still commented out; commit history preserves it if the user wants it back.
+Home page has been restructured around a single-photo hero and a 12-section stacked flow: Hero · Featured in · Platform · Chapter I · Operations register · Use Cases (four buyer types) · Global Capability (rotating globe + offices) · Founder letter · Principles · Voice from the field · Trust register · Join. Services summary, crop-peak calendar, and SDG alignment are all gone. Chapter I's SVG supply-chain figure was replaced with an isometric illustration plus a 5-node stats key. A new `PlatformSection` sits between Featured in and Chapter I with four products (Jogaan, Hyperfarm, Banijjo, Myfarm). Hero is a single 1920×815 photo (`h10.png`); the H1 block is pulled up into the image's lower portion via negative margin, with a cream fade gradient at the image floor acting as a soft mask so deep-green headline text reads cleanly against the image. Hero subhead is still commented out; commit history preserves it if the user wants it back.
 
 A content-strategy brief lives at [`HOME_CONTENT_BRIEF.md`](HOME_CONTENT_BRIEF.md) — a snapshot of the home page's copy, voice rules, and known copy-debt for future copywriting work in a fresh chat.
 

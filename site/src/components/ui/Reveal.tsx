@@ -6,6 +6,7 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 type Props = {
   children: ReactNode;
   delay?: number;
+  duration?: number;
   y?: number;
   className?: string;
   style?: CSSProperties;
@@ -21,6 +22,7 @@ type Props = {
 export function Reveal({
   children,
   delay = 0,
+  duration = 0.5,
   y = 14,
   className,
   style,
@@ -42,7 +44,7 @@ export function Reveal({
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, amount }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay }}
+      transition={{ duration, ease: [0.16, 1, 0.3, 1], delay }}
       onAnimationComplete={() => setDone(true)}
       className={className}
       style={style}
@@ -106,5 +108,68 @@ export function StaggerItem({
     >
       {children}
     </motion.div>
+  );
+}
+
+export function QuoteReveal({
+  children,
+  className,
+  style,
+}: {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return (
+      <blockquote className={className} style={style}>
+        {children}
+      </blockquote>
+    );
+  }
+  return (
+    <motion.blockquote
+      initial={{ opacity: 0, letterSpacing: "0.08em" }}
+      whileInView={{ opacity: 1, letterSpacing: "0em" }}
+      viewport={{ once: true, margin: "0px 0px -40% 0px" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+      style={style}
+    >
+      {children}
+    </motion.blockquote>
+  );
+}
+
+export function DelayedFade({
+  children,
+  className,
+  delay = 0.4,
+  duration = 0.3,
+  viewportMargin = "0px 0px -40% 0px",
+  as = "div",
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  duration?: number;
+  viewportMargin?: string;
+  as?: "div" | "figcaption" | "p" | "span";
+}) {
+  const reduce = useReducedMotion();
+  const Tag = as as keyof React.JSX.IntrinsicElements;
+  if (reduce) return <Tag className={className}>{children}</Tag>;
+  const MotionTag = motion[as] as typeof motion.div;
+  return (
+    <MotionTag
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: viewportMargin }}
+      transition={{ duration, ease: "easeOut", delay }}
+      className={className}
+    >
+      {children}
+    </MotionTag>
   );
 }

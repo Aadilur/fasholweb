@@ -8,7 +8,7 @@ import { ProductStack } from "@/components/figures/ProductStack";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Four products, one operating system. Jogaan, Hyperfarm, Banijjo, and CropCash make up Fashol's platform for the food supply chain.",
+    "Four products, one operating system. Jogaan, Hyperfarm, Banijjo, and Myfarm make up Fashol's platform for the food supply chain.",
 };
 
 type Block = {
@@ -69,16 +69,16 @@ const BLOCKS: Block[] = [
   },
   {
     n: "04",
-    name: "CropCash",
+    name: "Myfarm",
     audience:
       "For farmers, buyers, and exporters inside the Fashol network, in partnership with banks.",
     headline: "Supply chain financing, underwritten by transaction history.",
     body:
-      "CropCash offers input financing for farmers, working capital for buyers, and export receivables financing, all underwritten by the transaction history already recorded on Jogaan, Hyperfarm, and Banijjo. No collateral, no branch visits. Delivered in partnership with banks and development finance institutions. Launching 2026.",
+      "Myfarm offers input financing for farmers, working capital for buyers, and export receivables financing, all underwritten by the transaction history already recorded on Jogaan, Hyperfarm, and Banijjo. No collateral, no branch visits. Delivered in partnership with banks and development finance institutions. Launching 2026.",
     who: "Registered farmers, buyers, and exporters across the Fashol network, and partner banks.",
     status: "LAUNCHING 2026",
-    href: "/products/cropcash",
-    linkLabel: "Learn more about CropCash",
+    href: "/products/myfarm",
+    linkLabel: "Learn more about Myfarm",
     tone: "paper",
   },
 ];
@@ -126,7 +126,7 @@ export default function ProductsHubPage() {
           >
             Fashol runs on software we built ourselves. Jogaan gives farmers live buyer demand and
             24-hour settlement. Hyperfarm gives buyers a procurement desk with full traceability.
-            Banijjo runs the wholesale layer between them. CropCash, launching 2026, finances the
+            Banijjo runs the wholesale layer between them. Myfarm, launching 2026, finances the
             working capital that moves across all three. Four products, built to work together,
             run on the same data.
           </Reveal>
@@ -152,7 +152,7 @@ export default function ProductsHubPage() {
         <Reveal delay={0.2} className="mt-10 tablet:mt-14 max-w-[720px] mx-auto">
           <p className="t-body-sm text-[var(--color-ink-muted)] text-center">
             Data flows from the farmer (Jogaan) through the wholesale layer (Banijjo) to the buyer
-            (Hyperfarm). CropCash underwrites working capital based on the transaction record
+            (Hyperfarm). Myfarm underwrites working capital based on the transaction record
             already sitting on the platform.
           </p>
         </Reveal>

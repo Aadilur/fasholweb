@@ -20,6 +20,13 @@ const TAIL_LINKS = [
 
 const CLOSE_DELAY_MS = 200;
 
+// Pages whose hero sits directly under the nav in a dark tone — the green
+// Fashol logo becomes invisible there, so we recolor it to cream. Add future
+// stakeholder pages here as their dark-hero heroes are built out.
+const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
+  "/solutions/farmers",
+]);
+
 export function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -68,9 +75,14 @@ export function Nav() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    // Defer the initial sync so setState doesn't fire synchronously in the
+    // effect body (lint-clean + rAF runs on the next paint).
+    const raf = requestAnimationFrame(onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -184,7 +196,7 @@ export function Nav() {
         </span>
 
         <div className="relative flex items-center justify-between gap-4 h-12 tablet:h-14 px-4 tablet:px-5">
-          {/* Logo */}
+          {/* Logo — recolored to cream on pages whose hero is dark (see DARK_HERO_PATHS). */}
           <Link
             href="/"
             aria-label="Fashol home"
@@ -197,6 +209,11 @@ export function Nav() {
               height={120}
               priority
               className="relative h-8 tablet:h-9 w-auto object-contain"
+              style={
+                DARK_HERO_PATHS.has(pathname ?? "") && !scrolled
+                  ? { filter: "brightness(0) invert(1)" }
+                  : undefined
+              }
             />
           </Link>
 

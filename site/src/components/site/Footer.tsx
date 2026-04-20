@@ -6,7 +6,7 @@ const platformLinks = [
   { href: "/#platform-jogaan", label: "Jogaan" },
   { href: "/#platform-hyperfarm", label: "Hyperfarm" },
   { href: "/#platform-banijjo", label: "Banijjo" },
-  { href: "/#platform-cropcash", label: "CropCash" },
+  { href: "/#platform-myfarm", label: "Myfarm" },
 ];
 
 type SolutionsGroup = {

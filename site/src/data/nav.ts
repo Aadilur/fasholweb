@@ -50,9 +50,9 @@ export const PRODUCTS_MENU: NavMenu = {
             "Inventory, pricing, and distribution tooling for wholesalers and distributors inside the Fashol network. Store-level stock visibility, order routing, and two-sided settlement.",
         },
         {
-          slug: "cropcash",
-          href: "/products/cropcash",
-          name: "CropCash",
+          slug: "myfarm",
+          href: "/products/myfarm",
+          name: "Myfarm",
           descriptor: "Supply chain financing, launching 2026",
           description:
             "Input financing and working capital for Fashol farmers, buyers, and exporters. Launching 2026. Lending decisions underwritten by transaction history already recorded on the platform.",
@@ -161,7 +161,7 @@ export const SOLUTIONS_MENU: NavMenu = {
           name: "Agri machinery suppliers",
           descriptor: "Farm equipment and tooling",
           description:
-            "Marketplace access to farmer demand for tractors, tillers, and harvest equipment, with financing options through CropCash.",
+            "Marketplace access to farmer demand for tractors, tillers, and harvest equipment, with financing options through Myfarm.",
         },
       ],
     },

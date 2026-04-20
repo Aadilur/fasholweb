@@ -272,9 +272,9 @@ export default function HomePage() {
  {
  img: "/images/farmer-value/value-04.png",
  alt: "Working capital, underwritten by transaction history",
- product: "CROPCASH · LAUNCHING 2026",
+ product: "MYFARM · LAUNCHING 2026",
  headline: "Working capital, underwritten by transaction history.",
- body: "CropCash, launching in 2026, will offer input financing and working capital loans to Fashol farmers. Lending decisions are based on the farmer's sales history already recorded in Jogaan. No collateral, no paperwork, no bank visits.",
+ body: "Myfarm, launching in 2026, will offer input financing and working capital loans to Fashol farmers. Lending decisions are based on the farmer's sales history already recorded in Jogaan. No collateral, no paperwork, no bank visits.",
  },
  ].map((c) => (
  <Reveal key={c.img} className="h-full">
@@ -538,14 +538,9 @@ export default function HomePage() {
  `}</style>
 
  <Reveal>
- <div className="grid desktop:grid-cols-12 gap-8 desktop:gap-10 items-end">
- <h2 className="t-h2 desktop:col-span-7 !text-[var(--color-paper)]">
+ <h2 className="t-h2 !text-[var(--color-paper)]">
  The network, in the words of the people on it.
  </h2>
- <p className="desktop:col-span-5 t-mono text-[12px] leading-[1.6] !text-[rgba(255,251,234,0.55)]">
- Composite quotes drawn from farmer, buyer, and field-agent interviews conducted across 2024 and 2025. Names have been changed.
- </p>
- </div>
  </Reveal>
 
  {/* Full-bleed marquee viewport - breaks out of container-page padding so cards bleed off both edges */}

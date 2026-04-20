@@ -4,7 +4,7 @@ const TOP_BOXES = [
   { name: "Hyperfarm", descriptor: "buyer desk" },
 ];
 
-const BOTTOM_BOX = { name: "CropCash", descriptor: "financing" };
+const BOTTOM_BOX = { name: "Myfarm", descriptor: "financing" };
 
 export function ProductStack() {
   return (
@@ -12,7 +12,7 @@ export function ProductStack() {
       className="w-full"
       style={{ color: "var(--color-deep-green)" }}
       role="img"
-      aria-label="Diagram: Jogaan, Banijjo, and Hyperfarm form a left-to-right supply chain. CropCash sits below, financing the transactions recorded across the three."
+      aria-label="Diagram: Jogaan, Banijjo, and Hyperfarm form a left-to-right supply chain. Myfarm sits below, financing the transactions recorded across the three."
     >
       {/* Desktop diagram */}
       <div className="hidden tablet:block">
@@ -57,7 +57,7 @@ export function ProductStack() {
             markerEnd="url(#product-stack-arrow)"
           />
 
-          {/* Convergence into CropCash */}
+          {/* Convergence into Myfarm */}
           <polyline
             points="170,170 170,240 400,240 400,290"
             fill="none"
@@ -124,7 +124,7 @@ export function ProductStack() {
             );
           })}
 
-          {/* Bottom box: CropCash */}
+          {/* Bottom box: Myfarm */}
           <rect
             x={340}
             y={290}

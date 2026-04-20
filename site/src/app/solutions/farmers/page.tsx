@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
-import { Reveal } from "@/components/ui/Reveal";
+import {
+  Reveal,
+  StaggerChildren,
+  StaggerItem,
+} from "@/components/ui/Reveal";
+import { CountUp } from "@/components/ui/CountUp";
+import { MyfarmRegister } from "@/components/site/MyfarmRegister";
 
 export const metadata: Metadata = {
   title: "Farmers - Fashol",
@@ -9,53 +16,54 @@ export const metadata: Metadata = {
     "A fair price for every crop, 24-hour mobile money settlement, and a marketplace for inputs and machinery. Fashol serves 60,000-plus farmers across Bangladesh through the Jogaan platform.",
 };
 
-const HERO_STATS: ReadonlyArray<{ v: string; l: string }> = [
-  { v: "60,000+", l: "Registered farmers" },
-  { v: "24 hr", l: "Settlement window" },
-  { v: "200+", l: "Wholesale markets benchmarked" },
+type HeroStat = {
+  n: number;
+  format: "comma" | "plain";
+  suffix: string;
+  tail: string;
+  l: string;
+};
+
+const HERO_STATS: ReadonlyArray<HeroStat> = [
+  { n: 60000, format: "comma", suffix: "+", tail: "", l: "Registered farmers" },
+  { n: 24, format: "plain", suffix: "", tail: " hr", l: "Settlement window" },
+  { n: 200, format: "plain", suffix: "+", tail: "", l: "Wholesale markets benchmarked" },
 ];
 
 const BENEFITS: ReadonlyArray<{
   n: string;
   headline: string;
   body: string;
+  img: string;
+  imgAlt: string;
 }> = [
   {
     n: "01",
     headline: "A fair price, benchmarked live.",
     body: "Jogaan shows the farmer the price Fashol is paying that morning, benchmarked against live data from 200-plus wholesale markets across Bangladesh. The farmer can check the price before they leave home. If the offered price is lower than the market, they wait. If it is higher, they sell.",
+    img: "/images/farmer-value/value-01.png",
+    imgAlt: "A farmer checking crop prices on a phone",
   },
   {
     n: "02",
     headline: "Payment in 24 hours, straight to bKash.",
     body: "Settlement lands in the farmer's mobile money wallet within 24 hours of weighing at the hub. No invoices, no follow-up trips, no middleman deductions. The receipt sits in the app, and the farmer can show it to anyone.",
+    img: "/images/farmer-value/value-02.png",
+    imgAlt: "A smartphone with coins flowing into it, representing instant payment",
   },
   {
     n: "03",
     headline: "A marketplace for seed, feed, and machinery.",
     body: "Jogaan hosts a marketplace for quality-verified agricultural inputs. Seed, pesticide, livestock feed, and farm machinery, all available at prices negotiated by Fashol on behalf of the network. Farmers order from the same app they use to sell their produce.",
+    img: "/images/farmer-value/value-03.png",
+    imgAlt: "A display of seed, feed, and farm machinery",
   },
   {
     n: "04",
     headline: "Financing, underwritten by the farmer's own record.",
-    body: "CropCash, launching 2026, uses each farmer's transaction history on Jogaan to offer input loans and seasonal working capital. No collateral, no bank branch visits. The farmer's own sales record is the credit file.",
-  },
-];
-
-const PRODUCTS: ReadonlyArray<{
-  name: string;
-  role: string;
-  href: string;
-}> = [
-  {
-    name: "Jogaan",
-    role: "The farmer's app. Price alerts, settlement, marketplace, and record.",
-    href: "/products/jogaan",
-  },
-  {
-    name: "CropCash",
-    role: "Supply chain financing, launching 2026. Underwritten by transaction history.",
-    href: "/products/cropcash",
+    body: "Myfarm, launching 2026, uses each farmer's transaction history on Jogaan to offer input loans and seasonal working capital. No collateral, no bank branch visits. The farmer's own sales record is the credit file.",
+    img: "/images/farmer-value/value-04.png",
+    imgAlt: "Hands cupping a growing plant with coins, representing financing",
   },
 ];
 
@@ -114,58 +122,107 @@ const RELATED: ReadonlyArray<{
 export default function FarmersPage() {
   return (
     <>
-      {/* Section 1 - Hero */}
-      <Section tone="ink">
-        <div className="pt-[64px] tablet:pt-[88px] pb-4 tablet:pb-8">
-          <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
-            {/* Left column */}
-            <div className="desktop:col-span-7">
-              <Reveal
-                as="h1"
-                className="t-hero !text-[var(--color-paper)]"
-              >
-                Farmers.
-              </Reveal>
-              <Reveal
-                delay={0.08}
-                as="p"
-                className="t-body-lg mt-6 max-w-2xl !text-[rgba(255,251,234,0.75)]"
-              >
-                A fair price for every crop, payment in 24 hours, and a marketplace for everything
-                that goes into the field. The grower&apos;s end of the Fashol network, run on a
-                single app called Jogaan.
-              </Reveal>
-            </div>
+      {/* Section 1 - Hero - full-bleed photo with ink gradient + left-aligned overlay */}
+      <section className="relative min-h-[600px] h-[90vh] overflow-hidden">
+        {/* Layer 1 - Photo background */}
+        <Reveal
+          delay={0}
+          duration={0.8}
+          y={0}
+          amount={0}
+          className="absolute inset-0 z-0"
+        >
+          <Image
+            src="/shero1.jpeg"
+            alt="Bangladeshi farmers working in a rice paddy"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </Reveal>
 
-            {/* Right column - stat tiles */}
-            <Reveal delay={0.2} className="desktop:col-span-5">
-              <dl className="flex flex-col gap-3">
-                {HERO_STATS.map((s) => (
-                  <div
-                    key={s.l}
-                    className="rounded-xl border border-[rgba(255,251,234,0.15)] bg-[rgba(255,251,234,0.04)] px-5 py-4 tablet:px-6 tablet:py-5"
-                  >
-                    <dd
-                      className="t-tabular text-[28px] tablet:text-[34px] leading-none !text-[var(--color-paper)]"
-                      style={{ fontFamily: "var(--font-mono)", fontWeight: 500 }}
-                    >
-                      {s.v}
-                    </dd>
-                    <dt className="t-caption mt-2 !text-[rgba(255,251,234,0.6)]">{s.l}</dt>
-                  </div>
-                ))}
-              </dl>
+        {/* Layer 2 - Deep-green overlay (responsive direction)
+            rgba values = site's --color-deep-green (#065E3A) with varying alpha. */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-10 tablet:hidden"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(6,94,58,0.2), rgba(6,94,58,0.8))",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 z-10 hidden tablet:block"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(6,94,58,0.9) 0%, rgba(6,94,58,0.7) 45%, rgba(6,94,58,0.2) 70%, rgba(6,94,58,0) 100%)",
+          }}
+        />
+
+        {/* Layer 3 - Content overlay */}
+        <div className="absolute inset-0 z-20 flex flex-col justify-end tablet:justify-center px-6 tablet:pl-[8vw] tablet:pr-8 pb-12 tablet:pb-0 pt-24 tablet:pt-0">
+          <div className="max-w-[600px]">
+            <Reveal
+              as="h1"
+              className="t-hero !text-[var(--color-paper)] !text-[56px] tablet:!text-[72px] desktop:!text-[88px]"
+            >
+              Farmers.
             </Reveal>
+            <Reveal
+              delay={0.2}
+              as="p"
+              className="t-body-lg mt-6 max-w-[520px] !text-[rgba(255,251,234,0.75)]"
+            >
+              A fair price for every crop, payment in 24 hours, and a marketplace for everything
+              that goes into the field.
+            </Reveal>
+            <dl className="mt-12 flex flex-col tablet:flex-row items-start gap-6 tablet:gap-12">
+              {HERO_STATS.map((s, i) => (
+                <div key={s.l} className="flex flex-col items-start">
+                  <dd
+                    className="t-tabular text-[28px] tablet:text-[32px] desktop:text-[36px] leading-none !text-[var(--color-paper)]"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontWeight: 500,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    <CountUp
+                      to={s.n}
+                      format={s.format}
+                      suffix={s.suffix}
+                      duration={1200}
+                      delay={i * 150}
+                      sessionKey={`farmers-hero-stat-${i}`}
+                    />
+                    {s.tail}
+                  </dd>
+                  <dt className="t-caption mt-2 !text-[rgba(255,251,234,0.65)]">{s.l}</dt>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Section 2 - The problem */}
       <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The traditional chain has worked against the farmer for generations.
+              The chain was built against the farmer.
+            </Reveal>
+            <Reveal delay={0.2} duration={0.6} y={0} className="mt-12">
+              <Image
+                src="/i1.jpeg"
+                alt="A rural Bangladeshi farmer working in the traditional supply chain"
+                width={5568}
+                height={3712}
+                sizes="(min-width: 1200px) 520px, 100vw"
+                className="w-full h-auto block"
+              />
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
@@ -189,12 +246,59 @@ export default function FarmersPage() {
         </div>
       </Section>
 
-      {/* Section 3 - What Fashol does for farmers */}
+      {/* Section 3 - Hinge (custom sage tone unique to this section). Dot
+          pattern applied as background-image directly on the section — no
+          separate overlay layers needed. Text shifts to deep forest green
+          for tonal contrast against the sage ground. */}
+      <section
+        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
+        style={{
+          backgroundColor: "#D4DDC5",
+          backgroundImage:
+            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
+          backgroundSize: "9px 9px",
+        }}
+      >
+        <div className="container-page">
+          <div className="mx-auto text-center">
+            <Reveal>
+              <div
+                className="whitespace-nowrap leading-[0.95] !text-[var(--color-deep-green)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 500,
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                Up to{" "}
+                <CountUp
+                  to={20}
+                  duration={1500}
+                  trigger="inview"
+                  inviewMargin="0px 0px -30% 0px"
+                  sessionKey="farmers-hinge-20"
+                />
+                %
+              </div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p
+                className="t-body-lg mt-6 tablet:mt-8 max-w-[600px] mx-auto"
+                style={{ color: "rgba(6, 94, 58, 0.75)" }}
+              >
+                Price uplift for a Fashol farmer over what the traditional chain pays.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 - What Fashol does for farmers */}
       <Section tone="surface">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              Fashol gives the farmer a different chain.
+              Fashol broke the chain and built a better one.
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
@@ -205,15 +309,22 @@ export default function FarmersPage() {
           </Reveal>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6">
+        <StaggerChildren
+          className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6"
+          stagger={0.12}
+        >
           {BENEFITS.map((b) => (
-            <Reveal key={b.n} className="h-full">
+            <StaggerItem key={b.n} className="h-full" y={16}>
               <article className="h-full flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8">
-                <div
-                  aria-hidden
-                  className="w-20 h-20 rounded-[4px] bg-[var(--color-grain)] border border-[var(--color-line)]"
+                <Image
+                  src={b.img}
+                  alt={b.imgAlt}
+                  width={120}
+                  height={120}
+                  sizes="120px"
+                  className="w-[120px] h-[120px] object-contain"
                 />
-                <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mt-4">
+                <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mt-6">
                   {b.n}
                 </span>
                 <h3 className="t-h5 mt-3" style={{ fontWeight: 500 }}>
@@ -221,12 +332,12 @@ export default function FarmersPage() {
                 </h3>
                 <p className="t-body-sm mt-3">{b.body}</p>
               </article>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerChildren>
       </Section>
 
-      {/* Section 4 - Powered by */}
+      {/* Section 5 - Powered by */}
       <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
@@ -236,32 +347,74 @@ export default function FarmersPage() {
           </div>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6">
-          {PRODUCTS.map((p) => (
-            <Reveal key={p.name} className="h-full">
-              <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8 tablet:p-10">
-                <h3 className="t-h4" style={{ fontWeight: 500 }}>
-                  {p.name}
-                </h3>
-                <p className="t-body mt-4">{p.role}</p>
-                <div className="mt-auto pt-8">
-                  <Link href={p.href} className="link-arrow">
-                    Open product page
-                  </Link>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16">
+          <Reveal className="h-full">
+            <article className="h-full flex flex-col">
+              <Image
+                src="/jogaanlogo.png"
+                alt="Jogaan"
+                width={3668}
+                height={909}
+                sizes="400px"
+                className="h-10 tablet:h-12 w-auto object-contain self-start"
+              />
+              <p className="t-body mt-6">
+                The farmer&apos;s app. Price alerts, settlement, marketplace, and record.
+              </p>
+              <div className="mt-auto pt-8">
+                <Link
+                  href="https://play.google.com/store/apps/details?id=com.fashol.agent"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-arrow"
+                >
+                  Download on Google Play
+                </Link>
+              </div>
+            </article>
+          </Reveal>
+          <Reveal className="h-full">
+            <article className="h-full flex flex-col">
+              <Image
+                src="/myfarm-wide.png"
+                alt="Myfarm"
+                width={3711}
+                height={825}
+                sizes="400px"
+                className="h-10 tablet:h-12 w-auto object-contain self-start"
+              />
+              <p className="t-body mt-6">
+                Supply chain financing, launching 2026. Underwritten by transaction history.
+              </p>
+              <div className="mt-auto pt-8">
+                <MyfarmRegister />
+              </div>
+            </article>
+          </Reveal>
         </div>
       </Section>
 
-      {/* Section 5 - In their words */}
-      <Section tone="ink">
-        <div className="max-w-[880px] mx-auto text-center">
+      {/* Section 6 - In their words */}
+      <Section
+        tone="ink"
+        className="!py-[64px] tablet:!py-[80px] desktop:!py-[96px]"
+      >
+        <div className="mx-auto text-center max-w-[640px]">
           <Reveal>
+            <div className="mx-auto relative w-[64px] h-[64px] rounded-full overflow-hidden bg-[var(--color-grain)]">
+              <Image
+                src="/images/voices/voice-01.jpg"
+                alt="Abdul Karim, farmer in Jessore"
+                fill
+                sizes="64px"
+                className="object-cover"
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
             <blockquote
-              className="!text-[var(--color-paper)] text-[24px] tablet:text-[32px] desktop:text-[38px] leading-[1.25] tracking-[-0.02em]"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 500 }}
+              className="mt-6 tablet:mt-8 !text-[var(--color-paper)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
             >
               &ldquo;Before Fashol, I used to take my cauliflower to the mahajan and accept
               whatever price he gave that morning. Now I see the price on my phone the night
@@ -269,47 +422,22 @@ export default function FarmersPage() {
             </blockquote>
           </Reveal>
           <Reveal delay={0.16}>
-            <figcaption className="mt-8 tablet:mt-10 flex items-center justify-center gap-3">
-              <div
-                className="shrink-0 w-12 h-12 rounded-full bg-[var(--color-grain)] flex items-center justify-center overflow-hidden"
-                aria-hidden
+            <figcaption className="mt-6 flex flex-col items-center">
+              <span
+                className="text-[14px] !text-[var(--color-paper)]"
+                style={{ fontWeight: 500 }}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="w-8 h-8"
-                  fill="none"
-                  stroke="var(--color-ink)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ opacity: 0.4 }}
-                >
-                  <circle cx="12" cy="8.5" r="3.5" />
-                  <path d="M4.5 20c1.2-4 4.2-6 7.5-6s6.3 2 7.5 6" />
-                </svg>
-              </div>
-              <div className="flex flex-col items-start">
-                <span
-                  className="text-[14px] !text-[var(--color-paper)]"
-                  style={{ fontWeight: 500 }}
-                >
-                  Abdul Karim
-                </span>
-                <span className="text-[13px] !text-[rgba(255,251,234,0.6)] mt-0.5">
-                  Farmer, Jessore
-                </span>
-              </div>
+                Abdul Karim
+              </span>
+              <span className="text-[12px] !text-[rgba(255,251,234,0.6)] mt-1">
+                Farmer, Jessore
+              </span>
             </figcaption>
-          </Reveal>
-          <Reveal delay={0.24}>
-            <p className="t-mono text-[11px] tracking-[0.12em] mt-10 tablet:mt-12 !text-[rgba(255,251,234,0.45)] uppercase">
-              Composite voice. Drawn from farmer interviews across 2024 and 2025. Name changed.
-            </p>
           </Reveal>
         </div>
       </Section>
 
-      {/* Section 6 - How it starts */}
+      {/* Section 7 - How it starts */}
       <Section tone="surface">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
@@ -349,7 +477,7 @@ export default function FarmersPage() {
         </Reveal>
       </Section>
 
-      {/* Section 7 - Other roles on the chain */}
+      {/* Section 8 - Other roles on the chain */}
       <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">

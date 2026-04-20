@@ -99,7 +99,7 @@ const GROUPS: Group[] = [
       },
       {
         name: "Agri machinery suppliers",
-        description: "Marketplace access to farmer demand with CropCash financing.",
+        description: "Marketplace access to farmer demand with Myfarm financing.",
         href: "/solutions/agri-machinery-suppliers",
       },
     ],

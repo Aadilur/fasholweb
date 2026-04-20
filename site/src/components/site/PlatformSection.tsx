@@ -80,11 +80,11 @@ const PRODUCTS: Product[] = [
   },
   {
     num: "04",
-    name: "CropCash",
+    name: "Myfarm",
     bn: null,
     audience: "Farmers, distributors, and exporters.",
     headline: "Working capital for every stage of the chain.",
-    body: "CropCash will offer seasonal credit to farmers, inventory finance to distributors, and trade finance to exporters shipping across borders. Because Jogaan, Hyperfarm, and Banijjo already record every transaction on the platform, credit decisions start from a real ledger rather than a paper form. Launching in 2026.",
+    body: "Myfarm will offer seasonal credit to farmers, inventory finance to distributors, and trade finance to exporters shipping across borders. Because Jogaan, Hyperfarm, and Banijjo already record every transaction on the platform, credit decisions start from a real ledger rather than a paper form. Launching in 2026.",
     cta: "Register interest",
     action: { type: "form" },
     img: "/images/content/hero-paddy-aerial.jpg",
@@ -103,7 +103,7 @@ const HYPERFARM_PLATFORMS = [
 
 const FASHOL_WHATSAPP = "+8801810187230";
 
-type ModalKey = "hyperfarm" | "cropcash";
+type ModalKey = "hyperfarm" | "myfarm";
 
 export function PlatformSection() {
   const [openModal, setOpenModal] = useState<ModalKey | null>(null);
@@ -130,7 +130,7 @@ export function PlatformSection() {
         </Reveal>
         <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
           <p>
-            Fashol&apos;s operations run on software we built in-house. Jogaan is the farmer&apos;s app. Hyperfarm is the buyer&apos;s app. Banijjo runs the wholesale layer between them. CropCash, launching in 2026, finances the working capital that moves on all three.
+            Fashol&apos;s operations run on software we built in-house. Jogaan is the farmer&apos;s app. Hyperfarm is the buyer&apos;s app. Banijjo runs the wholesale layer between them. Myfarm, launching in 2026, finances the working capital that moves on all three.
           </p>
         </Reveal>
       </div>
@@ -147,8 +147,8 @@ export function PlatformSection() {
         {openModal === "hyperfarm" && (
           <HyperfarmModal key="hyperfarm" onClose={() => setOpenModal(null)} />
         )}
-        {openModal === "cropcash" && (
-          <CropCashModal key="cropcash" onClose={() => setOpenModal(null)} />
+        {openModal === "myfarm" && (
+          <MyfarmModal key="myfarm" onClose={() => setOpenModal(null)} />
         )}
       </AnimatePresence>
     </Section>
@@ -273,7 +273,7 @@ function PlatformTile({
   return (
     <button
       type="button"
-      onClick={() => onOpenModal(product.action.type === "platforms" ? "hyperfarm" : "cropcash")}
+      onClick={() => onOpenModal(product.action.type === "platforms" ? "hyperfarm" : "myfarm")}
       className={tileClass}
     >
       {tileInner}
@@ -324,7 +324,7 @@ function HyperfarmModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-function CropCashModal({ onClose }: { onClose: () => void }) {
+function MyfarmModal({ onClose }: { onClose: () => void }) {
   const [phone, setPhone] = useState("");
   const [crop, setCrop] = useState("");
   const [address, setAddress] = useState("");
@@ -332,21 +332,21 @@ function CropCashModal({ onClose }: { onClose: () => void }) {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const msg = `Hi Fashol, I'd like to register interest in CropCash.\n\nContact number: ${phone}\nCurrently growing: ${crop}\nDistrict or address: ${address}`;
+    const msg = `Hi Fashol, I'd like to register interest in Myfarm.\n\nContact number: ${phone}\nCurrently growing: ${crop}\nDistrict or address: ${address}`;
     const url = `https://wa.me/${FASHOL_WHATSAPP.replace("+", "")}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank", "noopener,noreferrer");
     setSubmitted(true);
   };
 
   return (
-    <ModalShell onClose={onClose} label="CropCash registration">
+    <ModalShell onClose={onClose} label="Myfarm registration">
       {!submitted ? (
         <>
           <h3 className="t-h3" style={{ fontWeight: 500 }}>
             Register interest
           </h3>
           <p className="t-body-sm text-[var(--color-ink-muted)] mt-2">
-            CropCash launches in 2026. Share a few details and we will reach out when onboarding opens.
+            Myfarm launches in 2026. Share a few details and we will reach out when onboarding opens.
           </p>
           <form className="mt-8 flex flex-col gap-5" onSubmit={onSubmit}>
             <Field label="Contact number" value={phone} onChange={setPhone} type="tel" placeholder="01XXXXXXXXX" required />
@@ -366,7 +366,7 @@ function CropCashModal({ onClose }: { onClose: () => void }) {
             Thanks, message ready.
           </h3>
           <p className="t-body-sm text-[var(--color-ink-muted)] mt-3">
-            We have opened WhatsApp with your details. Send the message and our team will reach out when CropCash nears launch.
+            We have opened WhatsApp with your details. Send the message and our team will reach out when Myfarm nears launch.
           </p>
           <button
             type="button"
