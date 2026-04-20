@@ -38,7 +38,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     format: "plain",
     suffix: "+",
     tail: "",
-    l: "Restaurants, including Domino's Pizza",
+    l: "Restaurants including Domino's",
   },
   { kind: "text", text: "5AM", l: "Morning delivery starts" },
   { kind: "text", text: "Dhaka", l: "Every corner, every day" },

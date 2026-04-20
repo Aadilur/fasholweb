@@ -6,6 +6,12 @@
 
 ---
 
+## 2026-04-21 later - Restaurants stat label fix
+
+First hero stat's caption was wrapping to two lines and breaking the stat-row rhythm. Shortened from "Restaurants, including Domino's Pizza" → "Restaurants including Domino's" — comma dropped, "Pizza" dropped (Domino's reads unambiguously in this context). Figure and other two stats untouched.
+
+---
+
 ## 2026-04-21 - Restaurants solutions page
 
 Shipped the Restaurants page under `/solutions/restaurants`, following the farmers-page template (hero → problem → hinge → benefits → product → testimonial → how it starts → related).
