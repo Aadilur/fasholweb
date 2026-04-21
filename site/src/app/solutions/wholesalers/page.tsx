@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { TalkToSalesButton } from "@/components/site/TalkToSalesButton";
+import { ComparisonPair } from "@/components/site/ComparisonPair";
 import { Section } from "@/components/ui/Section";
 import {
   Reveal,
@@ -46,38 +47,70 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
   { kind: "text", text: "50 districts", l: "Origin reach across Bangladesh" },
 ];
 
-const COMPARISON_ROWS: ReadonlyArray<{ old: string; now: string }> = [
+type ComparisonPairData = {
+  oldAnchor: string;
+  oldBody: string;
+  fasholAnchor: string;
+  fasholAnchorIsNumeric: boolean;
+  fasholBody: string;
+};
+
+const COMPARISON_PAIRS: ReadonlyArray<ComparisonPairData> = [
   {
-    old: "Sourcing from 50+ aratdars and farmers personally",
-    now: "One counterparty for sourcing, settlement, and grading",
+    oldAnchor: "50+ SUPPLIERS",
+    oldBody: "Sourcing from 50+ aratdars and farmers personally.",
+    fasholAnchor: "ONE",
+    fasholAnchorIsNumeric: false,
+    fasholBody: "counterparty for sourcing, settlement, and grading.",
   },
   {
-    old: "Supply drops 30-60% in bad weather weeks",
-    now: "Network redundancy across 50 districts keeps supply steady",
+    oldAnchor: "30-60% DROP",
+    oldBody: "Supply drops 30 to 60 percent in bad weather weeks.",
+    fasholAnchor: "50",
+    fasholAnchorIsNumeric: true,
+    fasholBody: "districts of network redundancy keep supply steady across Bangladesh.",
   },
   {
-    old: "Price negotiated fresh every morning",
-    now: "Live benchmarked pricing, published daily",
+    oldAnchor: "FRESH HAGGLE",
+    oldBody: "Price negotiated fresh every morning, from zero.",
+    fasholAnchor: "200+",
+    fasholAnchorIsNumeric: true,
+    fasholBody: "wholesale markets benchmarked for live, published daily pricing.",
   },
   {
-    old: "Quality is a guess until the crates are opened",
-    now: "Four-tier grading applied at Fashol hubs before dispatch",
+    oldAnchor: "A GUESS",
+    oldBody: "Quality is a guess until the crates are opened.",
+    fasholAnchor: "FOUR-TIER",
+    fasholAnchorIsNumeric: false,
+    fasholBody: "grading applied at Fashol hubs before dispatch.",
   },
   {
-    old: "Credit to downstream buyers is capped by working capital",
-    now: "Banijjo settlement and Myfarm credit extend capacity",
+    oldAnchor: "WORKING CAPITAL CAP",
+    oldBody: "Credit to downstream buyers is capped by personal working capital.",
+    fasholAnchor: "EXTENDED",
+    fasholAnchorIsNumeric: false,
+    fasholBody: "credit capacity via Banijjo same-day settlement and Myfarm underwriting.",
   },
   {
-    old: "Volume capped at trader's personal bandwidth",
-    now: "Capacity scales with Fashol's hub and cold-chain network",
+    oldAnchor: "PERSONAL CAP",
+    oldBody: "Volume capped at the trader's personal bandwidth.",
+    fasholAnchor: "NETWORK",
+    fasholAnchorIsNumeric: false,
+    fasholBody: "capacity scales with Fashol's hub and cold-chain infrastructure.",
   },
   {
-    old: "Quality disputes happen downstream at the stall",
-    now: "Quality resolved at the hub, before dispatch",
+    oldAnchor: "DOWNSTREAM",
+    oldBody: "Quality disputes happen downstream, at the stall.",
+    fasholAnchor: "AT THE HUB",
+    fasholAnchorIsNumeric: false,
+    fasholBody: "disputes resolved before dispatch, not after delivery.",
   },
   {
-    old: "Settlement is T+7 to T+14",
-    now: "Same-day settlement on delivered volume",
+    oldAnchor: "T+7 TO T+14",
+    oldBody: "Settlement takes 7 to 14 days after delivery.",
+    fasholAnchor: "SAME-DAY",
+    fasholAnchorIsNumeric: false,
+    fasholBody: "settlement on delivered volume, every delivery, end of day.",
   },
 ];
 
@@ -367,81 +400,19 @@ export default function WholesalersPage() {
           </Reveal>
         </div>
 
-        {/* Ledger block */}
-        <div className="mt-12 tablet:mt-16">
-          {/* Column headers */}
-          <div className="grid grid-cols-1 desktop:grid-cols-2 gap-6 desktop:gap-12">
-            <div>
-              <h3
-                className="text-[22px] tablet:text-[26px]"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  letterSpacing: "-0.02em",
-                  color: "var(--color-deep-green)",
-                }}
-              >
-                Running the old way.
-              </h3>
-              <div
-                className="mt-3 h-px w-full"
-                style={{ background: "rgba(184, 196, 165, 0.4)" }}
-              />
-            </div>
-            <div>
-              <h3
-                className="text-[22px] tablet:text-[26px]"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  letterSpacing: "-0.02em",
-                  color: "var(--color-deep-green)",
-                }}
-              >
-                Running on Fashol.
-              </h3>
-              <div
-                className="mt-3 h-px w-full"
-                style={{ background: "rgba(184, 196, 165, 0.4)" }}
-              />
-            </div>
-          </div>
-
-          {/* Rows */}
-          <StaggerChildren className="mt-2" stagger={0.1}>
-            {COMPARISON_ROWS.map((row, idx) => (
-              <StaggerItem key={row.now} y={12}>
-                <div
-                  className="grid grid-cols-1 desktop:grid-cols-2 gap-3 desktop:gap-12 py-8"
-                  style={{
-                    borderBottom:
-                      idx < COMPARISON_ROWS.length - 1
-                        ? "1px solid rgba(184, 196, 165, 0.25)"
-                        : "none",
-                  }}
-                >
-                  <p
-                    className="text-[17px] leading-[1.5]"
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      color: "rgba(6, 94, 58, 0.7)",
-                    }}
-                  >
-                    {row.old}
-                  </p>
-                  <p
-                    className="text-[17px] leading-[1.5]"
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      color: "var(--color-deep-green)",
-                    }}
-                  >
-                    {row.now}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerChildren>
+        {/* Transformation pairs — 8 asymmetric rows with display anchors, zigzag orientation. */}
+        <div className="mt-12 tablet:mt-16" role="list">
+          {COMPARISON_PAIRS.map((pair, idx) => (
+            <ComparisonPair
+              key={pair.fasholAnchor + idx}
+              index={idx + 1}
+              oldAnchor={pair.oldAnchor}
+              oldBody={pair.oldBody}
+              fasholAnchor={pair.fasholAnchor}
+              fasholAnchorIsNumeric={pair.fasholAnchorIsNumeric}
+              fasholBody={pair.fasholBody}
+            />
+          ))}
         </div>
 
         {/* Closing line */}
