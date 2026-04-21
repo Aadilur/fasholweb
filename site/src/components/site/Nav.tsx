@@ -27,6 +27,7 @@ const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
   "/solutions/farmers",
   "/solutions/restaurants",
   "/solutions/exporters",
+  "/solutions/wholesalers",
 ]);
 
 export function Nav() {
@@ -202,7 +203,7 @@ export function Nav() {
           <Link
             href="/"
             aria-label="Fashol home"
-            className="relative flex items-center shrink-0 px-2 py-0.5"
+            className="relative flex items-center shrink-0 py-0.5"
           >
             <Image
               src="/fashol-logo-full.png"
