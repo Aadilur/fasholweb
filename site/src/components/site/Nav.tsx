@@ -211,7 +211,7 @@ export function Nav() {
               width={400}
               height={120}
               priority
-              className="relative h-8 tablet:h-9 w-auto object-contain"
+              className="relative h-[38px] tablet:h-[43px] w-auto object-contain"
               style={
                 DARK_HERO_PATHS.has(pathname ?? "") && !scrolled
                   ? { filter: "brightness(0) invert(1)" }
