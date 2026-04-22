@@ -1,8 +1,93 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-22
+**Last updated:** 2026-04-23
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
+
+---
+
+## 2026-04-23 - Retailers solutions page
+
+Shipped `/solutions/retailers` for single-location mudi shop owners. Same 9-section skeleton as Supershops, tuned for the "skip the 4 AM market run" emotional angle rather than margin or scale.
+
+### Hero
+- Full-bleed `/rehero.jpg` at `h-[90vh] min-h-[600px]`. No gradient overlay (mirrors Supershops / Commission agents treatment). H1 "Retailers." + stat row + `TalkToSalesButton`. All hero text cream (`var(--color-paper)`) for readability on the photo.
+- Subhead iterated from a 39-word paragraph down to 14 words (65% shorter per brief): "Fresh produce at your shop before 6 AM. Wholesale prices. No minimum order."
+- Stats: `7,000+` (CountUp, comma format) / "Before 6 AM" / "Grade matched".
+- Registered `/solutions/retailers` in [Nav DARK_HERO_PATHS](site/src/components/site/Nav.tsx#L35) so the logo switches to cream.
+
+### Section 3 — Ink hinge (phrase, not number)
+- Unlike the other solutions pages, the hinge is the phrase **"No minimum order."** not a number. Uses `LetterSpaceReveal` with `startSpacing="0.08em"` → `0em` over 1000ms. Caption fades in via `DelayedFade` 300ms later.
+
+### Section 4 — Four claims bento (SIGNATURE SECTION, `surface-deep`)
+- Same structural layout as Supershops (4-col desktop, 2-col tablet, 1-col mobile; row-1 wide-wide, row-2 1-2-1, row-3 full). Six cards: three illustrated claims, two proof points, one closing statement.
+- Proof card display scale expanded with a third `sm` variant (`clamp(24px, 2.6vw, 36px)`, lineHeight 1.15) for the "Cash on delivery" phrase — longer-than-a-number but shorter-than-a-sentence type.
+- Mono tags (`CLAIM 01/02/03`, `PROOF POINT`) and Section 4 eyebrow `"WHAT FASHOL BRINGS TO A MUDI SHOP"` were rendered initially then pulled per feedback. Removed `tag` field from `ClaimCard` / `ProofCard` types, deleted the `CardTag` component, and tightened reserved top padding.
+- Illustrations: `/re1.png` (claim 1), `/re3.png` (claim 2, swapped after review), `/re2.png` (claim 3, swapped after review).
+
+### Section 5 — Powered by Hyperfarm (not Banijjo)
+- Initially built with Banijjo per brief, corrected to Hyperfarm after user flagged. `h-20 tablet:h-24` logo from `/images/content/hyperfarm-logo.png`. Copy leads with "The buyer procurement desk." followed by the WhatsApp/phone/app ordering workflow. Link to `/products/hyperfarm`.
+
+### Section 7 — How it starts
+- Four step cards framing a WhatsApp-first onboarding: message → next-morning delivery → daily/weekly orders → "your sleep back." CTA: "Message Fashol's mudi shop team" (not "Talk to...") to match the WhatsApp tone.
+
+### Files
+- **New**: [site/src/app/solutions/retailers/page.tsx](site/src/app/solutions/retailers/page.tsx), `site/public/rehero.jpg`, `site/public/re{1,2,3}.png`.
+- **Modified**: [Nav.tsx DARK_HERO_PATHS](site/src/components/site/Nav.tsx#L35).
+
+---
+
+## 2026-04-23 - Supershops solutions page
+
+Shipped `/solutions/supershops` targeting supershop chain procurement teams and CFOs. Margin-protection lead angle with named customer credibility: Shwapno, Meena Bazar, Agora, Daily Shopping.
+
+### Hero
+- Full-bleed `/sshero.jpg` at `h-[90vh] min-h-[600px]`. Built with forest-green gradient overlay first, then iterated: subhead paragraph removed, green overlay stripped, hero text went black → back to cream. Final state: no overlay, cream text, nav logo in cream via [DARK_HERO_PATHS](site/src/components/site/Nav.tsx#L34).
+- Stats: "Shwapno. Meena Bazar. Agora. Daily Shopping." (running on Fashol) / `400+ outlets` (CountUp) / "Daily delivery".
+
+### Section 3 — Ink hinge "Up to 18%"
+- Standard numeric hinge. `CountUp to={18}` over 1000ms, `sessionKey="supershops-hinge-18"`. Caption fades 300ms later.
+
+### Section 4 — Four claims bento (SIGNATURE SECTION, `surface-deep`)
+- First build of the "four-claims bento" pattern that carried over to Retailers. Six-card grid: two 2-col claim cards (01-02), then 1-2-1 (proof · claim 03 · proof), then a 4-col closing row.
+- Inline discriminated union `ClaimCard | ProofCard | ClosingCard` rendered by `BentoCardView`. Stagger fade via `StaggerChildren`/`StaggerItem` at 80ms, y={20}.
+- Proof card `displayScale: "lg" | "md"` (Retailers later added `"sm"` for the phrase case).
+- Claim illustrations: `/claim1.png`, `/claim2.png`, `/claim3.png` at public root. `publicFileExists` (`fs.existsSync`) checks for each asset; dashed cream placeholders render if missing.
+- Clipping fix: "1,000+" display at the original `clamp(56px, 6vw, 88px)` overflowed the 1-col slot. Tightened to `clamp(40px, 4.4vw, 64px)` and matched across both proof cards for visual balance.
+
+### Section 5 — Powered by Hyperfarm
+- `h-20 tablet:h-24` Hyperfarm logo, buyer-procurement-desk framing, link to `/products/hyperfarm`. Section tone iterated paper → surface-deep → paper during feedback.
+
+### Files
+- **New**: [site/src/app/solutions/supershops/page.tsx](site/src/app/solutions/supershops/page.tsx), `site/public/sshero.jpg`, `site/public/claim{1,2,3}.png`.
+- **Modified**: [Nav.tsx DARK_HERO_PATHS](site/src/components/site/Nav.tsx#L34).
+
+---
+
+## 2026-04-23 - Commission agents solutions page + generational dual-bento
+
+Shipped `/solutions/commission-agents` for second-generation arotdars taking over a family wholesale trade. Generational emotional register — respecting what the family built while extending it with Banijjo. Signature section went through the heaviest iteration of any solutions page to date.
+
+### Hero
+- Full-bleed `/cahero.jpg` at `h-[90vh] min-h-[600px]`. Built with forest-green gradient → subhead removed → green overlay stripped → text went black → back to cream → nav logo cream (final). H1 "Commission agents." + stats row + `TalkToSalesButton`. Hero subhead paragraph is intentionally absent; the stat row carries the context.
+- Hero top padding corrected to match Farmers — height bumped from 80vh to 90vh so the H1 sits at the same vertical position relative to the nav.
+
+### Section 4 — Signature section (the long story)
+- **Attempt 1**: `GenerationalSplit` component — two-column list of operational dimensions ("Your father's arot." / "Your arot, on Banijjo."), six paired rows with muted/full opacity. Scroll-driven row reveal, right-column 250ms delay, drawing center line via `scaleY(var(--line-progress))` scroll listener, hover tint, closing line letter-spacing reveal. Five animation layers.
+- **Attempt 2 (current)**: [`GenerationalBento`](site/src/components/site/GenerationalBento.tsx) replaces the split. Dual-bento side-by-side: **Without Fashol** (left, muted) vs **With Fashol** (right, confident). Six dimension cards per side in asymmetric bento layouts (left: wide-2-2-wide, right: 2-wide-2-wide). Closing line "Same arot. Two arots." with letter-spacing ease.
+- Visual contrast pushed hard: Without-Fashol side uses grey-token text colors (ink-muted / ink-soft) on surface-deep card backgrounds, no borders, flat embedded feel. With-Fashol side uses full-opacity deep-green at weight 500 on paper card backgrounds with a soft `0 1px 3px rgba(0,0,0,0.06)` shadow.
+- "WITH FASHOL" text label → Fashol icon (`/fashol-icon-green.png`) after multiple iterations. Icon pulled left with `-ml-2 tablet:-ml-3` + `object-left` to compensate for PNG internal whitespace; padding reduced 50%, icon size +50%.
+- Section tone churned between paper and surface-deep; landed on `surface-deep` with the two halves providing internal visual differentiation.
+- Scroll cascade: single container-level `IntersectionObserver` triggers everything. Delay ladder: `DELAY_LEFT_LABEL=200`, `DELAY_LEFT_CARDS=400`, `DELAY_RIGHT_LABEL=1400`, `DELAY_RIGHT_CARDS=1600`, `DELAY_CLOSING=2600`. 80ms card stagger, 400ms per-card reveal, 800ms letter-spacing on closing.
+
+### Other section iterations
+- Section 5 "Powered by Banijjo" tone cycled paper → surface-deep → paper → surface-deep several times per feedback.
+- Sections 4 and 5 both ended at `surface-deep`; ink pull quote between them breaks up adjacency.
+
+### Files
+- **New**: [site/src/app/solutions/commission-agents/page.tsx](site/src/app/solutions/commission-agents/page.tsx), [site/src/components/site/GenerationalBento.tsx](site/src/components/site/GenerationalBento.tsx), `site/public/cahero.jpg`.
+- **Intermediate (deleted)**: `GenerationalSplit.tsx` (replaced by GenerationalBento after the signature-section direction changed).
+- **Modified**: [Nav.tsx DARK_HERO_PATHS](site/src/components/site/Nav.tsx#L33).
 
 ---
 
