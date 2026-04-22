@@ -1,8 +1,68 @@
 # Fashol — Rebuild Progress
 
-**Last updated:** 2026-04-21
+**Last updated:** 2026-04-22
 **Working directory:** `/Users/ashikpw/Desktop/Ag Doc/fashol website redesign/website V2`
 **Live site:** `http://localhost:3000` (run `cd site && npm run dev`)
+
+---
+
+## 2026-04-22 - Quick commerce solutions page
+
+Shipped `/solutions/quick-commerce`, replacing the `[slug]` "Coming soon." placeholder with a full editorial page. Same structure and design tokens as Wholesalers / Farmers / Restaurants / Exporters, tailored for Foodpanda / Chaldal / Foodie-style dark-store operators. Nine sections with the three-tone rhythm (paper → ink hinge → surface bento → paper → ink pull-quote → surface steps → paper related).
+
+### Hero — photo-driven, ink text over the raw image
+- Full-bleed `/qchero1.jpg` at `h-[90vh] min-h-[600px]` (matches every other solutions hero). Section carries a `backgroundColor: var(--color-deep-green)` fallback so the frame holds while the image decodes.
+- **No gradient overlay** (iterated: forest-green wash → stronger left wash → removed per feedback). The raw photo reads as the hero; legibility comes from text color choice instead.
+- **All hero text is ink-black** rather than cream (one-off for this page — the rider photo has enough light areas on the left that black actually reads better than paper). H1 at `!text-[var(--color-ink)]`, subhead at `rgba(0,0,0,0.8)`, stat values at `ink`, stat labels at `rgba(0,0,0,0.7)`.
+- **Fashol logo stays green** over this hero. `/solutions/quick-commerce` is intentionally **not** in `DARK_HERO_PATHS` in [Nav.tsx:26-31](site/src/components/site/Nav.tsx#L26-L31) (was added, then removed once the overlay was stripped and the text went black).
+- **H1 "Quick commerce."** uses `tablet:whitespace-nowrap` and the content wrap is `max-w-[820px]` (vs. the sibling pages' `max-w-[640px]`) so the two-word title stays on one line at tablet+ — otherwise the centered content block grew too tall and pushed up against the nav. On mobile it wraps naturally.
+- Subhead trimmed to two sentences (45 → 25 words) after a copy pass: "Fill rate that holds, scale for festival surges, and wholesale prices that do not move mid-shift. Fashol keeps Dhaka's dark stores full, every order."
+- Stats row uses text-only pills (no CountUp): "Foodpanda. Chaldal. Foodie." / "Thousands of SKUs" / "Same-day" — each with a secondary caption underneath. `TalkToSalesButton` as the primary CTA.
+
+### Section 2 — Problem (paper, two-col with photo)
+- H2 "Fresh produce is where quick commerce fulfillment breaks." on the left column with `/qc4.jpg` (1200×800) placed under it using the Restaurants photo pattern (`w-full h-auto block`, `sizes="(min-width: 1200px) 520px, 100vw"`, fade-in via `Reveal delay={0.2} y={0}`). The original spec called for no image; flipped during review.
+- Right column: three paragraphs walking the failure mode (2 PM listing → 3 PM doorstep, stockouts, spot-price volatility), ending with "Quick commerce needs a supply partner that treats fresh produce like a warehouse SKU — predictable, priced, delivered."
+
+### Section 3 — Ink hinge "Above 95%"
+- Same hinge shape as the other solutions pages (`tone="ink"`, display numeral + caption). "Above " prefix static, `CountUp to={95}` triggers on viewport enter with `sessionKey="quick-commerce-hinge-95"`, "%" suffix static. Caption fades in via `DelayedFade` 300ms after the number.
+
+### Section 4 — Three-promises bento (SIGNATURE SECTION, `surface-deep`)
+- 4-column desktop grid (`min-[900px]:grid-cols-2 desktop:grid-cols-4 gap-5`) with `[grid-auto-flow:dense]` so narrow cards pack into free cells cleanly at tablet sizes.
+- Five promise/stat cards + a full-width Card 6 closing statement. Cards render on `var(--card-bg)` which on `surface-deep` sections resolves to `--color-card-raised` (#FAF6E4) — visibly lifts off the cream surface.
+- **Card layout** (after the "Promise 01/02/03/Proof Point" mono tags were pulled per feedback): illustration (no maxWidth cap after the last round, so `qc1/qc2/qc3.png` now expand to the full card inner width at `aspectRatio: 4 / 3`), then a shared heading + body below. Heading `clamp(26px, 2.8vw, 38px)` and body `15px` are now **unified across every promise and stat card**; the earlier split (`clamp(40px, 4vw, 56px)` for pure-number stats, `clamp(24px, 2.4vw, 32px)` for phrase stats) was collapsed to one scale per user call. `displaySize` discriminator removed from `PromiseCardData` once it was no longer needed.
+- Card 6: centered closer statement "Treated like a warehouse SKU. Priced like one. Delivered like one." at `clamp(28px, 3.6vw, 52px)`, deep-green, 56px vertical padding. Kept intentionally larger than the five upper cards — it's the section seal, not a peer card.
+- Scroll-in: `StaggerChildren` at `stagger={0.08}`, `y={20}`, default 500ms. Respects `prefers-reduced-motion`.
+
+### Section 5 — Powered by (paper, single Hyperfarm card)
+- Centered card at `max-w-[500px]`. Logo pulled from `/images/content/hyperfarm-logo.png` at native violet (no filter). Copy: "The buyer procurement desk. Quick commerce operators use Hyperfarm to forecast demand, order daily, track fulfillment, and reconcile same-day settlement." Link-arrow to `/products/hyperfarm`.
+
+### Section 6 — Ink pull quote
+- `QuoteReveal` letter-spacing ease-in. Attribution: Nabila Rahman, Category Manager, Fresh Produce, Foodpanda Bangladesh. No silhouette avatar.
+
+### Section 7 — How it starts (`surface-deep`, four step cards)
+- Two-column header + four-step row. "Twenty-four hours from forecast shared to first dark-store delivery." Steps: forecast call → SKU mapping on Hyperfarm → first dark store live the next morning → full-network rollout in the following days. Bottom CTA link-arrow to `/contact`.
+
+### Section 8 — Related (paper, three cards)
+- Restaurants · Supershops · Wholesalers. All land on existing `/solutions/*` routes.
+
+### Assets added
+- `/qchero1.jpg` — hero photo (food delivery rider in Dhaka traffic).
+- `/qc1.png`, `/qc2.png`, `/qc3.png` — isometric illustrations for the three promise cards (dark-store interior, bar-chart surge, pricing dashboard with price tag).
+- `/qc4.jpg` — supporting photo for the problem section (1200×800).
+
+### Iteration log (what moved during the session)
+1. Hero height 80vh → 90vh after the first screenshot showed "Quick" jammed against the nav (centered-content block was too tall for 80vh given the wrapping two-word H1).
+2. H1 `max-w-[640px]` → `max-w-[820px]` + `tablet:whitespace-nowrap` to unwrap "Quick commerce." onto one line at tablet+ and bring the centered vertical position back in line with sibling pages.
+3. Hero subhead shortened from four sentences (45 words) to two (25 words).
+4. Hero gradient iterated forest-green → stronger left wash → **removed**; text went from cream → black.
+5. Fashol nav logo: added path to `DARK_HERO_PATHS` for cream variant, then reverted once the hero went light-ish and black text took over.
+6. Bento "1,000+" at `clamp(..., 88px)` was clipping outside the 1-col card (`~197px` inner vs. `~330px` text width). Clamps tightened first (`56px` / `32px`), then unified across all five cards to one scale.
+7. Illustration maxWidth of 320px was capping `qc1/2/3.png` at a fixed size inside span-2 cards (~520px wide). Removed so images fill the inner card width at 4:3.
+8. Mono tags ("PROMISE 01/02/03", "PROOF POINT") removed from every card; `tag` field dropped from `PromiseCardData` and the reserved top-margin that held space for them (`mt-10 tablet:mt-12`) was stripped.
+
+### Files
+- **New**: [site/src/app/solutions/quick-commerce/page.tsx](site/src/app/solutions/quick-commerce/page.tsx), `site/public/qc{1,2,3}.png`, `site/public/qc4.jpg`, `site/public/qchero1.jpg`.
+- **Untouched**: `Nav.tsx` (add + remove cancelled out), shared components, other solutions pages.
 
 ---
 
