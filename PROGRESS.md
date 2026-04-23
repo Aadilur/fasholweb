@@ -6,6 +6,101 @@
 
 ---
 
+## 2026-04-23 - Agri machinery suppliers solutions page
+
+Shipped `/solutions/agri-machinery-suppliers` for foreign brand distributors, local importers, and regional sales heads of tractors/tillers/pumps/threshers. Dual-path angle: sell outright or finance via Myfarm. The financing side is the actual unlock for Bangladesh farmer demographics where machinery cash-purchase is out of reach.
+
+### Hero
+- Full-bleed `/agmahero.jpg` at `h-[94vh] min-h-[720px]` (20% taller than the standard 78vh/600px after an explicit bump). Built with the forest-green left-to-right gradient overlay per brief, then stripped per feedback — photo renders unmodified.
+- Hero text flipped from cream to ink (black). Nav logo kept green — this path was added to [DARK_HERO_PATHS](site/src/components/site/Nav.tsx) during initial build, then removed after the text-color flip.
+- H1 shrunk 20% to `45/58/70px` (from the standard 56/72/88).
+- Content wrapper changed to `justify-end` globally with `pb-[108px] tablet:pb-[124px] desktop:pb-[140px]` — accumulated +60px vertical shift (20+40) via two successive "push above" iterations.
+- Subhead cut 76% (50 words → 12): "Tractors, tillers, pumps, threshers. Sell them or finance them through Myfarm."
+- Stats use a discriminated `number | text` union — `60,000+` and `50 districts` count up on viewport entry; `Sell or finance` fades in as static text.
+
+### Section 3 — Hinge (ink, phrase-only)
+- `LetterSpaceReveal` 0.08em → 0em over 1200ms on "From a small fraction to the full network." Caption fades 400ms after. No count-up since the figure is phrasal.
+
+### Section 4 — Four claims bento (SIGNATURE SECTION, `surface-deep`)
+- Same six-card pattern as Retailers / Importers. Added optional `cardBg` field to `ClaimCard` so each claim card can match its image's median edge color — needed because supplied illustrations had baked-in cream backgrounds at different tones (no alpha channel).
+- Claim card images iterated heavily: `/claim-{01..03}.png` placeholders → `/agma{1..3}.png` → PIL alpha-channel background-removal (reversed after user flagged quality loss — RGB was intact, reversed via alpha-drop) → `/agma4.png` for Card 1 → `/agma5.png`/`/agma6.png` for Cards 2/4 with per-card `cardBg` (#F8EBDB / #F9EEDE / #F7EAD9 sampled from image edge medians) → finally stripped to text-only for the whole bento.
+- Grid-level `[--card-bg:#F8EBDB]` override covers the proof/closing cards; per-card `cardBg` on claim cards is retained in the data for quick re-enable.
+- Closing card extended with optional `ctaLabel`/`ctaHref` for inline green link ("Talk to Fashol's agri-machinery team" → `/contact`).
+- Proof card scales: Myfarm (`md`), Spare parts (`sm`), 40+ hubs (`lg`).
+
+### Section 5 — Powered by Jogaan + Myfarm (paper, 2-up grid)
+- `myfarm.png` source (1024×1024) had ~80% empty transparent padding (content rows 378-576 only). Cropped in-place to 912×221 via PIL to the content bbox plus 6% margin — logo matches Jogaan's ~4:1 aspect naturally.
+- Logos use `logoHeightClass?: string` override on `ProductCard`. Jogaan default `h-10 tablet:h-12`; Myfarm currently at `h-[120px] tablet:h-[144px]` (3×) per latest iteration.
+- Cards stretch to equal row height via `h-full`; CTA anchored bottom via `mt-auto pt-6` so CTAs align across cards.
+
+### Section 6 — Editorial statement (ink, no attribution)
+- Replaces the pull-quote pattern. `LetterSpaceReveal as="p"` — full-opacity cream, 0.08em → 0em over 800ms. Max-width 900px, `clamp(22px, 3vw, 44px)`, line-height 1.4.
+- Copy cut 71% (59 words → 17): "Not limited by what farmers want. Limited by what they can pay. Fashol and Myfarm close the gap."
+
+### Files
+- **New**: [site/src/app/solutions/agri-machinery-suppliers/page.tsx](site/src/app/solutions/agri-machinery-suppliers/page.tsx), `site/public/agmahero.jpg`, `site/public/agma{1..6}.png`.
+- **Modified**: `site/public/myfarm.png` (cropped 1024×1024 → 912×221), [Nav.tsx DARK_HERO_PATHS](site/src/components/site/Nav.tsx) (added then removed).
+
+---
+
+## 2026-04-23 - Agri input suppliers solutions page
+
+Shipped `/solutions/agri-input-suppliers` for seed/fertilizer/pesticide/feed suppliers. The angle is direct farmer reach via Jogaan's 60,000-farmer network, bypassing the dealer chain.
+
+### Hero
+- Full-bleed `/aginhero.jpg` at `h-[78vh] min-h-[600px]`. Forest-green gradient overlay included initially per brief, later removed per feedback. Nav logo in cream via [DARK_HERO_PATHS](site/src/components/site/Nav.tsx).
+- Subhead cut 71% (49 words → 14): "Seeds, pesticides, fertilizers, feed, straight to the farmer. No dealer layers, no margin lost."
+- Stat row introduces a mixed pattern: `60,000+` (CountUp comma + "+"), `50 districts` (CountUp 50 + static " districts" tail), `40+ hubs` (CountUp 40 + "+" suffix + " hubs" tail). The tail-text pattern solves "count up only the number, keep the unit label static."
+
+### Section 3 — Hinge (ink, count-up inside letter-spacing)
+- "**60,000** farmers, one platform." — `CountUp` (0 → 60,000 over 1200ms) nested inside `LetterSpaceReveal` (0.06em → 0em over 1000ms). Same dual-animation pattern as the Exporters hinge. Caption fades 300ms later.
+
+### Section 4 — Four claims bento (SIGNATURE SECTION, `surface-deep`)
+- Standard six-card bento. Mono tags ("CLAIM 01/02/03", "PROOF POINT") and section eyebrow rendered initially then removed per feedback (same cleanup pattern as Retailers). `tag` field removed from `ClaimCard`/`ProofCard`.
+- Claim illustrations: `/agin1.png`, `/agin2.png`, `/agin3.png`. Proofs: "40+" (lg), "Myfarm" (md). Closing: "The dealer was the best option. There is a better one now."
+
+### Section 5 — Powered by Jogaan (paper, single centered card)
+- Unlike Importers (2-up Banijjo + Hyperfarm), this page centers a single Jogaan card at max-width 500px.
+- Logo started at `h-20 tablet:h-24` — cut in half per feedback to `h-10 tablet:h-12`.
+- Render-quality fix: declared `width={1000} height={248}` (real source dims — was `1024×1024` with square aspect forced, which made Next/Image pick an undersized variant), `sizes="256px"` (was "60px" — too small for the retina-doubled render width), `quality={95}`. These three together resolved the blurry appearance.
+
+### Section 6 — Pull quote (ink)
+- Standard `QuoteReveal` letter-spacing ease-in. Rezaul Karim, Head of Distribution, fertilizer manufacturer, Dhaka.
+
+### Files
+- **New**: [site/src/app/solutions/agri-input-suppliers/page.tsx](site/src/app/solutions/agri-input-suppliers/page.tsx), `site/public/aginhero.jpg`, `site/public/agin{1,2,3}.png`.
+- **Modified**: [Nav.tsx DARK_HERO_PATHS](site/src/components/site/Nav.tsx).
+
+---
+
+## 2026-04-23 - Importers solutions page
+
+Shipped `/solutions/importers` for produce importers bringing foreign product into Bangladesh (fruits, onions, dates, spices). Angle: distribution-side — "the import side is yours, the distribution side is ours" — Fashol absorbs landed container volume into the downstream buyer network within one delivery cycle.
+
+### Hero
+- Full-bleed `/imhero.jpg` at `h-[78vh] min-h-[600px]`. Forest-green overlay added initially then removed per feedback. Nav logo in cream via [DARK_HERO_PATHS](site/src/components/site/Nav.tsx).
+- Three hero stats all numeric: `7,000+`, `400+`, `400+` — per spec (mudi shops / restaurants / supershop outlets).
+- Subhead cut 52% (46 words → 22) in one follow-up: "The import side is yours. The distribution side is ours. Once produce lands in Bangladesh, Fashol moves it through the country's largest downstream network."
+
+### Section 3 — Hinge (ink, phrase with letter-spacing)
+- "One container. One delivery cycle." — `LetterSpaceReveal` 0.08em → 0em over 1000ms. Caption via `DelayedFade` 300ms later. No count-up.
+
+### Section 4 — Four claims bento (SIGNATURE SECTION, `surface-deep`)
+- Standard six-card bento. Mono tags ("CLAIM 01/02/03", "PROOF POINT") and "WHAT FASHOL TAKES OFF AN IMPORTER'S PLATE" eyebrow rendered then removed per the same feedback pattern. `tag` field removed from both card types.
+- Claim illustrations: `/im1.png`, `/im2.png`, `/im3.png`. Proofs: "Full container" (sm — phrase-length), "Same-day" (md). Closing: "Your volume lands once. It moves everywhere."
+
+### Section 5 — Powered by Banijjo + Hyperfarm (paper, 2-up grid)
+- First two-product "Powered by" section in a solutions page. Importers use Banijjo for wholesale trade settlement and Hyperfarm for demand visibility. Logos render in native brand colors (Banijjo orange, Hyperfarm violet), no `mix-blend-multiply`.
+
+### Section 6 — Pull quote (ink)
+- `QuoteReveal` letter-spacing ease-in. Farhan Chowdhury, Director, fresh produce import, Chittagong.
+
+### Files
+- **New**: [site/src/app/solutions/importers/page.tsx](site/src/app/solutions/importers/page.tsx), `site/public/imhero.jpg`, `site/public/im{1,2,3}.png`.
+- **Modified**: [Nav.tsx DARK_HERO_PATHS](site/src/components/site/Nav.tsx).
+
+---
+
 ## 2026-04-23 - Retailers solutions page
 
 Shipped `/solutions/retailers` for single-location mudi shop owners. Same 9-section skeleton as Supershops, tuned for the "skip the 4 AM market run" emotional angle rather than margin or scale.
