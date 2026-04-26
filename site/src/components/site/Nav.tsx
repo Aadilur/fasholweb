@@ -33,6 +33,8 @@ const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
   "/solutions/retailers",
   "/solutions/importers",
   "/solutions/agri-input-suppliers",
+  "/solutions/cold-storage-operators",
+  "/solutions/logistics-partners",
 ]);
 
 export function Nav() {
