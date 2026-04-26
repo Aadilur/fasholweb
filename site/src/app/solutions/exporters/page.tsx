@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { TalkToSalesButton } from "@/components/site/TalkToSalesButton";
-import { Section } from "@/components/ui/Section";
+import { Section, toneClass } from "@/components/ui/Section";
 import {
   Reveal,
   StaggerChildren,
@@ -233,57 +233,47 @@ export default function ExportersPage() {
         </div>
       </Section>
 
-      {/* Section 3 - Hinge (sage tone with dotted texture) */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#D4DDC5",
-          backgroundImage:
-            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center">
-            <LetterSpaceReveal
-              as="div"
-              startSpacing="0.06em"
-              duration={1}
-              className="whitespace-nowrap leading-[0.95] !text-[var(--color-deep-green)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 500,
-              }}
-            >
-              Up to{" "}
-              <CountUp
-                to={30}
-                duration={1000}
-                trigger="inview"
-                inviewMargin="0px 0px -30% 0px"
-                sessionKey="exporters-hinge-30"
-              />
-              %
-            </LetterSpaceReveal>
-            <DelayedFade
-              as="p"
-              delay={0.3}
-              duration={0.5}
-              className="t-body-lg mt-6 tablet:mt-8 max-w-[680px] mx-auto"
-              viewportMargin="0px 0px -30% 0px"
-            >
-              <span style={{ color: "rgba(6, 94, 58, 0.75)" }}>
-                The share of fresh produce lost globally during packaging and post-harvest
-                handling. Fashol engineers packaging per product, per destination, per volume, and
-                brings that loss down to single digits.
-              </span>
-            </DelayedFade>
-          </div>
+      {/* Section 3 - Hinge (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center">
+          <LetterSpaceReveal
+            as="div"
+            startSpacing="0.06em"
+            duration={1}
+            className="whitespace-nowrap leading-[0.95] !text-[var(--color-paper)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 500,
+            }}
+          >
+            Up to{" "}
+            <CountUp
+              to={30}
+              duration={1000}
+              trigger="inview"
+              inviewMargin="0px 0px -30% 0px"
+              sessionKey="exporters-hinge-30"
+            />
+            %
+          </LetterSpaceReveal>
+          <DelayedFade
+            as="p"
+            delay={0.3}
+            duration={0.5}
+            className="t-body-lg mt-6 tablet:mt-8 max-w-[680px] mx-auto"
+            viewportMargin="0px 0px -30% 0px"
+          >
+            <span style={{ color: "rgba(255, 251, 234, 0.75)" }}>
+              The share of fresh produce lost globally during packaging and post-harvest
+              handling. Fashol engineers packaging per product, per destination, per volume, and
+              brings that loss down to single digits.
+            </span>
+          </DelayedFade>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 4 - The Journey (horizontal filmstrip) */}
-      <section className="bg-[var(--color-paper)]">
+      {/* Section 4 - The Journey (surface tone per rotation). */}
+      <section className={toneClass["surface-deep"]}>
         <div className="container-page pt-20 tablet:pt-28 desktop:pt-32 pb-10 tablet:pb-12">
           <Reveal
             as="span"
@@ -304,11 +294,11 @@ export default function ExportersPage() {
             </Reveal>
           </div>
         </div>
-        <JourneyStickyScroll />
+        <JourneyStickyScroll tone="surface-deep" />
       </section>
 
-      {/* Section 5 - The four reasons */}
-      <Section tone="surface">
+      {/* Section 5 - The four reasons (paper tone per rotation). */}
+      <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -347,8 +337,8 @@ export default function ExportersPage() {
         </StaggerChildren>
       </Section>
 
-      {/* Section 6 - Powered by (single centered Hyperfarm card) */}
-      <Section tone="paper">
+      {/* Section 6 - Powered by (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -382,45 +372,35 @@ export default function ExportersPage() {
         </div>
       </Section>
 
-      {/* Section 7 - Pull quote (sage + dotted) */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#D4DDC5",
-          backgroundImage:
-            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center max-w-[820px]">
-            <QuoteReveal
-              className="!text-[var(--color-deep-green)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
-            >
-              &ldquo;We used to work with three separate exporters out of Bangladesh and still spent
-              most of our quality team&apos;s time chasing paperwork. With Fashol, the documentation
-              is on the portal before the shipment leaves Chittagong. Our compliance team stopped
-              flagging Bangladesh origin last quarter. That tells me everything.&rdquo;
-            </QuoteReveal>
-            <Reveal delay={0.16}>
-              <figcaption className="mt-8 flex flex-col items-center">
-                <span
-                  className="text-[14px]"
-                  style={{ fontWeight: 500, color: "var(--color-deep-green)" }}
-                >
-                  Rashid Mohammed
-                </span>
-                <span className="text-[12px] mt-1" style={{ color: "rgba(6,94,58,0.65)" }}>
-                  Director of Procurement, regional wholesale group, Dubai
-                </span>
-              </figcaption>
-            </Reveal>
-          </div>
+      {/* Section 7 - Pull quote (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center max-w-[820px]">
+          <QuoteReveal
+            className="!text-[var(--color-paper)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+          >
+            &ldquo;We used to work with three separate exporters out of Bangladesh and still spent
+            most of our quality team&apos;s time chasing paperwork. With Fashol, the documentation
+            is on the portal before the shipment leaves Chittagong. Our compliance team stopped
+            flagging Bangladesh origin last quarter. That tells me everything.&rdquo;
+          </QuoteReveal>
+          <Reveal delay={0.16}>
+            <figcaption className="mt-8 flex flex-col items-center">
+              <span
+                className="text-[14px]"
+                style={{ fontWeight: 500, color: "var(--color-paper)" }}
+              >
+                Rashid Mohammed
+              </span>
+              <span className="text-[12px] mt-1" style={{ color: "rgba(255,251,234,0.65)" }}>
+                Director of Procurement, regional wholesale group, Dubai
+              </span>
+            </figcaption>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 9 - Other roles on the chain */}
+      {/* Section 8 - Other roles on the chain */}
       <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">

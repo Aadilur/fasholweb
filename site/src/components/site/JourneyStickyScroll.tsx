@@ -114,7 +114,26 @@ const CREAM_75 = "rgba(255, 251, 234, 0.75)";
 const CREAM_25 = "rgba(255, 251, 234, 0.25)";
 const BLACK_25 = "rgba(0, 0, 0, 0.25)";
 
-function PhaseHeader({ phase, reduce }: { phase: Phase; reduce: boolean }) {
+type JourneyTone = "paper" | "surface" | "surface-deep" | "ink";
+
+const TONE_BG: Record<JourneyTone, string> = {
+  paper: "var(--color-paper)",
+  surface: "var(--color-surface)",
+  "surface-deep": "var(--color-surface-deep)",
+  ink: "var(--color-ink)",
+};
+
+const DARK_TONES: ReadonlySet<JourneyTone> = new Set(["ink"]);
+
+function PhaseHeader({
+  phase,
+  reduce,
+  tone,
+}: {
+  phase: Phase;
+  reduce: boolean;
+  tone: JourneyTone;
+}) {
   const initial = reduce ? false : { opacity: 0, y: 20 };
   const whileInView = reduce ? undefined : { opacity: 1, y: 0 };
   return (
@@ -131,7 +150,9 @@ function PhaseHeader({ phase, reduce }: { phase: Phase; reduce: boolean }) {
           lineHeight: 1.05,
           letterSpacing: "-0.03em",
           fontWeight: 500,
-          color: "var(--color-deep-green)",
+          color: DARK_TONES.has(tone)
+            ? "var(--color-paper)"
+            : "var(--color-deep-green)",
         }}
       >
         {phase.title}
@@ -151,7 +172,7 @@ function StopCard({ stop, reduce }: { stop: Stop; reduce: boolean }) {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
       className="relative overflow-hidden rounded-[12px] grid grid-cols-[110px_1fr] desktop:grid-cols-[220px_1fr] gap-6 desktop:gap-10 px-6 py-5 desktop:px-10 desktop:py-6 h-[200px] desktop:h-[220px]"
       style={{
-        background: "var(--color-surface)",
+        background: "var(--card-bg, var(--color-paper))",
       }}
     >
       <div
@@ -280,7 +301,11 @@ function LeftPanel({ currentPhase }: { currentPhase: number }) {
   );
 }
 
-export function JourneyStickyScroll() {
+export function JourneyStickyScroll({
+  tone = "paper",
+}: {
+  tone?: JourneyTone;
+} = {}) {
   const reduce = useReducedMotion() ?? false;
   const [currentPhase, setCurrentPhase] = useState(0);
   const phaseRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -320,7 +345,8 @@ export function JourneyStickyScroll() {
   return (
     <section
       aria-label="Export journey stops"
-      className="relative bg-[var(--color-paper)]"
+      className="relative"
+      style={{ background: TONE_BG[tone] }}
     >
       <div className="flex flex-col desktop:flex-row desktop:gap-4 desktop:px-8 desktop:py-8">
         {/* Left: sticky photo panel on desktop, static image block on mobile */}
@@ -344,7 +370,7 @@ export function JourneyStickyScroll() {
               className={pi > 0 ? "mt-16" : ""}
             >
               <div className="mb-12">
-                <PhaseHeader phase={phase} reduce={reduce} />
+                <PhaseHeader phase={phase} reduce={reduce} tone={tone} />
               </div>
               <div className="flex flex-col gap-5">
                 {phase.stops.map((stop) => (

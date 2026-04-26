@@ -21,6 +21,10 @@
   --color-orange: #FF6740;               /* Orange — warmth */
   --color-sky: #13C171;                  /* keep alias pointing to emerald (no blue in brand) */
 
+  /* product accents — scoped to single product pages, never used elsewhere */
+  --color-jogaan: #C13C73;               /* Jogaan muted magenta-pink */
+  --color-jogaan-pressed: #A8305F;
+
   /* neutrals */
   --color-ink: #000000;                  /* Deep Black — anchor */
   --color-ink-subtle: #0F1A12;           /* near-black with slight green bias for body */
@@ -28,6 +32,8 @@
   --color-ink-soft: #7A8A80;
   --color-paper: #FFFBEA;                /* Creamy White — balance */
   --color-surface: #F4EFD8;              /* darker creamy surface */
+  --color-surface-deep: #ECE4C7;         /* deeper cream, scoped to solutions pages rhythm */
+  --color-card-raised: #FAF6E4;          /* mid cream for cards on surface-deep sections */
   --color-line: rgba(6, 94, 58, 0.10);
   --color-line-strong: rgba(6, 94, 58, 0.18);
 
@@ -65,11 +71,15 @@
   --color-ink-soft: var(--color-ink-soft);
   --color-paper: var(--color-paper);
   --color-surface: var(--color-surface);
+  --color-surface-deep: var(--color-surface-deep);
+  --color-card-raised: var(--color-card-raised);
   --color-line: var(--color-line);
   --color-line-strong: var(--color-line-strong);
   --color-terracotta: var(--color-terracotta);
   --color-clay: var(--color-clay);
   --color-grain: var(--color-grain);
+  --color-jogaan: var(--color-jogaan);
+  --color-jogaan-pressed: var(--color-jogaan-pressed);
 
   --font-display: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, monospace;

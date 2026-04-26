@@ -299,52 +299,42 @@ export default function RestaurantsPage() {
         </div>
       </Section>
 
-      {/* Section 3 - Hinge (sage tone with dotted texture) */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#D4DDC5",
-          backgroundImage:
-            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center">
-            <Reveal>
-              <div
-                className="whitespace-nowrap leading-[0.95] !text-[var(--color-deep-green)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                <CountUp
-                  to={8}
-                  duration={1500}
-                  trigger="inview"
-                  inviewMargin="0px 0px -30% 0px"
-                  sessionKey="restaurants-hinge-8"
-                />{" "}
-                days a week
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p
-                className="t-body-lg mt-6 tablet:mt-8 max-w-[600px] mx-auto"
-                style={{ color: "rgba(6, 94, 58, 0.75)" }}
-              >
-                A procurement team spends roughly one full workday per week on the wholesale market
-                run. Fashol gives that day back.
-              </p>
-            </Reveal>
-          </div>
+      {/* Section 3 - Hinge (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center">
+          <Reveal>
+            <div
+              className="whitespace-nowrap leading-[0.95] !text-[var(--color-paper)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 500,
+                letterSpacing: "-0.03em",
+              }}
+            >
+              <CountUp
+                to={8}
+                duration={1500}
+                trigger="inview"
+                inviewMargin="0px 0px -30% 0px"
+                sessionKey="restaurants-hinge-8"
+              />{" "}
+              days a week
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p
+              className="t-body-lg mt-6 tablet:mt-8 max-w-[600px] mx-auto"
+              style={{ color: "rgba(255, 251, 234, 0.75)" }}
+            >
+              A procurement team spends roughly one full workday per week on the wholesale market
+              run. Fashol gives that day back.
+            </p>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 4 - What Fashol does for restaurants */}
-      <Section tone="surface">
+      {/* Section 4 - What Fashol does for restaurants (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -366,7 +356,7 @@ export default function RestaurantsPage() {
         >
           {BENEFITS.map((b) => (
             <StaggerItem key={b.n} className="h-full" y={16}>
-              <article className="h-full flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8">
+              <article className="h-full flex flex-col bg-[var(--card-bg)] text-[var(--color-ink)] rounded-[4px] p-8">
                 <div
                   aria-hidden
                   className="w-[120px] h-[120px] bg-[var(--color-grain)]"
@@ -419,48 +409,38 @@ export default function RestaurantsPage() {
         </div>
       </Section>
 
-      {/* Section 6 - In their words - orange dotted hinge, no avatar */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#FFE0C4",
-          backgroundImage:
-            "radial-gradient(circle, #FFAF85 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center max-w-[640px]">
-            <Reveal>
-              <blockquote
-                className="!text-[var(--color-ink)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+      {/* Section 6 - In their words (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center max-w-[640px]">
+          <Reveal>
+            <blockquote
+              className="!text-[var(--color-paper)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+            >
+              &ldquo;We used to send two runners to Karwan Bazar every morning at 4 AM. We stopped
+              the morning run six months ago. Now I check one dashboard before bed and the produce
+              is at the kitchen by 7 AM. My head chef does not even come in for receiving
+              anymore.&rdquo;
+            </blockquote>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <figcaption className="mt-6 flex flex-col items-center">
+              <span
+                className="text-[14px] !text-[var(--color-paper)]"
+                style={{ fontWeight: 500 }}
               >
-                &ldquo;We used to send two runners to Karwan Bazar every morning at 4 AM. We stopped
-                the morning run six months ago. Now I check one dashboard before bed and the produce
-                is at the kitchen by 7 AM. My head chef does not even come in for receiving
-                anymore.&rdquo;
-              </blockquote>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <figcaption className="mt-6 flex flex-col items-center">
-                <span
-                  className="text-[14px] !text-[var(--color-ink)]"
-                  style={{ fontWeight: 500 }}
-                >
-                  Tanvir Ahmed
-                </span>
-                <span className="text-[12px] !text-[rgba(19,19,19,0.6)] mt-1">
-                  Chef-Owner, six-branch restaurant group, Dhaka
-                </span>
-              </figcaption>
-            </Reveal>
-          </div>
+                Tanvir Ahmed
+              </span>
+              <span className="text-[12px] !text-[rgba(255,251,234,0.6)] mt-1">
+                Chef-Owner, six-branch restaurant group, Dhaka
+              </span>
+            </figcaption>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 7 - How it starts */}
-      <Section tone="surface">
+      {/* Section 7 - How it starts (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -480,7 +460,7 @@ export default function RestaurantsPage() {
         <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-4 gap-6">
           {STEPS.map((s) => (
             <Reveal key={s.n} className="h-full">
-              <article className="h-full flex flex-col bg-[var(--color-paper)] rounded-[4px] p-6 tablet:p-8">
+              <article className="h-full flex flex-col bg-[var(--card-bg)] rounded-[4px] p-6 tablet:p-8">
                 <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)]">
                   {s.n}
                 </span>

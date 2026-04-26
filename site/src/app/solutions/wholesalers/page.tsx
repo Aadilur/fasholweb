@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { TalkToSalesButton } from "@/components/site/TalkToSalesButton";
-import { ComparisonPair } from "@/components/site/ComparisonPair";
+import { ComparisonBento } from "@/components/site/ComparisonBento";
 import { Section } from "@/components/ui/Section";
 import {
   Reveal,
-  StaggerChildren,
-  StaggerItem,
   QuoteReveal,
   DelayedFade,
 } from "@/components/ui/Reveal";
@@ -45,100 +43,6 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
   },
   { kind: "text", text: "Same day", l: "Settlement on delivered volume" },
   { kind: "text", text: "50 districts", l: "Origin reach across Bangladesh" },
-];
-
-type ComparisonPairData = {
-  oldAnchor: string;
-  oldBody: string;
-  fasholAnchor: string;
-  fasholAnchorIsNumeric: boolean;
-  fasholBody: string;
-};
-
-const COMPARISON_PAIRS: ReadonlyArray<ComparisonPairData> = [
-  {
-    oldAnchor: "50+ SUPPLIERS",
-    oldBody: "Sourcing from 50+ aratdars and farmers personally.",
-    fasholAnchor: "ONE",
-    fasholAnchorIsNumeric: false,
-    fasholBody: "counterparty for sourcing, settlement, and grading.",
-  },
-  {
-    oldAnchor: "30-60% DROP",
-    oldBody: "Supply drops 30 to 60 percent in bad weather weeks.",
-    fasholAnchor: "50",
-    fasholAnchorIsNumeric: true,
-    fasholBody: "districts of network redundancy keep supply steady across Bangladesh.",
-  },
-  {
-    oldAnchor: "FRESH HAGGLE",
-    oldBody: "Price negotiated fresh every morning, from zero.",
-    fasholAnchor: "200+",
-    fasholAnchorIsNumeric: true,
-    fasholBody: "wholesale markets benchmarked for live, published daily pricing.",
-  },
-  {
-    oldAnchor: "A GUESS",
-    oldBody: "Quality is a guess until the crates are opened.",
-    fasholAnchor: "FOUR-TIER",
-    fasholAnchorIsNumeric: false,
-    fasholBody: "grading applied at Fashol hubs before dispatch.",
-  },
-  {
-    oldAnchor: "WORKING CAPITAL CAP",
-    oldBody: "Credit to downstream buyers is capped by personal working capital.",
-    fasholAnchor: "EXTENDED",
-    fasholAnchorIsNumeric: false,
-    fasholBody: "credit capacity via Banijjo same-day settlement and Myfarm underwriting.",
-  },
-  {
-    oldAnchor: "PERSONAL CAP",
-    oldBody: "Volume capped at the trader's personal bandwidth.",
-    fasholAnchor: "NETWORK",
-    fasholAnchorIsNumeric: false,
-    fasholBody: "capacity scales with Fashol's hub and cold-chain infrastructure.",
-  },
-  {
-    oldAnchor: "DOWNSTREAM",
-    oldBody: "Quality disputes happen downstream, at the stall.",
-    fasholAnchor: "AT THE HUB",
-    fasholAnchorIsNumeric: false,
-    fasholBody: "disputes resolved before dispatch, not after delivery.",
-  },
-  {
-    oldAnchor: "T+7 TO T+14",
-    oldBody: "Settlement takes 7 to 14 days after delivery.",
-    fasholAnchor: "SAME-DAY",
-    fasholAnchorIsNumeric: false,
-    fasholBody: "settlement on delivered volume, every delivery, end of day.",
-  },
-];
-
-const LEVERS: ReadonlyArray<{
-  n: string;
-  headline: string;
-  body: string;
-}> = [
-  {
-    n: "01",
-    headline: "Sourcing at network scale.",
-    body: "Fashol's 60,000 farmer network across 50 districts replaces a personal supplier rolodex. Weather failure in one district is covered by another. Crop failures in one season are redistributed across crop cycles. Sourcing becomes statistical, not relational.",
-  },
-  {
-    n: "02",
-    headline: "Daily price discovery, published.",
-    body: "Live prices from 200-plus wholesale markets, benchmarked and published daily on the Banijjo platform. Traders stop negotiating price from zero every morning. They trade on top of a published reference.",
-  },
-  {
-    n: "03",
-    headline: "Grading at the hub, disputes gone.",
-    body: "Four-tier grading is applied at Fashol's hubs before produce ever reaches the wholesaler's stall. Grade A leaves as Grade A. Quality disputes at the downstream stall drop to near zero because the sorting already happened.",
-  },
-  {
-    n: "04",
-    headline: "Credit capacity, extended.",
-    body: "Banijjo settles same-day on delivered volume. Myfarm (launching 2026) underwrites working capital against the trader's own Banijjo settlement history. The trader can offer downstream credit without tying up personal cash.",
-  },
 ];
 
 const STEPS: ReadonlyArray<{
@@ -330,56 +234,46 @@ export default function WholesalersPage() {
         </div>
       </Section>
 
-      {/* Section 3 - Hinge (sage + dotted texture) */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#D4DDC5",
-          backgroundImage:
-            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center">
-            <Reveal>
-              <div
-                className="whitespace-nowrap leading-[0.95] !text-[var(--color-deep-green)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                Up to{" "}
-                <CountUp
-                  to={3}
-                  duration={1000}
-                  trigger="inview"
-                  sessionKey="wholesalers-hinge-3x"
-                />
-                x
-              </div>
-            </Reveal>
-            <DelayedFade
-              as="p"
-              delay={0.3}
-              duration={0.5}
-              className="t-body-lg mt-6 tablet:mt-8 max-w-[720px] mx-auto"
-              viewportMargin="0px 0px -30% 0px"
+      {/* Section 3 - Hinge (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center">
+          <Reveal>
+            <div
+              className="whitespace-nowrap leading-[0.95] !text-[var(--color-paper)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 500,
+                letterSpacing: "-0.03em",
+              }}
             >
-              <span style={{ color: "rgba(6, 94, 58, 0.75)" }}>
-                The volume a wholesale trader typically moves after plugging into Fashol&apos;s
-                sourcing and settlement stack. Same trader, same relationships, same market stall
-                - now with a supply chain that does not cap at the trader&apos;s personal capacity.
-              </span>
-            </DelayedFade>
-          </div>
+              Up to{" "}
+              <CountUp
+                to={3}
+                duration={1000}
+                trigger="inview"
+                sessionKey="wholesalers-hinge-3x"
+              />
+              x
+            </div>
+          </Reveal>
+          <DelayedFade
+            as="p"
+            delay={0.3}
+            duration={0.5}
+            className="t-body-lg mt-6 tablet:mt-8 max-w-[720px] mx-auto"
+            viewportMargin="0px 0px -30% 0px"
+          >
+            <span style={{ color: "rgba(255, 251, 234, 0.75)" }}>
+              The volume a wholesale trader typically moves after plugging into Fashol&apos;s
+              sourcing and settlement stack. Same trader, same relationships, same market stall
+              - now with a supply chain that does not cap at the trader&apos;s personal capacity.
+            </span>
+          </DelayedFade>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 4 - The Comparison (ComparisonLedger) */}
-      <Section tone="paper">
+      {/* Section 4 - Before/after bento comparison (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal
@@ -400,22 +294,12 @@ export default function WholesalersPage() {
           </Reveal>
         </div>
 
-        {/* Transformation pairs — 8 asymmetric rows with display anchors, zigzag orientation. */}
-        <div className="mt-12 tablet:mt-16" role="list">
-          {COMPARISON_PAIRS.map((pair, idx) => (
-            <ComparisonPair
-              key={pair.fasholAnchor + idx}
-              index={idx + 1}
-              oldAnchor={pair.oldAnchor}
-              oldBody={pair.oldBody}
-              fasholAnchor={pair.fasholAnchor}
-              fasholAnchorIsNumeric={pair.fasholAnchorIsNumeric}
-              fasholBody={pair.fasholBody}
-            />
-          ))}
+        {/* 8-card bento grid. */}
+        <div className="mt-12 tablet:mt-16">
+          <ComparisonBento />
         </div>
 
-        {/* Closing line */}
+        {/* Closing line. */}
         <div className="mt-16 tablet:mt-20 text-center">
           <Reveal>
             <p
@@ -433,46 +317,7 @@ export default function WholesalersPage() {
         </div>
       </Section>
 
-      {/* Section 5 - Four levers of scale (surface, 2x2 grid) */}
-      <Section tone="surface">
-        <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
-          <div className="desktop:col-span-6">
-            <Reveal as="h2" className="t-h2">
-              Four places the ceiling lifts.
-            </Reveal>
-          </div>
-          <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
-            <p>
-              Each of these is independently valuable. Together they move the whole book.
-            </p>
-          </Reveal>
-        </div>
-
-        <StaggerChildren
-          className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6"
-          stagger={0.12}
-        >
-          {LEVERS.map((l) => (
-            <StaggerItem key={l.n} className="h-full" y={16}>
-              <article className="h-full flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8">
-                <div
-                  aria-hidden
-                  className="w-[120px] h-[120px] bg-[var(--color-grain)]"
-                />
-                <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mt-6">
-                  {l.n}
-                </span>
-                <h3 className="t-h5 mt-3" style={{ fontWeight: 500 }}>
-                  {l.headline}
-                </h3>
-                <p className="t-body-sm mt-3">{l.body}</p>
-              </article>
-            </StaggerItem>
-          ))}
-        </StaggerChildren>
-      </Section>
-
-      {/* Section 6 - Powered by (paper, 2-up grid) */}
+      {/* Section 5 - Powered by (paper tone per rotation). */}
       <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
@@ -490,8 +335,8 @@ export default function WholesalersPage() {
                 alt="Banijjo"
                 width={1000}
                 height={248}
-                sizes="400px"
-                className="h-10 tablet:h-12 w-auto object-contain self-start"
+                sizes="(min-width: 810px) 780px, 650px"
+                className="h-40 tablet:h-48 w-auto object-contain self-start"
               />
               <p className="t-body mt-6">
                 The wholesale trade platform. Live pricing from 200-plus markets, same-day
@@ -507,12 +352,12 @@ export default function WholesalersPage() {
           <Reveal className="h-full">
             <article className="h-full flex flex-col">
               <Image
-                src="/hyperfarm%20logo.png"
+                src="/images/content/hyperfarm-logo.png"
                 alt="Hyperfarm"
                 width={1024}
                 height={1024}
                 sizes="120px"
-                className="h-20 tablet:h-24 w-auto object-contain self-start mix-blend-multiply"
+                className="h-20 tablet:h-24 w-auto object-contain self-start"
               />
               <p className="t-body mt-6">
                 The buyer procurement desk. Wholesalers use Hyperfarm to service their downstream
@@ -528,49 +373,39 @@ export default function WholesalersPage() {
         </div>
       </Section>
 
-      {/* Section 7 - Pull quote (sage + dotted texture) */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#D4DDC5",
-          backgroundImage:
-            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center max-w-[820px]">
-            <QuoteReveal
-              className="!text-[var(--color-deep-green)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
-              style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
-            >
-              &ldquo;I was moving around 80 tons a week before Fashol. I knew my ceiling. The
-              relationships I had, the hours I could keep, the credit I could float - it worked
-              out to 80 tons. Today I move above 250 tons a week. Same stall, same market. The
-              difference is I am not sourcing alone anymore.&rdquo;
-            </QuoteReveal>
-            <Reveal delay={0.16}>
-              <figcaption className="mt-8 flex flex-col items-center">
-                <span
-                  className="text-[14px]"
-                  style={{ fontWeight: 500, color: "var(--color-deep-green)" }}
-                >
-                  Abul Kashem
-                </span>
-                <span
-                  className="text-[12px] mt-1"
-                  style={{ color: "rgba(6,94,58,0.65)" }}
-                >
-                  Wholesale trader, Karwan Bazar, Dhaka
-                </span>
-              </figcaption>
-            </Reveal>
-          </div>
+      {/* Section 6 - Pull quote (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center max-w-[820px]">
+          <QuoteReveal
+            className="!text-[var(--color-paper)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
+            style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+          >
+            &ldquo;I was moving around 80 tons a week before Fashol. I knew my ceiling. The
+            relationships I had, the hours I could keep, the credit I could float - it worked
+            out to 80 tons. Today I move above 250 tons a week. Same stall, same market. The
+            difference is I am not sourcing alone anymore.&rdquo;
+          </QuoteReveal>
+          <Reveal delay={0.16}>
+            <figcaption className="mt-8 flex flex-col items-center">
+              <span
+                className="text-[14px]"
+                style={{ fontWeight: 500, color: "var(--color-paper)" }}
+              >
+                Abul Kashem
+              </span>
+              <span
+                className="text-[12px] mt-1"
+                style={{ color: "rgba(255,251,234,0.6)" }}
+              >
+                Wholesale trader, Karwan Bazar, Dhaka
+              </span>
+            </figcaption>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 8 - How it starts (surface, 4 step cards) */}
-      <Section tone="surface">
+      {/* Section 7 - How it starts (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -590,7 +425,7 @@ export default function WholesalersPage() {
         <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-4 gap-6">
           {STEPS.map((s) => (
             <Reveal key={s.n} className="h-full">
-              <article className="h-full flex flex-col bg-[var(--color-paper)] rounded-[4px] p-6 tablet:p-8">
+              <article className="h-full flex flex-col bg-[var(--card-bg)] rounded-[4px] p-6 tablet:p-8">
                 <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)]">
                   {s.n}
                 </span>
@@ -610,7 +445,7 @@ export default function WholesalersPage() {
         </Reveal>
       </Section>
 
-      {/* Section 9 - Other roles on the chain (paper) */}
+      {/* Section 8 - Other roles on the chain (paper) */}
       <Section tone="paper">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">

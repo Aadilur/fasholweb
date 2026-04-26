@@ -256,55 +256,42 @@ export default function FarmersPage() {
         </div>
       </Section>
 
-      {/* Section 3 - Hinge (custom sage tone unique to this section). Dot
-          pattern applied as background-image directly on the section — no
-          separate overlay layers needed. Text shifts to deep forest green
-          for tonal contrast against the sage ground. */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#D4DDC5",
-          backgroundImage:
-            "radial-gradient(circle, #B8C4A5 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center">
-            <Reveal>
-              <div
-                className="whitespace-nowrap leading-[0.95] !text-[var(--color-deep-green)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                Up to{" "}
-                <CountUp
-                  to={20}
-                  duration={1500}
-                  trigger="inview"
-                  inviewMargin="0px 0px -30% 0px"
-                  sessionKey="farmers-hinge-20"
-                />
-                %
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p
-                className="t-body-lg mt-6 tablet:mt-8 max-w-[600px] mx-auto"
-                style={{ color: "rgba(6, 94, 58, 0.75)" }}
-              >
-                Price uplift for a Fashol farmer over what the traditional chain pays.
-              </p>
-            </Reveal>
-          </div>
+      {/* Section 3 - Hinge (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center">
+          <Reveal>
+            <div
+              className="whitespace-nowrap leading-[0.95] !text-[var(--color-paper)] text-[56px] tablet:text-[88px] desktop:text-[120px]"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 500,
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Up to{" "}
+              <CountUp
+                to={20}
+                duration={1500}
+                trigger="inview"
+                inviewMargin="0px 0px -30% 0px"
+                sessionKey="farmers-hinge-20"
+              />
+              %
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p
+              className="t-body-lg mt-6 tablet:mt-8 max-w-[600px] mx-auto"
+              style={{ color: "rgba(255, 251, 234, 0.75)" }}
+            >
+              Price uplift for a Fashol farmer over what the traditional chain pays.
+            </p>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 4 - What Fashol does for farmers */}
-      <Section tone="surface">
+      {/* Section 4 - What Fashol does for farmers (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -325,7 +312,7 @@ export default function FarmersPage() {
         >
           {BENEFITS.map((b) => (
             <StaggerItem key={b.n} className="h-full" y={16}>
-              <article className="h-full flex flex-col bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8">
+              <article className="h-full flex flex-col bg-[var(--card-bg)] text-[var(--color-ink)] rounded-[4px] p-8">
                 <Image
                   src={b.img}
                   alt={b.imgAlt}
@@ -404,61 +391,48 @@ export default function FarmersPage() {
         </div>
       </Section>
 
-      {/* Section 6 - In their words. Mirrors the hinge section treatment
-          (dot-pattern background) but in the brand orange palette so the
-          testimonial reads as a warm counterpoint to the sage statistic
-          section earlier in the page. */}
-      <section
-        className="py-[56px] tablet:py-[72px] desktop:py-[96px]"
-        style={{
-          backgroundColor: "#FFE0C4",
-          backgroundImage:
-            "radial-gradient(circle, #FFAF85 1.5px, transparent 1.5px)",
-          backgroundSize: "9px 9px",
-        }}
-      >
-        <div className="container-page">
-          <div className="mx-auto text-center max-w-[640px]">
-            <Reveal>
-              <div className="mx-auto relative w-[64px] h-[64px] rounded-full overflow-hidden bg-[var(--color-grain)]">
-                <Image
-                  src="/images/voices/voice-01.jpg"
-                  alt="Abdul Karim, farmer in Jessore"
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                />
-              </div>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <blockquote
-                className="mt-6 tablet:mt-8 !text-[var(--color-ink)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
-                style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+      {/* Section 6 - In their words (ink tone per rotation). */}
+      <Section tone="ink">
+        <div className="mx-auto text-center max-w-[640px]">
+          <Reveal>
+            <div className="mx-auto relative w-[64px] h-[64px] rounded-full overflow-hidden bg-[var(--color-grain)]">
+              <Image
+                src="/images/voices/voice-01.jpg"
+                alt="Abdul Karim, farmer in Jessore"
+                fill
+                sizes="64px"
+                className="object-cover"
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <blockquote
+              className="mt-6 tablet:mt-8 !text-[var(--color-paper)] text-[20px] tablet:text-[24px] desktop:text-[28px] leading-[1.45]"
+              style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
+            >
+              &ldquo;Before Fashol, I used to take my cauliflower to the mahajan and accept
+              whatever price he gave that morning. Now I see the price on my phone the night
+              before. If it&apos;s not good, I wait a day.&rdquo;
+            </blockquote>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <figcaption className="mt-6 flex flex-col items-center">
+              <span
+                className="text-[14px] !text-[var(--color-paper)]"
+                style={{ fontWeight: 500 }}
               >
-                &ldquo;Before Fashol, I used to take my cauliflower to the mahajan and accept
-                whatever price he gave that morning. Now I see the price on my phone the night
-                before. If it&apos;s not good, I wait a day.&rdquo;
-              </blockquote>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <figcaption className="mt-6 flex flex-col items-center">
-                <span
-                  className="text-[14px] !text-[var(--color-ink)]"
-                  style={{ fontWeight: 500 }}
-                >
-                  Abdul Karim
-                </span>
-                <span className="text-[12px] !text-[rgba(19,19,19,0.6)] mt-1">
-                  Farmer, Jessore
-                </span>
-              </figcaption>
-            </Reveal>
-          </div>
+                Abdul Karim
+              </span>
+              <span className="text-[12px] !text-[rgba(255,251,234,0.6)] mt-1">
+                Farmer, Jessore
+              </span>
+            </figcaption>
+          </Reveal>
         </div>
-      </section>
+      </Section>
 
-      {/* Section 7 - How it starts */}
-      <Section tone="surface">
+      {/* Section 7 - How it starts (surface tone per rotation). */}
+      <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
@@ -477,7 +451,7 @@ export default function FarmersPage() {
         <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-4 gap-6">
           {STEPS.map((s) => (
             <Reveal key={s.n} className="h-full">
-              <article className="h-full flex flex-col bg-[var(--color-paper)] rounded-[4px] p-6 tablet:p-8">
+              <article className="h-full flex flex-col bg-[var(--card-bg)] rounded-[4px] p-6 tablet:p-8">
                 <span className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)]">
                   {s.n}
                 </span>
