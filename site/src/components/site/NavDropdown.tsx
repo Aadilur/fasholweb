@@ -5,6 +5,18 @@ import Image from "next/image";
 import clsx from "clsx";
 import type { NavItem, NavMenu } from "@/data/nav";
 import { allItems, findMenuItem, PRODUCT_LOGOS } from "@/data/nav";
+import { useLang } from "@/components/site/LanguageProvider";
+import { t } from "@/lib/i18n";
+
+const EYEBROW_BN: Record<string, string> = {
+  Products: "প্রোডাক্ট",
+  Solutions: "সলিউশন",
+  Buyers: "বায়ার",
+  Suppliers: "সাপ্লায়ার",
+  Partners: "পার্টনার",
+  "Urban buyers": "আরবান বায়ার",
+  "Trade buyers": "ট্রেড বায়ার",
+};
 
 type Props = {
   menu: NavMenu;
@@ -27,6 +39,8 @@ export function NavDropdown({
   panelId,
   listRef,
 }: Props) {
+  const lang = useLang();
+  const eb = (en: string) => t(lang, en, EYEBROW_BN[en] ?? en);
   const activeItem = findMenuItem(menu, activeSlug) ?? allItems(menu)[0];
   const isSolutions = menu.id === "solutions";
   const isProducts = menu.id === "products";
@@ -54,7 +68,7 @@ export function NavDropdown({
           {/* Left area - logo tile grid for Products, text columns for Solutions */}
           {isProducts ? (
             <div ref={listRef} className="flex flex-col">
-              <div className="t-eyebrow mb-4">{menu.label}</div>
+              <div className="t-eyebrow mb-4">{eb(menu.label)}</div>
               <div className="grid grid-cols-2 gap-3 w-[554px] max-w-full">
                 {allItems(menu).map((item) => {
                   const logo = PRODUCT_LOGOS[item.slug];
@@ -114,7 +128,7 @@ export function NavDropdown({
                       )}
                     >
                       {group.eyebrow && (
-                        <div className="t-eyebrow mb-4">{group.eyebrow}</div>
+                        <div className="t-eyebrow mb-4">{eb(group.eyebrow)}</div>
                       )}
                       <ul className="flex flex-col">
                         {group.items.map((item) => {
@@ -137,7 +151,7 @@ export function NavDropdown({
                                 )}
                               >
                                 <div className="font-[var(--font-display)] text-[15px] font-medium tracking-tight text-[var(--color-ink)]">
-                                  {item.name}
+                                  {t(lang, item.name, item.nameBn)}
                                 </div>
                               </Link>
                             </li>

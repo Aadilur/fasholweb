@@ -1,3 +1,8 @@
+"use client";
+
+import { t } from "@/lib/i18n";
+import { useLang } from "@/components/site/LanguageProvider";
+
 export const SALES_CALENDLY_URL = "https://calendly.com/sakibhossain";
 export const TALK_TO_SALES_LABEL = "Talk to sales";
 
@@ -6,6 +11,7 @@ type Props = {
 };
 
 export function TalkToSalesButton({ className }: Props) {
+  const lang = useLang();
   return (
     <a
       href={SALES_CALENDLY_URL}
@@ -13,7 +19,7 @@ export function TalkToSalesButton({ className }: Props) {
       rel="noopener noreferrer"
       className={`tts-btn ${className ?? ""}`}
     >
-      {TALK_TO_SALES_LABEL}
+      {t(lang, TALK_TO_SALES_LABEL, "সেলসের সঙ্গে কথা বলুন")}
       <span className="tts-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 0h24v24H0z" fill="none" />

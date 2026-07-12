@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLang } from "@/components/site/LanguageProvider";
+import { t, type Lang } from "@/lib/i18n";
 
 const HYPERFARM_VIOLET = "#7E00FF";
 const HYPERFARM_CREAM = "#F4EFD8";
@@ -13,9 +15,24 @@ const PLAY_STORE_URL =
 const WEB_URL = "https://hyperfarm.global/";
 
 const PLATFORMS = [
-  { label: "App Store", detail: "iPhone, iPad", href: APP_STORE_URL },
-  { label: "Google Play", detail: "Android", href: PLAY_STORE_URL },
-  { label: "hyperfarm.global", detail: "Web browser", href: WEB_URL },
+  {
+    label: "App Store",
+    detail: "iPhone, iPad",
+    detailBn: "iPhone, iPad",
+    href: APP_STORE_URL,
+  },
+  {
+    label: "Google Play",
+    detail: "Android",
+    detailBn: "Android",
+    href: PLAY_STORE_URL,
+  },
+  {
+    label: "hyperfarm.global",
+    detail: "Web browser",
+    detailBn: "ওয়েব ব্রাউজার",
+    href: WEB_URL,
+  },
 ];
 
 type Tone = "violet" | "cream";
@@ -44,6 +61,7 @@ export function TryHyperfarmButton({
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const lang = useLang();
 
   const onClick = useCallback(() => {
     const p = detectPlatform();
@@ -99,19 +117,29 @@ export function TryHyperfarmButton({
           fontWeight: 500,
         }}
       >
-        Try Hyperfarm
+        {t(lang, "Try Hyperfarm", "হাইপারফার্ম ব্যবহার করুন")}
       </button>
 
       <AnimatePresence>
         {open && (
-          <PlatformsModal key="hyperfarm-platforms" onClose={() => setOpen(false)} />
+          <PlatformsModal
+            key="hyperfarm-platforms"
+            lang={lang}
+            onClose={() => setOpen(false)}
+          />
         )}
       </AnimatePresence>
     </>
   );
 }
 
-function PlatformsModal({ onClose }: { onClose: () => void }) {
+function PlatformsModal({
+  lang,
+  onClose,
+}: {
+  lang: Lang;
+  onClose: () => void;
+}) {
   return (
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
@@ -165,13 +193,17 @@ function PlatformsModal({ onClose }: { onClose: () => void }) {
           className="t-h3"
           style={{ fontWeight: 500, color: "var(--color-ink)" }}
         >
-          Try Hyperfarm
+          {t(lang, "Try Hyperfarm", "হাইপারফার্ম ব্যবহার করুন")}
         </h3>
         <p
           className="t-body-sm mt-2"
           style={{ color: "var(--color-ink-muted)" }}
         >
-          Pick your platform. iOS, Android, or web.
+          {t(
+            lang,
+            "Pick your platform. iOS, Android, or web.",
+            "আপনার প্ল্যাটফর্ম বেছে নিন। iOS, Android, নাকি ওয়েব।",
+          )}
         </p>
         <ul className="mt-7 flex flex-col gap-3">
           {PLATFORMS.map((p) => (
@@ -207,7 +239,7 @@ function PlatformsModal({ onClose }: { onClose: () => void }) {
                       fontWeight: 500,
                     }}
                   >
-                    {p.detail}
+                    {t(lang, p.detail, p.detailBn)}
                   </div>
                 </div>
               </a>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
+import { getLang } from "@/lib/i18n.server";
+import { t, type Lang } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Jogaan - The farmer's app for Bangladesh",
@@ -19,7 +21,9 @@ const CTA_BG = "#CC3E67";
 const SECTIONS: ReadonlyArray<{
   id: string;
   headline: string;
+  headlineBn: string;
   body: string;
+  bodyBn: string;
   image: string;
   imageAlt: string;
   imageSide: "left" | "right";
@@ -28,7 +32,9 @@ const SECTIONS: ReadonlyArray<{
   {
     id: "prices",
     headline: "see the whole country.",
-    body: "Live prices from 200+ markets across Bangladesh, refreshed every hour. Tomato selling for more in Sylhet than Dhaka? You'll know before the trader does.",
+    headlineBn: "গোটা দেশ এক নজরে।",
+    body: "Live prices from 200+ markets across Bangladesh, refreshed hourly. When tomato pays more in Sylhet than Dhaka, you'll know first.",
+    bodyBn: "বাংলাদেশের 200+ বাজারের লাইভ দাম, প্রতি ঘণ্টায় আপডেট। ঢাকার চেয়ে সিলেটে টমেটোর দাম বেশি উঠলে খবরটা সবার আগে আপনিই পাবেন।",
     image: "/pj1.png",
     imageAlt:
       "Farmer sitting on a mat with a phone in hand and floating price bubbles around him",
@@ -38,7 +44,9 @@ const SECTIONS: ReadonlyArray<{
   {
     id: "sell",
     headline: "sell tonight. paid tomorrow.",
-    body: "Pick the market that pays best. Confirm the sale on Jogaan. The buyer takes delivery overnight. Your payment lands in your account by morning. No waiting at the arot. No commission agent in the middle.",
+    headlineBn: "আজ রাতে বিক্রি। কাল সকালে টাকা।",
+    body: "Pick the best-paying market and confirm on Jogaan. Delivery is overnight, payment by morning. No arot queue, no commission agent.",
+    bodyBn: "সবচেয়ে ভালো দামের বাজার বেছে যোগানে অর্ডার কনফার্ম করুন। রাতেই ডেলিভারি, সকালেই টাকা হাতে। আড়তের লাইন নেই, কমিশন এজেন্টও নেই।",
     image: "/pj2.png",
     imageAlt:
       "Farmer with a phone showing a confirmation, a truck departing, and a sun-and-moon notification",
@@ -48,7 +56,9 @@ const SECTIONS: ReadonlyArray<{
   {
     id: "truck",
     headline: "the truck comes to you.",
-    body: "Sold to a market 200 kilometers away? Tap once for a truck. Fashol's logistics network picks up at your door and delivers to the buyer. You stay home. The harvest moves.",
+    headlineBn: "ট্রাক আসবে আপনার দুয়ারে।",
+    body: "Sold 200 kilometers away? Tap once for a truck. Fashol's logistics picks up at your door and delivers to the buyer. You stay home.",
+    bodyBn: "200 কিলোমিটার দূরে বিক্রি করেছেন? এক ট্যাপেই ট্রাক বুক করুন। ফসলের লজিস্টিকস আপনার দরজা থেকে প্রোডাক্ট তুলে বায়ারের কাছে ডেলিভারি করে দেয়। আপনি ঘরে বসেই থাকুন।",
     image: "/pj3.png",
     imageAlt:
       "Younger farmer holding a phone with a truck booking, older farmer approving in the background",
@@ -58,7 +68,9 @@ const SECTIONS: ReadonlyArray<{
   {
     id: "inputs",
     headline: "everything the farm needs.",
-    body: "Seeds, fertilizer, pesticide, machinery, spare parts. Jogaan's catalog is the whole supply side, in your hand. Order today, delivered to your nearest Fashol hub.",
+    headlineBn: "খামারের সবকিছু এক জায়গায়।",
+    body: "Seeds, fertilizer, pesticide, machinery, spare parts. The whole supply side in one catalog. Order today, delivered to your nearest Fashol hub.",
+    bodyBn: "বীজ, সার, কীটনাশক, যন্ত্রপাতি, যন্ত্রাংশ - পুরো সাপ্লাই এক ক্যাটালগে। আজ অর্ডার করুন, পৌঁছে যাবে আপনার নিকটতম ফসল হাবে।",
     image: "/pj4.png",
     imageAlt:
       "Woman farmer holding a phone with a catalog of inputs floating around her",
@@ -68,7 +80,9 @@ const SECTIONS: ReadonlyArray<{
   {
     id: "credit",
     headline: "credit when you need it.",
-    body: "Six years of harvest records turn into a credit decision. Apply through Jogaan, get working capital before the planting season, repay after harvest. No middleman lender. No 10% monthly interest.",
+    headlineBn: "প্রয়োজনের সময় ঋণ।",
+    body: "Six years of harvest records become a credit decision. Apply through Jogaan for working capital before planting, repay after harvest. No middleman lender, no 10% monthly interest.",
+    bodyBn: "ছয় বছরের ফসল বিক্রির রেকর্ডই হয়ে ওঠে ঋণের ভিত্তি। চাষের আগে যোগানে আবেদন করে মূলধন নিন, ফসল তুলে শোধ করুন। মাঝের কোনো মহাজন নেই, মাসে 10% সুদও নেই।",
     image: "/pj5.png",
     imageAlt:
       "Farmer with a teaching gesture, ledger and credit approval graphics floating beside him",
@@ -77,7 +91,13 @@ const SECTIONS: ReadonlyArray<{
   },
 ];
 
-function InstallJogaanButton({ inverse = false }: { inverse?: boolean }) {
+function InstallJogaanButton({
+  inverse = false,
+  lang,
+}: {
+  inverse?: boolean;
+  lang: Lang;
+}) {
   const baseStyle: React.CSSProperties = inverse
     ? {
         background: "var(--color-paper)",
@@ -103,7 +123,7 @@ function InstallJogaanButton({ inverse = false }: { inverse?: boolean }) {
         paddingInline: 28,
       }}
     >
-      Install Jogaan
+      {t(lang, "Install Jogaan", "যোগান ইনস্টল করুন")}
     </a>
   );
 }
@@ -128,7 +148,7 @@ function ShieldIcon() {
   );
 }
 
-function ClosingCtaContent() {
+function ClosingCtaContent({ lang }: { lang: Lang }) {
   return (
     <>
       <Reveal>
@@ -142,7 +162,7 @@ function ClosingCtaContent() {
             color: "var(--color-paper)",
           }}
         >
-          Your harvest. Our network.
+          {t(lang, "Your harvest. Our network.", "আপনার ফসল। আমাদের নেটওয়ার্ক।")}
         </h2>
       </Reveal>
       <Reveal delay={0.08}>
@@ -155,11 +175,11 @@ function ClosingCtaContent() {
             color: "rgba(255,251,234,0.85)",
           }}
         >
-          Built with farmers. For farmers.
+          {t(lang, "Built with farmers. For farmers.", "কৃষকের সাথে গড়া। কৃষকের জন্য।")}
         </p>
       </Reveal>
       <Reveal delay={0.16} className="mt-7">
-        <InstallJogaanButton inverse />
+        <InstallJogaanButton inverse lang={lang} />
       </Reveal>
     </>
   );
@@ -182,7 +202,8 @@ function SectionHeadline({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function JogaanPage() {
+export default async function JogaanPage() {
+  const lang = await getLang();
   return (
     <>
       {/* Section 1 - Hero. On desktop the image lifts out of the column flow
@@ -222,13 +243,13 @@ export default function JogaanPage() {
                   color: "var(--color-ink)",
                 }}
               >
-                The farmer&apos;s app
+                {t(lang, "The farmer's app", "বাংলাদেশের কৃষকের")}
                 <br />
-                for Bangladesh
+                {t(lang, "for Bangladesh", "নিজের অ্যাপ")}
               </h1>
             </Reveal>
             <Reveal delay={0.16} className="mt-9">
-              <InstallJogaanButton />
+              <InstallJogaanButton lang={lang} />
             </Reveal>
             <Reveal delay={0.22}>
               <p
@@ -236,7 +257,13 @@ export default function JogaanPage() {
                 style={{ color: "var(--color-ink-muted)" }}
               >
                 <ShieldIcon />
-                <span>Trusted by 60,000+ farmers across 50 districts</span>
+                <span>
+                  {t(
+                    lang,
+                    "Trusted by 60,000+ farmers across 50 districts",
+                    "50টি জেলার 60,000+ কৃষকের আস্থা",
+                  )}
+                </span>
               </p>
             </Reveal>
           </div>
@@ -295,13 +322,17 @@ export default function JogaanPage() {
                   }
                 >
                   <Reveal>
-                    <SectionHeadline>{s.headline}</SectionHeadline>
+                    <SectionHeadline>
+                      {t(lang, s.headline, s.headlineBn)}
+                    </SectionHeadline>
                   </Reveal>
                   <Reveal delay={0.08}>
-                    <p className="t-body-lg mt-6 max-w-[500px]">{s.body}</p>
+                    <p className="t-body-lg mt-6 max-w-[500px]">
+                      {t(lang, s.body, s.bodyBn)}
+                    </p>
                   </Reveal>
                   <Reveal delay={0.16} className="mt-9">
-                    <InstallJogaanButton />
+                    <InstallJogaanButton lang={lang} />
                   </Reveal>
                 </div>
               </div>
@@ -330,7 +361,7 @@ export default function JogaanPage() {
           <div className="absolute inset-0 flex items-center">
             <div className="container-page w-full">
               <div className="max-w-[42%]">
-                <ClosingCtaContent />
+                <ClosingCtaContent lang={lang} />
               </div>
             </div>
           </div>
@@ -341,7 +372,7 @@ export default function JogaanPage() {
               characters land closer to the frame's horizontal center. */}
           <div className="container-page pt-12 tablet:pt-16 pb-10 tablet:pb-12 text-center">
             <div className="max-w-[560px] mx-auto">
-              <ClosingCtaContent />
+              <ClosingCtaContent lang={lang} />
             </div>
           </div>
           <div className="relative w-full" style={{ aspectRatio: "1 / 1" }}>

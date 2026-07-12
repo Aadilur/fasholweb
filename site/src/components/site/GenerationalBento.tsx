@@ -3,13 +3,17 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion } from "framer-motion";
+import { t } from "@/lib/i18n";
+import { useLang } from "@/components/site/LanguageProvider";
 
 // Editorial ease-out curve shared across every reveal in this section.
 const EASE = "cubic-bezier(0.25, 0.1, 0.25, 1)";
 
 type BentoCard = {
   dim: string;
+  dimBn: string;
   text: string;
+  textBn: string;
   wide: boolean;
 };
 
@@ -17,32 +21,44 @@ type BentoCard = {
 const LEFT_CARDS: ReadonlyArray<BentoCard> = [
   {
     dim: "PRICING",
+    dimBn: "দাম",
     text: "Set every morning by what walked into the market. Negotiated from zero, every day.",
+    textBn: "প্রতিদিন সকালে বাজারে যা আসে তা দিয়েই দাম ঠিক হয়। প্রতিদিন শূন্য থেকে দর-কষাকষি।",
     wide: true,
   },
   {
     dim: "SETTLEMENT",
+    dimBn: "সেটেলমেন্ট",
     text: "When it happens. Sometimes a week, sometimes more.",
+    textBn: "যখন হয় তখন। কখনো এক সপ্তাহ, কখনো আরও বেশি।",
     wide: false,
   },
   {
     dim: "BUYERS",
+    dimBn: "বায়ার",
     text: "Found one phone call at a time.",
+    textBn: "একটা একটা ফোন করে খুঁজে বের করা।",
     wide: false,
   },
   {
     dim: "REACH",
+    dimBn: "নাগাল",
     text: "Defined by who could come to the market.",
+    textBn: "যে বাজারে আসতে পারত, তাতেই সীমাবদ্ধ।",
     wide: false,
   },
   {
     dim: "QUALITY",
+    dimBn: "কোয়ালিটি",
     text: "Disputed at the stall, after delivery.",
+    textBn: "ডেলিভারির পর দোকানের সামনে নিয়ে বিতর্ক।",
     wide: false,
   },
   {
     dim: "CREDIT",
+    dimBn: "ক্রেডিট",
     text: "Floated from personal cash. Capped by what the arot can afford to risk.",
+    textBn: "নিজের পকেটের টাকায় চালানো। আড়ত যতটুকু রিস্ক নিতে পারে, ততটুকুতেই সীমা।",
     wide: true,
   },
 ];
@@ -51,32 +67,44 @@ const LEFT_CARDS: ReadonlyArray<BentoCard> = [
 const RIGHT_CARDS: ReadonlyArray<BentoCard> = [
   {
     dim: "PRICING",
+    dimBn: "দাম",
     text: "Live pricing benchmarked against 200+ wholesale markets, daily.",
+    textBn: "প্রতিদিন 200-এর বেশি পাইকারি বাজারের সঙ্গে বেঞ্চমার্ক করা লাইভ দাম।",
     wide: false,
   },
   {
     dim: "SETTLEMENT",
+    dimBn: "সেটেলমেন্ট",
     text: "Same-day, digital, on every transaction.",
+    textBn: "প্রতিটি ট্রানজেকশনে একই দিনে, ডিজিটাল সেটেলমেন্ট।",
     wide: false,
   },
   {
     dim: "BUYERS",
+    dimBn: "বায়ার",
     text: "Restaurants, supershops, quick commerce - already on Hyperfarm. The downstream book is built in.",
+    textBn: "রেস্তোরাঁ, সুপারশপ, কুইক কমার্স - সবাই আগে থেকেই হাইপারফার্মে। ডাউনস্ট্রিম বুক ভেতরেই তৈরি।",
     wide: true,
   },
   {
     dim: "REACH",
+    dimBn: "নাগাল",
     text: "Extended to 50 districts and platforms across Bangladesh.",
+    textBn: "বাংলাদেশজুড়ে 50 জেলা ও প্ল্যাটফর্ম পর্যন্ত বিস্তৃত।",
     wide: false,
   },
   {
     dim: "QUALITY",
+    dimBn: "কোয়ালিটি",
     text: "Four-tier grading at the hub, before dispatch.",
+    textBn: "পাঠানোর আগে হাবেই চার স্তরের গ্রেডিং।",
     wide: false,
   },
   {
     dim: "CREDIT",
+    dimBn: "ক্রেডিট",
     text: "Same-day settlement and Fashol-backed credit extend working capital without touching personal cash.",
+    textBn: "একই দিনে সেটেলমেন্ট আর ফসল-ব্যাকড ক্রেডিট নিজের পকেটের টাকা না ছুঁয়েই ওয়ার্কিং ক্যাপিটাল বাড়ায়।",
     wide: true,
   },
 ];
@@ -98,6 +126,7 @@ const CARD_DURATION = 400;
 const RIGHT_CARD_SHADOW = "0 1px 3px rgba(0, 0, 0, 0.06)";
 
 export function GenerationalBento() {
+  const lang = useLang();
   const reduce = useReducedMotion();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [triggered, setTriggered] = useState(false);
@@ -151,7 +180,7 @@ export function GenerationalBento() {
                 color: "rgba(6, 94, 58, 0.35)",
               }}
             >
-              Without Fashol.
+              {t(lang, "Without Fashol.", "ফসল ছাড়া।")}
             </div>
           </div>
 
@@ -173,7 +202,7 @@ export function GenerationalBento() {
                     color: "rgba(6, 94, 58, 0.35)",
                   }}
                 >
-                  {c.dim}
+                  {t(lang, c.dim, c.dimBn)}
                 </span>
                 <p
                   className="mt-4 text-[17px] leading-[1.5]"
@@ -184,7 +213,7 @@ export function GenerationalBento() {
                     color: "rgba(6, 94, 58, 0.45)",
                   }}
                 >
-                  {c.text}
+                  {t(lang, c.text, c.textBn)}
                 </p>
               </div>
             ))}
@@ -228,7 +257,7 @@ export function GenerationalBento() {
                     color: "rgba(6, 94, 58, 0.8)",
                   }}
                 >
-                  {c.dim}
+                  {t(lang, c.dim, c.dimBn)}
                 </span>
                 <p
                   className="mt-4 text-[17px] leading-[1.5]"
@@ -239,7 +268,7 @@ export function GenerationalBento() {
                     color: "var(--color-deep-green)",
                   }}
                 >
-                  {c.text}
+                  {t(lang, c.text, c.textBn)}
                 </p>
               </div>
             ))}
@@ -262,7 +291,7 @@ export function GenerationalBento() {
               : `opacity 800ms ${EASE} ${DELAY_CLOSING}ms, letter-spacing 800ms ${EASE} ${DELAY_CLOSING}ms`,
           }}
         >
-          Same arot. Two arots.
+          {t(lang, "Same arot. Two arots.", "একই আড়ত। দুই আড়ত।")}
         </p>
       </div>
     </div>

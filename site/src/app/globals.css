@@ -112,6 +112,19 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Bangla mode - swap the display + mono stacks to the Bengali face site-wide.
+   Every type utility resolves var(--font-display), so this one override
+   re-typesets all headings and body copy. Slightly looser tracking suits Bangla. */
+html[data-lang="bn"] {
+  --font-display: var(--font-bengali), "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+  --font-mono: var(--font-bengali), "Hind Siliguri", ui-monospace, monospace;
+}
+html[data-lang="bn"] body { letter-spacing: 0; }
+html[data-lang="bn"] .t-hero,
+html[data-lang="bn"] .t-h2,
+html[data-lang="bn"] .t-h3,
+html[data-lang="bn"] .t-h4 { letter-spacing: -0.01em; }
+
 ::selection { background: var(--color-lime); color: var(--color-ink); }
 
 /* ------------------------------------------------------------------

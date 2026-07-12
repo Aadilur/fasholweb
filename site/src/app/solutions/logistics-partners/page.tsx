@@ -13,6 +13,8 @@ import {
   LetterSpaceReveal,
 } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { t, type Lang } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n.server";
 
 export const metadata: Metadata = {
   title: "Logistics partners - Fashol",
@@ -32,11 +34,14 @@ type HeroStat =
       suffix: string;
       tail: string;
       label: string;
+      labelBn: string;
     }
   | {
       kind: "text";
       text: string;
+      textBn: string;
       label: string;
+      labelBn: string;
     };
 
 const HERO_STATS: ReadonlyArray<HeroStat> = [
@@ -47,6 +52,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "+",
     tail: "",
     label: "Hubs of origin and destination",
+    labelBn: "উৎস ও গন্তব্যের হাব",
   },
   {
     kind: "number",
@@ -55,6 +61,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "",
     tail: "",
     label: "Districts of operational reach",
+    labelBn: "কার্যক্রমের আওতায় জেলা",
   },
   {
     kind: "number",
@@ -63,6 +70,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "+ MT",
     tail: "",
     label: "Moving through the network monthly",
+    labelBn: "প্রতি মাসে নেটওয়ার্ক দিয়ে চলাচল",
   },
 ];
 
@@ -71,13 +79,17 @@ type AnchorCard = {
   imageSrc: string;
   imageAlt: string;
   title: string;
+  titleBn: string;
   body: string;
+  bodyBn: string;
 };
 
 type TextCard = {
   kind: "text";
   title: string;
+  titleBn: string;
   body: string;
+  bodyBn: string;
 };
 
 type BentoCard = AnchorCard | TextCard;
@@ -96,7 +108,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric diagram of loads being dispatched from a Fashol hub to partner trucks across the network",
       title: "The load pipeline",
-      body: "3,500+ MT of produce move through the network every month. Fashol's hub team dispatches these loads directly to partner fleets, no brokers, no commission off the top.",
+      titleBn: "লোডের ধারা",
+      body: "3,500+ MT of produce move through the network monthly. Fashol's hub team dispatches these loads straight to partner fleets - no brokers, no commission.",
+      bodyBn: "প্রতি মাসে 3,500+ MT পণ্য নেটওয়ার্ক দিয়ে চলাচল করে। ফসলের হাব টিম এই লোডগুলো সরাসরি পার্টনার ফ্লিটের কাছে পাঠায় - কোনো দালাল নেই, কোনো কমিশন নেই।",
     },
   },
   {
@@ -107,7 +121,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric diagram of a truck loaded on both directions of its route, with upstream and downstream matched",
       title: "Return trips, not empty ones",
-      body: "Fashol moves produce upstream from farms to hubs and downstream from hubs to buyers. Trucks loaded on the way out get matched on the way back. Both legs of the trip earn.",
+      titleBn: "খালি নয়, ভরা ফিরতি ট্রিপ",
+      body: "Fashol moves produce upstream from farms to hubs and downstream to buyers. A truck loaded on the way out gets matched on the way back. Both legs earn.",
+      bodyBn: "ফসল খামার থেকে হাবে পণ্য আনে আপস্ট্রিমে, আর হাব থেকে বায়ারের কাছে পাঠায় ডাউনস্ট্রিমে। যাওয়ার পথে বোঝাই হওয়া ট্রাক ফেরার পথেও লোড পায়। দুই পথেই আয় হয়।",
     },
   },
   {
@@ -115,7 +131,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Loads visible across 50 districts",
+      titleBn: "50 জেলাজুড়ে দৃশ্যমান লোড",
       body: "See available work across the full Fashol network, not just the corridor you already know. Pick the routes that match your fleet.",
+      bodyBn: "শুধু চেনা করিডোর নয়, পুরো ফসল নেটওয়ার্কজুড়ে থাকা কাজ দেখুন। আপনার ফ্লিটের সঙ্গে মানানসই রুট বেছে নিন।",
     },
   },
   {
@@ -123,7 +141,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Direct, not through a middleman",
+      titleBn: "মধ্যস্বত্বভোগী নয়, সরাসরি",
       body: "Loads come from Fashol's hub team straight to you. What used to be broker commission stays with the truck.",
+      bodyBn: "লোড আসে ফসলের হাব টিম থেকে সরাসরি আপনার কাছে। যা আগে দালালের কমিশনে যেত, তা এখন ট্রাকের হাতেই থাকে।",
     },
   },
   {
@@ -131,7 +151,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Routes built around the hub network",
+      titleBn: "হাব নেটওয়ার্ক ঘিরে গড়া রুট",
       body: "40+ hubs across 50 districts create natural corridors. Fashol matches your fleet to the routes that keep the kilometers efficient.",
+      bodyBn: "50 জেলাজুড়ে 40+ হাব স্বাভাবিক করিডোর তৈরি করে। ফসল আপনার ফ্লিটকে এমন রুটে মেলায়, যা প্রতিটি কিলোমিটার কাজে লাগায়।",
     },
   },
   {
@@ -139,73 +161,116 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Steady work, by the month",
+      titleBn: "মাসজুড়ে নিয়মিত কাজ",
       body: "3,500+ MT moving every month needs trucks every day. Standing partnerships mean predictable utilization instead of chasing jobs job by job.",
+      bodyBn: "প্রতি মাসে 3,500+ MT পণ্য চলাচলের জন্য প্রতিদিন ট্রাক দরকার। স্থায়ী পার্টনারশিপ মানে কাজের পেছনে একটার পর একটা না ছুটে অনুমানযোগ্য নিয়মিত কাজ।",
     },
   },
 ];
 
-type ProofTile = { figure: string; label: string };
+type ProofTile = {
+  figure: string;
+  figureBn: string;
+  label: string;
+  labelBn: string;
+};
 
 const PROOF_STRIP: ReadonlyArray<ProofTile> = [
-  { figure: "40+ hubs", label: "Of origin and destination" },
-  { figure: "Direct dispatch", label: "No broker commission" },
+  {
+    figure: "40+ hubs",
+    figureBn: "40+ হাব",
+    label: "Of origin and destination",
+    labelBn: "উৎস ও গন্তব্যের",
+  },
+  {
+    figure: "Direct dispatch",
+    figureBn: "সরাসরি ডিসপ্যাচ",
+    label: "No broker commission",
+    labelBn: "কোনো দালাল কমিশন নেই",
+  },
 ];
 
 type Step = {
   n: string;
   headline: string;
+  headlineBn: string;
   tagline: string;
+  taglineBn: string;
   body: string;
+  bodyBn: string;
 };
 
 const STEPS: ReadonlyArray<Step> = [
   {
     n: "01",
     headline: "Fleet review.",
+    headlineBn: "ফ্লিট পর্যালোচনা।",
     tagline: "We look at what you run.",
+    taglineBn: "আপনি যা চালান, তা দেখি।",
     body: "Truck count, types, home corridor, cold-chain capability, driver availability. Map your fleet against the routes Fashol moves.",
+    bodyBn: "ট্রাকের সংখ্যা, ধরন, নিজের করিডোর, কোল্ড চেইনের সক্ষমতা, চালকের প্রাপ্যতা। ফসল যে রুটে চলে, তার সঙ্গে আপনার ফ্লিট মিলিয়ে দেখা হয়।",
   },
   {
     n: "02",
     headline: "Integration.",
+    headlineBn: "ইন্টিগ্রেশন।",
     tagline: "The dispatch connects.",
+    taglineBn: "ডিসপ্যাচ যুক্ত হয়।",
     body: "Your fleet joins the Fashol load board. Upstream loads from Jogaan and downstream loads from Hyperfarm become visible to your dispatch.",
+    bodyBn: "আপনার ফ্লিট ফসলের লোড বোর্ডে যুক্ত হয়। যোগানের আপস্ট্রিম লোড আর হাইপারফার্মের ডাউনস্ট্রিম লোড আপনার ডিসপ্যাচে দৃশ্যমান হয়।",
   },
   {
     n: "03",
     headline: "First cycle.",
+    headlineBn: "প্রথম চক্র।",
     tagline: "Trips begin.",
+    taglineBn: "ট্রিপ শুরু হয়।",
     body: "Loads start routing through your trucks. Return trips get matched. The Fashol hub team coordinates pickup, delivery, and reconciliation.",
+    bodyBn: "লোড আপনার ট্রাকে চলতে শুরু করে। ফিরতি ট্রিপ মিলিয়ে দেওয়া হয়। ফসলের হাব টিম পিকআপ, ডেলিভারি আর হিসাব মেলানোর সমন্বয় করে।",
   },
   {
     n: "04",
     headline: "Standing partnership.",
+    headlineBn: "স্থায়ী পার্টনারশিপ।",
     tagline: "The rhythm holds.",
+    taglineBn: "ছন্দ ধরে রাখে।",
     body: "Rate cards, volume forecasting, and seasonal planning happen together. Your fleet runs networked, not freelance.",
+    bodyBn: "রেট কার্ড, পরিমাণের পূর্বাভাস আর মৌসুমি পরিকল্পনা একসঙ্গে হয়। আপনার ফ্লিট চলে নেটওয়ার্কে যুক্ত হয়ে, ফ্রিল্যান্স হিসেবে নয়।",
   },
 ];
 
 const RELATED: ReadonlyArray<{
   name: string;
+  nameBn: string;
   description: string;
+  descriptionBn: string;
   href: string;
 }> = [
   {
     name: "Cold storage operators",
+    nameBn: "কোল্ড স্টোরেজ পরিচালক",
     description:
       "Cold storage facilities plugged into the Fashol network, with verified inbound bookings and outbound orders from the buyer side.",
+    descriptionBn:
+      "ফসল নেটওয়ার্কে যুক্ত কোল্ড স্টোরেজ, যাচাই করা ইনবাউন্ড বুকিং আর বায়ারের দিক থেকে আউটবাউন্ড অর্ডারসহ।",
     href: "/solutions/cold-storage-operators",
   },
   {
     name: "Commission agents",
+    nameBn: "আড়তদার",
     description:
       "Traditional arotdars on a modern stack, with transparent pricing and digital settlement.",
+    descriptionBn:
+      "ঐতিহ্যবাহী আড়তদার আধুনিক স্ট্যাকে, স্বচ্ছ দাম আর ডিজিটাল সেটেলমেন্টসহ।",
     href: "/solutions/commission-agents",
   },
   {
     name: "Wholesalers",
+    nameBn: "পাইকার",
     description:
       "A modern supply stack behind the wholesale trade, with 50-district sourcing and same-day settlement.",
+    descriptionBn:
+      "পাইকারি ব্যবসার পেছনে একটি আধুনিক সাপ্লাই স্ট্যাক, 50 জেলা থেকে সোর্সিং আর একই দিনে সেটেলমেন্টসহ।",
     href: "/solutions/wholesalers",
   },
 ];
@@ -214,7 +279,8 @@ function publicFileExists(relative: string): boolean {
   return existsSync(join(process.cwd(), "public", relative));
 }
 
-export default function LogisticsPartnersPage() {
+export default async function LogisticsPartnersPage() {
+  const lang = await getLang();
   const heroImageExists = publicFileExists(HERO_IMAGE_PATH);
 
   return (
@@ -269,17 +335,22 @@ export default function LogisticsPartnersPage() {
               as="h1"
               className="t-hero !text-[var(--color-paper)] !text-[44px] tablet:!text-[58px] desktop:!text-[72px]"
             >
-              The loads were always there. Now so is the visibility.
+              {t(
+                lang,
+                "The loads were always there. Now so is the visibility.",
+                "লোড সবসময়ই ছিল। এখন সেগুলো চোখের সামনেও এসেছে।",
+              )}
             </Reveal>
             <Reveal
               delay={0.2}
               as="p"
               className="t-body-lg mt-6 max-w-[640px] !text-[rgba(255,251,234,0.82)]"
             >
-              Fashol partners with small fleet owners across Bangladesh to route loads
-              directly, match return trips, and keep trucks earning on both legs of
-              every journey. No brokers. No empty returns. Just the network your truck
-              was built for.
+              {t(
+                lang,
+                "Fashol partners with small fleet owners across Bangladesh to route loads directly, match return trips, and keep trucks earning on both legs. No brokers. No empty returns.",
+                "ফসল বাংলাদেশজুড়ে ছোট ফ্লিটের মালিকদের সঙ্গে কাজ করে সরাসরি লোড পৌঁছে দিতে, ফিরতি ট্রিপ মিলিয়ে দিতে আর দুই পথেই ট্রাককে আয়ে রাখতে। কোনো দালাল নেই। খালি ফেরা নেই।",
+              )}
             </Reveal>
             <dl className="mt-10 tablet:mt-12 flex flex-col tablet:flex-row items-start gap-6 tablet:gap-10">
               {HERO_STATS.map((s, i) => (
@@ -316,7 +387,7 @@ export default function LogisticsPartnersPage() {
                         duration={0.6}
                         y={0}
                       >
-                        {s.text}
+                        {t(lang, s.text, s.textBn)}
                       </Reveal>
                     )}
                   </dd>
@@ -328,14 +399,14 @@ export default function LogisticsPartnersPage() {
                       letterSpacing: "0.14em",
                     }}
                   >
-                    {s.label}
+                    {t(lang, s.label, s.labelBn)}
                   </dt>
                 </div>
               ))}
             </dl>
             <Reveal delay={0.48} className="mt-8 tablet:mt-10">
               <Button variant="on-dark" href="/contact">
-                Partner with Fashol
+                {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
               </Button>
             </Reveal>
           </div>
@@ -347,18 +418,20 @@ export default function LogisticsPartnersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The truck earns on one leg and loses on the other.
+              {t(
+                lang,
+                "The truck earns on one leg and loses on the other.",
+                "ট্রাক এক পথে আয় করে, অন্য পথে লোকসান গোনে।",
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              A truck owner in Bangladesh runs on margins the market has already
-              thinned. Half the trips are empty returns - loaded with potato to Dhaka,
-              deadheaded back to Rangpur. The loads come through brokers who take a
-              commission off the top. The work is there, somewhere in the country, but
-              you cannot see it from your home corridor. So the truck sits, or it runs
-              at half capacity, or it goes out and comes back with nothing in the bed.
-              Every kilometer unloaded is a kilometer paid for out of pocket.
+              {t(
+                lang,
+                "A truck owner in Bangladesh runs on margins the market has already thinned. Half the trips are empty returns - potato down to Dhaka, deadhead back to Rangpur. Loads come through brokers who take a commission off the top, and the work you cannot see from your home corridor might as well not exist. So the truck sits or runs half full, and every unloaded kilometer is paid for out of pocket.",
+                "বাংলাদেশে একজন ট্রাক মালিক এমন মার্জিনে চলেন, যা বাজার আগেই কমিয়ে এনেছে। অর্ধেক ট্রিপই খালি ফেরা - আলু নিয়ে ঢাকায় নামা, তারপর খালি ট্রাকে রংপুরে ফেরা। লোড আসে দালালদের হাত ঘুরে, যারা ওপর থেকেই কমিশন কেটে নেয়; আর নিজের চেনা করিডোরের বাইরের কাজ চোখে না পড়লে সেটা যেন থাকেই না। ফলে ট্রাক বসে থাকে কিংবা অর্ধেক ভরে চলে, আর প্রতিটি খালি কিলোমিটারের খরচ যায় নিজের পকেট থেকে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -374,7 +447,11 @@ export default function LogisticsPartnersPage() {
                 color: "var(--color-ink)",
               }}
             >
-              The fleet is there. The system that keeps it moving is not.
+              {t(
+                lang,
+                "The fleet is there. The system that keeps it moving is not.",
+                "ফ্লিট আছে। যে ব্যবস্থা তাকে সচল রাখে, সেটাই নেই।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -393,7 +470,7 @@ export default function LogisticsPartnersPage() {
               fontWeight: 500,
             }}
           >
-            Full trip out. Full trip back.
+            {t(lang, "Full trip out. Full trip back.", "যাওয়ার পথ ভরা। ফেরার পথও ভরা।")}
           </LetterSpaceReveal>
         </div>
       </Section>
@@ -403,14 +480,20 @@ export default function LogisticsPartnersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              What a Fashol partnership keeps running.
+              {t(
+                lang,
+                "What a Fashol partnership keeps running.",
+                "ফসলের সঙ্গে পার্টনারশিপ যা সচল রাখে।",
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Direct loads, matched returns, network-wide visibility, standing
-              utilization. The difference between a truck that runs and a truck that
-              earns on both legs.
+              {t(
+                lang,
+                "Direct loads, matched returns, network-wide visibility, standing utilization. The difference between a truck that runs and a truck that earns on both legs.",
+                "সরাসরি লোড, মিলিয়ে দেওয়া ফিরতি ট্রিপ, পুরো নেটওয়ার্কজুড়ে স্পষ্টতা, নিয়মিত ব্যবহার। শুধু চলা ট্রাক আর দুই পথেই আয় করা ট্রাকের মধ্যে এটাই পার্থক্য।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -421,7 +504,7 @@ export default function LogisticsPartnersPage() {
         >
           {BENTO.map((entry, i) => (
             <StaggerItem key={i} className={entry.span} y={20}>
-              <BentoCardView card={entry.card} />
+              <BentoCardView card={entry.card} lang={lang} />
             </StaggerItem>
           ))}
         </StaggerChildren>
@@ -440,7 +523,7 @@ export default function LogisticsPartnersPage() {
                   color: "var(--color-deep-green)",
                 }}
               >
-                {p.figure}
+                {t(lang, p.figure, p.figureBn)}
               </span>
               <span
                 className="mt-2 uppercase"
@@ -451,7 +534,7 @@ export default function LogisticsPartnersPage() {
                   color: "var(--color-ink-muted)",
                 }}
               >
-                {p.label}
+                {t(lang, p.label, p.labelBn)}
               </span>
             </Reveal>
           ))}
@@ -469,7 +552,11 @@ export default function LogisticsPartnersPage() {
                 color: "var(--color-ink)",
               }}
             >
-              A truck that keeps moving is a truck that keeps earning.
+              {t(
+                lang,
+                "A truck that keeps moving is a truck that keeps earning.",
+                "যে ট্রাক চলতে থাকে, সে ট্রাক আয় করতে থাকে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -480,7 +567,11 @@ export default function LogisticsPartnersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The systems that route the trucks.
+              {t(
+                lang,
+                "The systems that route the trucks.",
+                "যে ব্যবস্থাগুলো ট্রাকের পথ ঠিক করে।",
+              )}
             </Reveal>
           </div>
         </div>
@@ -509,16 +600,18 @@ export default function LogisticsPartnersPage() {
                   color: "var(--color-deep-green)",
                 }}
               >
-                Loads from the farm side.
+                {t(lang, "Loads from the farm side.", "খামারের দিক থেকে লোড।")}
               </p>
               <p className="t-body mt-4">
-                Farmers booking produce into Fashol hubs generate the upstream load.
-                Jogaan handles registration, volume forecasting, and the dispatch to
-                your fleet.
+                {t(
+                  lang,
+                  "Farmers booking produce into Fashol hubs generate the upstream load. Jogaan handles registration, volume forecasting, and the dispatch to your fleet.",
+                  "ফসল হাবে পণ্য বুক করা কৃষকরাই আপস্ট্রিম লোড তৈরি করেন। যোগান সামলায় নিবন্ধন, পরিমাণের পূর্বাভাস আর আপনার ফ্লিটে লোড পাঠানোর কাজ।",
+                )}
               </p>
               <div className="mt-auto pt-8">
                 <Link href="/products/jogaan" className="link-arrow">
-                  Open product page
+                  {t(lang, "Open product page", "প্রোডাক্ট পেজ খুলুন")}
                 </Link>
               </div>
             </article>
@@ -545,16 +638,18 @@ export default function LogisticsPartnersPage() {
                   color: "var(--color-deep-green)",
                 }}
               >
-                Loads from the buyer side.
+                {t(lang, "Loads from the buyer side.", "বায়ারের দিক থেকে লোড।")}
               </p>
               <p className="t-body mt-4">
-                Restaurants, supershops, and quick commerce place orders against hub
-                inventory. Hyperfarm dispatches the downstream load - the return trip
-                your truck was driving empty before.
+                {t(
+                  lang,
+                  "Restaurants, supershops, and quick commerce order against hub inventory. Hyperfarm dispatches the downstream load - the return trip your truck used to drive empty.",
+                  "রেস্তোরাঁ, সুপারশপ আর কুইক কমার্স হাবের স্টকের বিপরীতে অর্ডার দেয়। হাইপারফার্ম পাঠায় ডাউনস্ট্রিম লোড - সেই ফিরতি ট্রিপ, যা আগে আপনার ট্রাক খালি চালাত।",
+                )}
               </p>
               <div className="mt-auto pt-8">
                 <Link href="/products/hyperfarm" className="link-arrow">
-                  Open product page
+                  {t(lang, "Open product page", "প্রোডাক্ট পেজ খুলুন")}
                 </Link>
               </div>
             </article>
@@ -569,11 +664,11 @@ export default function LogisticsPartnersPage() {
             className="!text-[var(--color-paper)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
           >
-            &ldquo;I run three trucks on the Rangpur-Dhaka route. For years, we took
-            potato down and came back empty. Brokers in the middle, always. Fashol
-            loads us with potato from the hub, and when we drop it in Dhaka they have
-            vegetables waiting for the return. Three trucks earning on both legs is a
-            different business than three trucks earning on one.&rdquo;
+            {t(
+              lang,
+              "“I run three trucks on the Rangpur-Dhaka route. For years, we took potato down and came back empty. Brokers in the middle, always. Fashol loads us with potato from the hub, and when we drop it in Dhaka they have vegetables waiting for the return. Three trucks earning on both legs is a different business than three trucks earning on one.”",
+              "“রংপুর-ঢাকা রুটে আমার তিনটি ট্রাক চলে। বছরের পর বছর আলু নিয়ে নামতাম, ফিরতাম খালি হাতে। মাঝখানে সবসময় দালাল। এখন ফসল হাব থেকে আলু বোঝাই করে দেয়, আর ঢাকায় নামিয়ে দিলে ফেরার জন্য সবজি তৈরি রাখে। দুই পথেই আয় করা তিনটি ট্রাক আর এক পথে আয় করা তিনটি ট্রাক - দুটো এক ব্যবসা নয়।”",
+            )}
           </QuoteReveal>
           <Reveal delay={0.16}>
             <figcaption className="mt-8 flex flex-col items-center">
@@ -581,13 +676,17 @@ export default function LogisticsPartnersPage() {
                 className="text-[14px]"
                 style={{ fontWeight: 500, color: "var(--color-paper)" }}
               >
-                Jahangir Alam
+                {t(lang, "Jahangir Alam", "জাহাঙ্গীর আলম")}
               </span>
               <span
                 className="text-[12px] mt-1"
                 style={{ color: "rgba(255,251,234,0.65)" }}
               >
-                Small fleet operator, Rangpur-Dhaka corridor
+                {t(
+                  lang,
+                  "Small fleet operator, Rangpur-Dhaka corridor",
+                  "ছোট ফ্লিট পরিচালক, রংপুর-ঢাকা করিডোর",
+                )}
               </span>
             </figcaption>
           </Reveal>
@@ -599,13 +698,16 @@ export default function LogisticsPartnersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              How the partnership starts.
+              {t(lang, "How the partnership starts.", "পার্টনারশিপ যেভাবে শুরু হয়।")}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Partnership, not sign-up. A cycle of steps that sets the fleet up to run
-              networked.
+              {t(
+                lang,
+                "Partnership, not sign-up. A cycle of steps that sets the fleet up to run networked.",
+                "সাইন-আপ নয়, পার্টনারশিপ। কয়েকটি ধাপের একটি চক্র, যা ফ্লিটকে নেটওয়ার্কে যুক্ত হয়ে চলার জন্য তৈরি করে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -618,7 +720,7 @@ export default function LogisticsPartnersPage() {
                   {s.n}
                 </span>
                 <h3 className="t-h5 mt-4" style={{ fontWeight: 500 }}>
-                  {s.headline}
+                  {t(lang, s.headline, s.headlineBn)}
                 </h3>
                 <p
                   className="mt-3"
@@ -632,9 +734,9 @@ export default function LogisticsPartnersPage() {
                     color: "var(--color-deep-green)",
                   }}
                 >
-                  {s.tagline}
+                  {t(lang, s.tagline, s.taglineBn)}
                 </p>
-                <p className="t-body-sm mt-3">{s.body}</p>
+                <p className="t-body-sm mt-3">{t(lang, s.body, s.bodyBn)}</p>
               </article>
             </Reveal>
           ))}
@@ -642,7 +744,7 @@ export default function LogisticsPartnersPage() {
 
         <Reveal delay={0.16} className="mt-10 tablet:mt-12">
           <Button variant="primary" href="/contact">
-            Partner with Fashol
+            {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
           </Button>
         </Reveal>
       </Section>
@@ -652,7 +754,11 @@ export default function LogisticsPartnersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The rest of the chain runs on Fashol too.
+              {t(
+                lang,
+                "The rest of the chain runs on Fashol too.",
+                "চেইনের বাকি অংশও চলে ফসলে।",
+              )}
             </Reveal>
           </div>
         </div>
@@ -662,12 +768,12 @@ export default function LogisticsPartnersPage() {
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">
                 <h3 className="t-h5" style={{ fontWeight: 500 }}>
-                  {r.name}
+                  {t(lang, r.name, r.nameBn)}
                 </h3>
-                <p className="t-body-sm mt-3">{r.description}</p>
+                <p className="t-body-sm mt-3">{t(lang, r.description, r.descriptionBn)}</p>
                 <div className="mt-auto pt-6">
                   <Link href={r.href} className="link-arrow">
-                    Learn more
+                    {t(lang, "Learn more", "আরও জানুন")}
                   </Link>
                 </div>
               </article>
@@ -684,12 +790,12 @@ export default function LogisticsPartnersPage() {
 // body. Text cards are title + body only. No eyebrow tags.
 // ------------------------------------------------------------------
 
-function BentoCardView({ card }: { card: BentoCard }) {
-  if (card.kind === "anchor") return <AnchorCardView card={card} />;
-  return <TextCardView card={card} />;
+function BentoCardView({ card, lang }: { card: BentoCard; lang: Lang }) {
+  if (card.kind === "anchor") return <AnchorCardView card={card} lang={lang} />;
+  return <TextCardView card={card} lang={lang} />;
 }
 
-function AnchorCardView({ card }: { card: AnchorCard }) {
+function AnchorCardView({ card, lang }: { card: AnchorCard; lang: Lang }) {
   const imageReady = publicFileExists(card.imageSrc);
   return (
     <article
@@ -737,7 +843,7 @@ function AnchorCardView({ card }: { card: AnchorCard }) {
           color: "var(--color-deep-green)",
         }}
       >
-        {card.title}
+        {t(lang, card.title, card.titleBn)}
       </h3>
       <p
         className="mt-4"
@@ -748,13 +854,13 @@ function AnchorCardView({ card }: { card: AnchorCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </article>
   );
 }
 
-function TextCardView({ card }: { card: TextCard }) {
+function TextCardView({ card, lang }: { card: TextCard; lang: Lang }) {
   return (
     <article
       className="relative h-full flex flex-col rounded-[12px] p-6 tablet:p-8"
@@ -770,7 +876,7 @@ function TextCardView({ card }: { card: TextCard }) {
           color: "var(--color-deep-green)",
         }}
       >
-        {card.title}
+        {t(lang, card.title, card.titleBn)}
       </h3>
       <p
         className="mt-auto pt-6"
@@ -781,7 +887,7 @@ function TextCardView({ card }: { card: TextCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </article>
   );

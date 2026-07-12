@@ -8,14 +8,17 @@ import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { NavDropdown } from "@/components/site/NavDropdown";
 import { NAV_MENUS, allItems, PRODUCT_LOGOS, type NavMenu } from "@/data/nav";
+import { useLang } from "@/components/site/LanguageProvider";
+import { LanguageToggle } from "@/components/site/LanguageToggle";
+import { t } from "@/lib/i18n";
 
 type MenuId = (typeof NAV_MENUS)[number]["id"];
 
-const LEAD_LINKS = [{ href: "/", label: "Overview" }];
+const LEAD_LINKS = [{ href: "/", en: "Overview", bn: "হোম" }];
 const TAIL_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/career", label: "Career" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", en: "About", bn: "আমাদের সম্পর্কে" },
+  { href: "/career", en: "Career", bn: "ক্যারিয়ার" },
+  { href: "/contact", en: "Contact", bn: "যোগাযোগ" },
 ];
 
 const CLOSE_DELAY_MS = 200;
@@ -38,6 +41,7 @@ const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
 ]);
 
 export function Nav() {
+  const lang = useLang();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -187,7 +191,7 @@ export function Nav() {
           "mx-auto relative",
           "transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
           scrolled
-            ? "max-w-[880px] rounded-full border border-[rgba(19,19,19,0.08)] shadow-[0_4px_24px_-12px_rgba(19,19,19,0.14)]"
+            ? "max-w-[1040px] rounded-full border border-[rgba(19,19,19,0.08)] shadow-[0_4px_24px_-12px_rgba(19,19,19,0.14)]"
             : "max-w-[1360px] border border-transparent",
           "w-[calc(100%-16px)] tablet:w-[calc(100%-40px)]"
         )}
@@ -252,7 +256,7 @@ export function Nav() {
               <DesktopLink
                 key={l.href}
                 href={l.href}
-                label={l.label}
+                label={t(lang, l.en, l.bn)}
                 active={pathname === l.href}
                 onHoverOther={closeAllMenus}
               />
@@ -282,7 +286,7 @@ export function Nav() {
                       : "text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)]"
                   )}
                 >
-                  <span>{menu.label}</span>
+                  <span>{t(lang, menu.label, menu.labelBn)}</span>
                   <svg
                     aria-hidden
                     viewBox="0 0 10 6"
@@ -310,7 +314,7 @@ export function Nav() {
                 <DesktopLink
                   key={l.href}
                   href={l.href}
-                  label={l.label}
+                  label={t(lang, l.en, l.bn)}
                   active={!!active}
                   onHoverOther={closeAllMenus}
                 />
@@ -320,8 +324,9 @@ export function Nav() {
 
           {/* Right CTA */}
           <div className="hidden desktop:flex items-center gap-2 shrink-0">
+            <LanguageToggle />
             <Button variant="primary" href="/contact" className="!h-9 !px-4 !text-[12px]">
-              Partner with Fashol
+              {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
             </Button>
           </div>
 
@@ -365,7 +370,7 @@ export function Nav() {
         <div className="rounded-2xl bg-[var(--color-paper)] shadow-[0_20px_48px_-16px_rgba(0,0,0,0.18)] p-4 overflow-y-auto max-h-[80vh]">
           <ul className="flex flex-col">
             {LEAD_LINKS.map((l) => (
-              <MobileLink key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
+              <MobileLink key={l.href} href={l.href} label={t(lang, l.en, l.bn)} active={pathname === l.href} />
             ))}
 
             {NAV_MENUS.map((menu) => {
@@ -388,7 +393,7 @@ export function Nav() {
                     )}
                   >
                     <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">
-                      {menu.label}
+                      {t(lang, menu.label, menu.labelBn)}
                     </span>
                     <svg
                       aria-hidden
@@ -448,7 +453,7 @@ export function Nav() {
                                 className="t-eyebrow mb-2"
                                 style={{ color: "var(--color-ink-muted)" }}
                               >
-                                {group.eyebrow}
+                                {t(lang, group.eyebrow, group.eyebrowBn ?? group.eyebrow)}
                               </div>
                             )}
                             <ul className="grid grid-cols-2 gap-x-4">
@@ -458,7 +463,7 @@ export function Nav() {
                                     href={item.href}
                                     className="block py-1.5 text-[14px] font-medium text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)] transition-colors"
                                   >
-                                    {item.name}
+                                    {t(lang, item.name, item.nameBn)}
                                   </Link>
                                 </li>
                               ))}
@@ -475,14 +480,15 @@ export function Nav() {
             {TAIL_LINKS.map((l) => {
               const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
               return (
-                <MobileLink key={l.href} href={l.href} label={l.label} active={!!active} />
+                <MobileLink key={l.href} href={l.href} label={t(lang, l.en, l.bn)} active={!!active} />
               );
             })}
           </ul>
           <div className="mt-4 pt-4 border-t border-[rgba(19,19,19,0.08)] flex flex-col gap-2">
             <Button variant="primary" href="/contact">
-              Partner with Fashol
+              {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
             </Button>
+            <LanguageToggle className="!w-full" />
           </div>
         </div>
       </div>

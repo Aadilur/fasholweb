@@ -10,6 +10,8 @@ import {
   DelayedFade,
 } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { t } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n.server";
 
 export const metadata: Metadata = {
   title: "Wholesalers - Fashol",
@@ -25,11 +27,14 @@ type HeroStat =
       suffix: string;
       tail: string;
       l: string;
+      lBn: string;
     }
   | {
       kind: "text";
       text: string;
+      textBn: string;
       l: string;
+      lBn: string;
     };
 
 const HERO_STATS: ReadonlyArray<HeroStat> = [
@@ -40,64 +45,99 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "+ MT",
     tail: "",
     l: "Daily cold-chain capacity",
+    lBn: "দৈনিক কোল্ড-চেইন সক্ষমতা",
   },
-  { kind: "text", text: "Same day", l: "Settlement on delivered volume" },
-  { kind: "text", text: "50 districts", l: "Origin reach across Bangladesh" },
+  {
+    kind: "text",
+    text: "Same day",
+    textBn: "একই দিনে",
+    l: "Settlement on delivered volume",
+    lBn: "সরবরাহকৃত পরিমাণে সেটেলমেন্ট",
+  },
+  {
+    kind: "text",
+    text: "50 districts",
+    textBn: "50 জেলা",
+    l: "Origin reach across Bangladesh",
+    lBn: "বাংলাদেশজুড়ে উৎসের নাগাল",
+  },
 ];
 
 const STEPS: ReadonlyArray<{
   n: string;
   headline: string;
+  headlineBn: string;
   body: string;
+  bodyBn: string;
 }> = [
   {
     n: "01",
     headline: "First conversation.",
+    headlineBn: "প্রথম আলাপ।",
     body: "A Fashol wholesale representative walks through the trader's typical book - crops, volumes, downstream customers, current supply pattern. One phone call, sometimes a market-side visit.",
+    bodyBn: "একজন ফসল পাইকারি প্রতিনিধি ব্যবসায়ীর সাধারণ কারবার ঘুরে দেখেন-ফসল, পরিমাণ, ডাউনস্ট্রিম বায়ার, বর্তমান সরবরাহের ধরন। একটি ফোন কল, কখনো বাজারে গিয়ে সরেজমিন।",
   },
   {
     n: "02",
     headline: "SKU and volume mapping.",
+    headlineBn: "SKU ও পরিমাণ ম্যাপিং।",
     body: "Within 24 hours, the trade team maps the trader's regular book to Fashol SKUs with live pricing. Downstream customers on Hyperfarm are flagged for coordinated supply.",
+    bodyBn: "24 ঘণ্টার মধ্যে ট্রেড টিম ব্যবসায়ীর নিয়মিত কারবারকে লাইভ দামসহ ফসল SKU-এর সঙ্গে ম্যাপ করে। হাইপারফার্মে থাকা ডাউনস্ট্রিম বায়ারদের সমন্বিত সরবরাহের জন্য চিহ্নিত করা হয়।",
   },
   {
     n: "03",
     headline: "First wholesale delivery.",
+    headlineBn: "প্রথম পাইকারি ডেলিভারি।",
     body: "Within 72 hours of the first conversation, Fashol runs the first wholesale load at the trader's stall. Cold-chain fulfillment, graded at origin, settled same-day.",
+    bodyBn: "প্রথম আলাপের 72 ঘণ্টার মধ্যে ফসল ব্যবসায়ীর দোকানে প্রথম পাইকারি চালান পৌঁছে দেয়। কোল্ড-চেইন ফুলফিলমেন্ট, উৎসেই গ্রেড করা, একই দিনে সেটেলমেন্ট।",
   },
   {
     n: "04",
     headline: "The book scales.",
+    headlineBn: "কারবার বড় হয়।",
     body: "From week two onward, volume scales with the trader's downstream demand. Fashol's trade team stays embedded for the first month to tune pricing, grading preferences, and settlement cadence.",
+    bodyBn: "দ্বিতীয় সপ্তাহ থেকে ব্যবসায়ীর ডাউনস্ট্রিম চাহিদার সঙ্গে পরিমাণ বাড়তে থাকে। দাম, গ্রেডিংয়ের পছন্দ ও সেটেলমেন্টের ছন্দ ঠিক করতে ফসলের ট্রেড টিম প্রথম মাসজুড়ে পাশে থাকে।",
   },
 ];
 
 const RELATED: ReadonlyArray<{
   name: string;
+  nameBn: string;
   description: string;
+  descriptionBn: string;
   href: string;
 }> = [
   {
     name: "Commission agents",
+    nameBn: "কমিশন এজেন্ট",
     description:
       "Traditional arotdars on a modern stack, with transparent pricing and settlement.",
+    descriptionBn:
+      "আধুনিক ব্যবস্থায় পরিচালিত ঐতিহ্যবাহী আড়তদার, স্বচ্ছ দাম ও সেটেলমেন্টসহ।",
     href: "/solutions/commission-agents",
   },
   {
     name: "Importers",
+    nameBn: "ইমপোর্টার",
     description:
       "Bulk produce supply for import-focused distributors, with origin documentation handled upstream.",
+    descriptionBn:
+      "আমদানি-কেন্দ্রিক পরিবেশকদের জন্য বাল্ক ফসল সরবরাহ, উৎসের ডকুমেন্টেশন আগেভাগেই সামলানো।",
     href: "/solutions/importers",
   },
   {
     name: "Exporters",
+    nameBn: "এক্সপোর্টার",
     description:
       "End-to-end export corridors to the UK, Europe, the Middle East, and Southeast Asia.",
+    descriptionBn:
+      "যুক্তরাজ্য, ইউরোপ, মধ্যপ্রাচ্য ও দক্ষিণ-পূর্ব এশিয়ার জন্য শুরু থেকে শেষ পর্যন্ত এক্সপোর্ট করিডোর।",
     href: "/solutions/exporters",
   },
 ];
 
-export default function WholesalersPage() {
+export default async function WholesalersPage() {
+  const lang = await getLang();
   return (
     <>
       {/* Section 1 - Hero (photo + forest gradient, height + padding match Farmers) */}
@@ -146,16 +186,18 @@ export default function WholesalersPage() {
               as="h1"
               className="t-hero !text-[var(--color-paper)] !text-[56px] tablet:!text-[72px] desktop:!text-[88px]"
             >
-              Wholesalers.
+              {t(lang, "Wholesalers.", "পাইকার।")}
             </Reveal>
             <Reveal
               delay={0.2}
               as="p"
               className="t-body-lg mt-6 max-w-[560px] !text-[rgba(255,251,234,0.75)]"
             >
-              A modern supply stack behind your existing trading business. Consistent volumes,
-              cold-chain fulfillment, transparent pricing, and same-day settlement. Plug Fashol
-              into the trade you already run.
+              {t(
+                lang,
+                "A modern supply stack behind your existing trading business. Consistent volumes, cold-chain fulfillment, transparent pricing, and same-day settlement. Plug Fashol into the trade you already run.",
+                "আপনার চালু ব্যবসার পেছনে একটি আধুনিক সাপ্লাই স্ট্যাক। ধারাবাহিক পরিমাণ, কোল্ড-চেইন ফুলফিলমেন্ট, স্বচ্ছ দাম, আর একই দিনে সেটেলমেন্ট। আপনি যে কারবার এখনই চালাচ্ছেন, তাতেই ফসলকে যুক্ত করুন।"
+              )}
             </Reveal>
             <dl className="mt-10 tablet:mt-12 flex flex-col tablet:flex-row items-start gap-6 tablet:gap-12">
               {HERO_STATS.map((s, i) => (
@@ -187,11 +229,13 @@ export default function WholesalersPage() {
                         duration={0.6}
                         y={0}
                       >
-                        {s.text}
+                        {t(lang, s.text, s.textBn)}
                       </Reveal>
                     )}
                   </dd>
-                  <dt className="t-caption mt-2 !text-[rgba(255,251,234,0.65)]">{s.l}</dt>
+                  <dt className="t-caption mt-2 !text-[rgba(255,251,234,0.65)]">
+                    {t(lang, s.l, s.lBn)}
+                  </dt>
                 </div>
               ))}
             </dl>
@@ -207,28 +251,34 @@ export default function WholesalersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The wholesale business has hit the ceiling of the old chain.
+              {t(
+                lang,
+                "The wholesale business has hit the ceiling of the old chain.",
+                "পাইকারি ব্যবসা পুরনো শৃঙ্খলের সর্বোচ্চ সীমায় এসে ঠেকেছে।"
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              A wholesale trader at Karwan Bazar or any major city market has spent years
-              building relationships, working out which aratdars to trust, which districts deliver
-              on time, which farmers show up with Grade A consistently. Volume moves through
-              because the trader is working the phone from 3 AM, chasing loads, negotiating every
-              price in real time. The business scales with the trader&apos;s hours and contacts,
-              not with a system.
+              {t(
+                lang,
+                "A trader at Karwan Bazar or any city market spends years building relationships - which aratdars to trust, which districts deliver, which farmers bring Grade A. Volume moves because the trader works the phone from 3 AM. The business scales with the trader's hours, not a system.",
+                "কারওয়ান বাজার কিংবা যেকোনো শহুরে বাজারের একজন ব্যবসায়ী বছরের পর বছর সম্পর্ক গড়েন-কোন আড়তদারকে বিশ্বাস করা যায়, কোন জেলা ঠিকঠাক দেয়, কোন কৃষক গ্রেড এ আনে। পরিমাণ নড়ে কারণ ব্যবসায়ী ভোর 3টা থেকে ফোন সামলান। ব্যবসা বড় হয় ব্যবসায়ীর শ্রমঘণ্টার সঙ্গে, কোনো ব্যবস্থার সঙ্গে নয়।"
+              )}
             </p>
             <p className="mt-5">
-              That model caps out. A trader can personally manage maybe 50 origin relationships.
-              Bad weather in one district breaks the week&apos;s supply. A buyer calls asking for
-              40 tons on two days&apos; notice and the trader cannot say yes without risking
-              everything they promised the rest of the book. Credit terms are whatever the trader
-              can float on their own working capital. Quality disputes happen downstream because
-              grading was a guess, not a standard.
+              {t(
+                lang,
+                "That model caps out. A trader manages maybe 50 origin relationships. One district's bad weather breaks the week's supply. A 40-ton order on two days' notice risks the rest of the book. Credit is whatever the trader can float, and grading is a guess, so disputes happen downstream.",
+                "এই মডেলের একটা সীমা আছে। একজন ব্যবসায়ী বড়জোর 50টি উৎস-সম্পর্ক সামলাতে পারেন। একটি জেলার খারাপ আবহাওয়া গোটা সপ্তাহের সরবরাহ ভেঙে দেয়। দুই দিনের নোটিশে 40 টনের একটি অর্ডার বাকি কারবারকেই ঝুঁকিতে ফেলে। ঋণ বলতে ব্যবসায়ী যতটুকু জোগাড় করতে পারেন, আর গ্রেডিং একরকম অনুমান-তাই বিরোধ বাধে ডাউনস্ট্রিমে।"
+              )}
             </p>
             <p className="mt-5">
-              The trader is not the problem. The infrastructure behind the trader is.
+              {t(
+                lang,
+                "The trader is not the problem. The infrastructure behind the trader is.",
+                "ব্যবসায়ী সমস্যা নন। সমস্যা ব্যবসায়ীর পেছনের ইনফ্রাস্ট্রাকচার।"
+              )}
             </p>
           </Reveal>
         </div>
@@ -246,14 +296,14 @@ export default function WholesalersPage() {
                 letterSpacing: "-0.03em",
               }}
             >
-              Up to{" "}
+              {t(lang, "Up to", "")}{lang === "bn" ? "" : " "}
               <CountUp
                 to={3}
                 duration={1000}
                 trigger="inview"
                 sessionKey="wholesalers-hinge-3x"
               />
-              x
+              {t(lang, "x", "x পর্যন্ত")}
             </div>
           </Reveal>
           <DelayedFade
@@ -264,9 +314,11 @@ export default function WholesalersPage() {
             viewportMargin="0px 0px -30% 0px"
           >
             <span style={{ color: "rgba(255, 251, 234, 0.75)" }}>
-              The volume a wholesale trader typically moves after plugging into Fashol&apos;s
-              sourcing and settlement stack. Same trader, same relationships, same market stall
-              - now with a supply chain that does not cap at the trader&apos;s personal capacity.
+              {t(
+                lang,
+                "The volume a wholesale trader typically moves after plugging into Fashol's sourcing and settlement stack. Same trader, same relationships, same market stall - now with a supply chain that does not cap at the trader's personal capacity.",
+                "ফসলের সোর্সিং ও সেটেলমেন্ট কাঠামোয় যুক্ত হওয়ার পর একজন পাইকারি ব্যবসায়ী সাধারণত যে পরিমাণ প্রোডাক্ট সরান। একই ব্যবসায়ী, একই সম্পর্ক, একই বাজারের দোকান-এখন এমন একটি সাপ্লাই চেইনসহ যা ব্যবসায়ীর ব্যক্তিগত সক্ষমতায় থেমে থাকে না।"
+              )}
             </span>
           </DelayedFade>
         </div>
@@ -277,13 +329,20 @@ export default function WholesalersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The same trader. A different ceiling.
+              {t(
+                lang,
+                "The same trader. A different ceiling.",
+                "একই ব্যবসায়ী। ভিন্ন এক সীমা।"
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Fashol does not replace the wholesale trade. It extends its capacity. Below is what
-              changes when a wholesaler plugs in.
+              {t(
+                lang,
+                "Fashol does not replace the wholesale trade. It extends its capacity. Below is what changes when a wholesaler plugs in.",
+                "ফসল পাইকারি বাণিজ্যকে প্রতিস্থাপন করে না। এটি তার সক্ষমতা বাড়ায়। একজন পাইকার যুক্ত হলে কী কী বদলায়, তা নিচে দেওয়া হলো।"
+              )}
             </p>
           </Reveal>
         </div>
@@ -305,7 +364,7 @@ export default function WholesalersPage() {
                 color: "var(--color-deep-green)",
               }}
             >
-              Not a new business. A bigger one.
+              {t(lang, "Not a new business. A bigger one.", "নতুন কোনো ব্যবসা নয়। বড় একটা ব্যবসা।")}
             </p>
           </Reveal>
         </div>
@@ -316,7 +375,7 @@ export default function WholesalersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The product behind this work.
+              {t(lang, "The product behind this work.", "এই কাজের পেছনের প্রোডাক্ট।")}
             </Reveal>
           </div>
         </div>
@@ -333,12 +392,15 @@ export default function WholesalersPage() {
                 className="h-20 tablet:h-24 w-auto object-contain self-start"
               />
               <p className="t-body mt-6">
-                The buyer procurement desk. Wholesalers use Hyperfarm to service their downstream
-                book - restaurants, supershops, quick commerce, institutional kitchens.
+                {t(
+                  lang,
+                  "The buyer procurement desk. Wholesalers use Hyperfarm to service their downstream book - restaurants, supershops, quick commerce, institutional kitchens.",
+                  "বায়ারের প্রকিউরমেন্ট ডেস্ক। পাইকাররা হাইপারফার্ম ব্যবহার করে তাদের ডাউনস্ট্রিম কারবার সামলান-রেস্তোরাঁ, সুপারশপ, কুইক কমার্স, প্রাতিষ্ঠানিক রান্নাঘর।"
+                )}
               </p>
               <div className="mt-auto pt-8">
                 <Link href="/products/hyperfarm" className="link-arrow">
-                  Open product page
+                  {t(lang, "Open product page", "প্রোডাক্টের পেজ দেখুন")}
                 </Link>
               </div>
             </article>
@@ -353,10 +415,11 @@ export default function WholesalersPage() {
             className="!text-[var(--color-paper)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
           >
-            &ldquo;I was moving around 80 tons a week before Fashol. I knew my ceiling. The
-            relationships I had, the hours I could keep, the credit I could float - it worked
-            out to 80 tons. Today I move above 250 tons a week. Same stall, same market. The
-            difference is I am not sourcing alone anymore.&rdquo;
+            {t(
+              lang,
+              "“I was moving around 80 tons a week before Fashol. I knew my ceiling. The relationships I had, the hours I could keep, the credit I could float - it worked out to 80 tons. Today I move above 250 tons a week. Same stall, same market. The difference is I am not sourcing alone anymore.”",
+              "“ফসলের আগে আমি সপ্তাহে প্রায় 80 টন প্রোডাক্ট সরাতাম। আমার সীমাটা জানতাম। যে সম্পর্ক ছিল, যত ঘণ্টা খাটতে পারতাম, যত ঋণ জোগাড় করতে পারতাম-সব মিলিয়ে দাঁড়াত 80 টন। আজ আমি সপ্তাহে 250 টনের বেশি সরাই। একই দোকান, একই বাজার। পার্থক্য একটাই-আমি আর একা সোর্সিং করি না।”"
+            )}
           </QuoteReveal>
           <Reveal delay={0.16}>
             <figcaption className="mt-8 flex flex-col items-center">
@@ -364,13 +427,13 @@ export default function WholesalersPage() {
                 className="text-[14px]"
                 style={{ fontWeight: 500, color: "var(--color-paper)" }}
               >
-                Abul Kashem
+                {t(lang, "Abul Kashem", "আবুল কাশেম")}
               </span>
               <span
                 className="text-[12px] mt-1"
                 style={{ color: "rgba(255,251,234,0.6)" }}
               >
-                Wholesale trader, Karwan Bazar, Dhaka
+                {t(lang, "Wholesale trader, Karwan Bazar, Dhaka", "পাইকারি ব্যবসায়ী, কারওয়ান বাজার, ঢাকা")}
               </span>
             </figcaption>
           </Reveal>
@@ -382,15 +445,20 @@ export default function WholesalersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              Seventy-two hours from first conversation to wholesale delivery.
+              {t(
+                lang,
+                "Seventy-two hours from first conversation to wholesale delivery.",
+                "প্রথম আলাপ থেকে পাইকারি ডেলিভারি পর্যন্ত বাহাত্তর ঘণ্টা।"
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Wholesale traders do not need a rollout. Fashol&apos;s wholesale desk can run a
-              live supply load within three days of the first conversation. The trade team scopes
-              volume, maps SKUs to Fashol pricing, and turns on the first delivery. The
-              relationship grows from there.
+              {t(
+                lang,
+                "No rollout needed. Fashol's wholesale desk runs a live supply load within three days of the first conversation - scoping volume, mapping SKUs to Fashol pricing, and turning on the first delivery. It grows from there.",
+                "কোনো রোলআউটের দরকার নেই। ফসলের পাইকারি ডেস্ক প্রথম আলাপের তিন দিনের মধ্যেই একটি সরাসরি সরবরাহ চালু করে-পরিমাণ যাচাই, SKU-কে ফসলের দামের সঙ্গে ম্যাপ, আর প্রথম ডেলিভারি চালু করা। এরপর তা বাড়তেই থাকে।"
+              )}
             </p>
           </Reveal>
         </div>
@@ -403,9 +471,9 @@ export default function WholesalersPage() {
                   {s.n}
                 </span>
                 <h3 className="t-h5 mt-4" style={{ fontWeight: 500 }}>
-                  {s.headline}
+                  {t(lang, s.headline, s.headlineBn)}
                 </h3>
-                <p className="t-body-sm mt-3">{s.body}</p>
+                <p className="t-body-sm mt-3">{t(lang, s.body, s.bodyBn)}</p>
               </article>
             </Reveal>
           ))}
@@ -413,7 +481,7 @@ export default function WholesalersPage() {
 
         <Reveal delay={0.16} className="mt-10 tablet:mt-12">
           <Link href="/contact" className="link-arrow">
-            Talk to Fashol&apos;s wholesale team
+            {t(lang, "Talk to Fashol's wholesale team", "ফসলের পাইকারি টিমের সঙ্গে কথা বলুন")}
           </Link>
         </Reveal>
       </Section>
@@ -423,7 +491,11 @@ export default function WholesalersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The rest of the trade side runs on Fashol too.
+              {t(
+                lang,
+                "The rest of the trade side runs on Fashol too.",
+                "বাণিজ্যের বাকি দিকটাও ফসলেই চলে।"
+              )}
             </Reveal>
           </div>
         </div>
@@ -433,12 +505,12 @@ export default function WholesalersPage() {
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">
                 <h3 className="t-h5" style={{ fontWeight: 500 }}>
-                  {r.name}
+                  {t(lang, r.name, r.nameBn)}
                 </h3>
-                <p className="t-body-sm mt-3">{r.description}</p>
+                <p className="t-body-sm mt-3">{t(lang, r.description, r.descriptionBn)}</p>
                 <div className="mt-auto pt-6">
                   <Link href={r.href} className="link-arrow">
-                    Learn more
+                    {t(lang, "Learn more", "আরও জানুন")}
                   </Link>
                 </div>
               </article>

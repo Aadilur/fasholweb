@@ -4,17 +4,23 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { TalkToSalesButton } from "@/components/site/TalkToSalesButton";
+import { t, type Lang } from "@/lib/i18n";
+import { useLang } from "@/components/site/LanguageProvider";
 
 type Stop = {
   n: string;
   title: string;
+  titleBn: string;
   body: string;
+  bodyBn: string;
 };
 
 type Phase = {
   label: string;
   title: string;
+  titleBn: string;
   subtitle: string;
+  subtitleBn: string;
   stops: Stop[];
 };
 
@@ -22,88 +28,120 @@ const PHASES: ReadonlyArray<Phase> = [
   {
     label: "PHASE 01",
     title: "Inquiry",
+    titleBn: "অনুসন্ধান",
     subtitle: "The first 24 hours.",
+    subtitleBn: "প্রথম 24 ঘণ্টা।",
     stops: [
       {
         n: "1",
         title: "RFQ received.",
+        titleBn: "RFQ গৃহীত।",
         body: "A buyer submits a request for quote through Hyperfarm or directly to the export desk. Volume, product spec, destination, target delivery window.",
+        bodyBn: "একজন বায়ার হাইপারফার্মের মাধ্যমে অথবা সরাসরি এক্সপোর্ট ডেস্কে দরপত্রের অনুরোধ পাঠান। পরিমাণ, প্রোডাক্টের স্পেসিফিকেশন, গন্তব্য, কাঙ্ক্ষিত ডেলিভারির সময়সীমা।",
       },
       {
         n: "2",
         title: "CNF priced in 24 hours.",
+        titleBn: "24 ঘণ্টায় CNF দাম।",
         body: "Fashol returns a full CNF quote within a business day. Pricing is live, benchmarked against 200-plus wholesale markets on the platform.",
+        bodyBn: "ফসল এক কর্মদিবসের মধ্যেই পূর্ণ CNF কোটেশন দেয়। দাম লাইভ, প্ল্যাটফর্মের 200টির বেশি পাইকারি বাজারের বিপরীতে যাচাই করা।",
       },
       {
         n: "3",
         title: "Order placed.",
+        titleBn: "অর্ডার নিশ্চিত।",
         body: "The buyer confirms. A dedicated Fashol export manager is assigned to the order from this point onward.",
+        bodyBn: "বায়ার নিশ্চিত করেন। এই মুহূর্ত থেকে অর্ডারটির জন্য একজন ডেডিকেটেড ফসল এক্সপোর্ট ম্যানেজার নির্ধারিত হন।",
       },
     ],
   },
   {
     label: "PHASE 02",
     title: "Sourcing",
+    titleBn: "সোর্সিং",
     subtitle: "Choosing the right farmer, the right crop, the right price.",
+    subtitleBn: "সঠিক কৃষক, সঠিক ফসল, সঠিক দাম বেছে নেওয়া।",
     stops: [
       {
         n: "4",
         title: "Farmer matching.",
+        titleBn: "কৃষক মেলানো।",
         body: "The order is matched against Fashol's network of 60,000 farmers across nine districts. GAP-certified products source from pre-certified farmers.",
+        bodyBn: "নয়টি জেলাজুড়ে ফসলের 60,000 কৃষকের নেটওয়ার্কের সঙ্গে অর্ডারটি মেলানো হয়। GAP-সার্টিফায়েড প্রোডাক্ট আগে থেকেই সার্টিফায়েড কৃষকদের কাছ থেকে সংগ্রহ করা হয়।",
       },
       {
         n: "5",
         title: "Packaging engineered.",
+        titleBn: "প্যাকেজিং তৈরি।",
         body: "Packaging is designed and tested for the specific product, destination climate, volume, and transit mode. It is the single biggest lever on post-harvest loss.",
+        bodyBn: "নির্দিষ্ট প্রোডাক্ট, গন্তব্যের জলবায়ু, পরিমাণ ও পরিবহন মাধ্যমের জন্য প্যাকেজিং নকশা করা ও পরীক্ষা করা হয়। ফসল-পরবর্তী ক্ষতি ঠেকাতে এটিই সবচেয়ে বড় হাতিয়ার।",
       },
       {
         n: "6",
         title: "Sourcing begins.",
+        titleBn: "সোর্সিং শুরু।",
         body: "Farmers are notified, harvest windows are coordinated, and produce is collected at the nearest Fashol hub.",
+        bodyBn: "কৃষকদের জানানো হয়, ফসল তোলার সময় সমন্বয় করা হয়, আর ফসল নিকটতম ফসল হাবে সংগ্রহ করা হয়।",
       },
     ],
   },
   {
     label: "PHASE 03",
     title: "Processing",
+    titleBn: "প্রসেসিং",
     subtitle: "Export-grade handling inside the Fashol hub.",
+    subtitleBn: "ফসল হাবের ভেতরে এক্সপোর্ট-গ্রেড হ্যান্ডলিং।",
     stops: [
       {
         n: "7",
         title: "Grading and sorting.",
+        titleBn: "গ্রেডিং ও বাছাই।",
         body: "Four-tier grading at intake. Only Grade A moves to export. Grade B and below route to domestic channels, so nothing is wasted.",
+        bodyBn: "গ্রহণের সময়ই চার স্তরের গ্রেডিং। কেবল গ্রেড এ এক্সপোর্টে যায়। গ্রেড বি ও তার নিচের প্রোডাক্ট দেশীয় চ্যানেলে যায়, ফলে কিছুই নষ্ট হয় না।",
       },
       {
         n: "8",
         title: "EPZ-approved.",
+        titleBn: "EPZ-অনুমোদিত।",
         body: "The graded shipment is moved through Fashol's EPZ-approved facility for final inspection, phytosanitary review, and pack-out.",
+        bodyBn: "গ্রেড করা চালান চূড়ান্ত পরিদর্শন, ফাইটোস্যানিটারি যাচাই ও প্যাক-আউটের জন্য ফসলের EPZ-অনুমোদিত স্থাপনার ভেতর দিয়ে যায়।",
       },
       {
         n: "9",
         title: "Destination docs filed.",
+        titleBn: "গন্তব্যের কাগজপত্র জমা।",
         body: "Export permits, phytosanitary certificates, certificates of origin, and destination import paperwork handled in-house. HACCP, BRC, and GlobalGAP sourced when required.",
+        bodyBn: "এক্সপোর্ট অনুমতি, ফাইটোস্যানিটারি সনদ, উৎস সনদ ও গন্তব্যের আমদানি কাগজপত্র নিজেরাই সামলানো হয়। প্রয়োজনে HACCP, BRC ও GlobalGAP সংগ্রহ করা হয়।",
       },
     ],
   },
   {
     label: "PHASE 04",
     title: "Delivery",
+    titleBn: "ডেলিভারি",
     subtitle: "Air and sea to the destination, with accountability after landing.",
+    subtitleBn: "আকাশ ও সমুদ্রপথে গন্তব্যে, পৌঁছানোর পরও দায়বদ্ধতা বজায় রেখে।",
     stops: [
       {
         n: "10",
         title: "Logistics locked.",
+        titleBn: "লজিস্টিকস চূড়ান্ত।",
         body: "Fashol selects air or sea based on product perishability, volume, destination, and buyer's commercial window. Booking is done on pre-negotiated rates with freight partners.",
+        bodyBn: "প্রোডাক্টের পচনশীলতা, পরিমাণ, গন্তব্য ও বায়ারের বাণিজ্যিক সময়সীমার ভিত্তিতে ফসল আকাশ না সমুদ্রপথ বেছে নেয়। বুকিং হয় ফ্রেইট পার্টনারদের সঙ্গে আগে থেকে ঠিক করা হারে।",
       },
       {
         n: "11",
         title: "Booked and cleared.",
+        titleBn: "বুকড ও ছাড়পত্র সম্পন্ন।",
         body: "The shipment is booked and cleared at origin. Buyer receives live tracking and customs documentation in the Hyperfarm dashboard.",
+        bodyBn: "চালান উৎসেই বুক করা ও ছাড়পত্র সম্পন্ন হয়। বায়ার হাইপারফার্ম ড্যাশবোর্ডে লাইভ ট্র্যাকিং ও কাস্টমস ডকুমেন্টেশন পান।",
       },
       {
         n: "12",
         title: "Arrived, supported.",
+        titleBn: "পৌঁছেছে, পাশে আছি।",
         body: "The buyer receives the shipment. Fashol's 24/7 desk handles any post-delivery issue - quality, documentation, reorder. The relationship continues past the port.",
+        bodyBn: "বায়ার চালান বুঝে পান। ডেলিভারির পরের যেকোনো বিষয়-কোয়ালিটি, ডকুমেন্টেশন, রিঅর্ডার-ফসলের 24/7 ডেস্ক সামলায়। সম্পর্ক বন্দরের পরেও চলতে থাকে।",
       },
     ],
   },
@@ -129,10 +167,12 @@ function PhaseHeader({
   phase,
   reduce,
   tone,
+  lang,
 }: {
   phase: Phase;
   reduce: boolean;
   tone: JourneyTone;
+  lang: Lang;
 }) {
   const initial = reduce ? false : { opacity: 0, y: 20 };
   const whileInView = reduce ? undefined : { opacity: 1, y: 0 };
@@ -155,13 +195,13 @@ function PhaseHeader({
             : "var(--color-deep-green)",
         }}
       >
-        {phase.title}
+        {t(lang, phase.title, phase.titleBn)}
       </h3>
     </motion.div>
   );
 }
 
-function StopCard({ stop, reduce }: { stop: Stop; reduce: boolean }) {
+function StopCard({ stop, reduce, lang }: { stop: Stop; reduce: boolean; lang: Lang }) {
   const initial = reduce ? false : { opacity: 0, y: 20 };
   const whileInView = reduce ? undefined : { opacity: 1, y: 0 };
   return (
@@ -202,7 +242,7 @@ function StopCard({ stop, reduce }: { stop: Stop; reduce: boolean }) {
             color: "var(--color-deep-green)",
           }}
         >
-          {stop.title}
+          {t(lang, stop.title, stop.titleBn)}
         </h4>
         <p
           className="mt-4"
@@ -213,7 +253,7 @@ function StopCard({ stop, reduce }: { stop: Stop; reduce: boolean }) {
             color: FOREST_85,
           }}
         >
-          {stop.body}
+          {t(lang, stop.body, stop.bodyBn)}
         </p>
       </div>
     </motion.article>
@@ -248,7 +288,7 @@ function ProgressBar({
   );
 }
 
-function LeftPanel({ currentPhase }: { currentPhase: number }) {
+function LeftPanel({ currentPhase, lang }: { currentPhase: number; lang: Lang }) {
   return (
     <>
       <Image
@@ -271,7 +311,7 @@ function LeftPanel({ currentPhase }: { currentPhase: number }) {
             color: "var(--color-paper)",
           }}
         >
-          Journey.
+          {t(lang, "Journey.", "যাত্রা।")}
         </h2>
 
         <div
@@ -292,7 +332,7 @@ function LeftPanel({ currentPhase }: { currentPhase: number }) {
               color: CREAM_75,
             }}
           >
-            RFQ to retail shelf in twelve precise stops.
+            {t(lang, "RFQ to retail shelf in twelve precise stops.", "RFQ থেকে খুচরা তাক পর্যন্ত বারোটি নিখুঁত ধাপে।")}
           </p>
         </div>
         </div>
@@ -306,6 +346,7 @@ export function JourneyStickyScroll({
 }: {
   tone?: JourneyTone;
 } = {}) {
+  const lang = useLang();
   const reduce = useReducedMotion() ?? false;
   const [currentPhase, setCurrentPhase] = useState(0);
   const phaseRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -355,7 +396,7 @@ export function JourneyStickyScroll({
             className="relative w-full overflow-hidden h-[70vh] min-h-[480px] desktop:h-[calc(100vh-64px)] desktop:sticky desktop:top-8 desktop:rounded-[16px]"
             style={{ background: "var(--color-deep-green)" }}
           >
-            <LeftPanel currentPhase={currentPhase} />
+            <LeftPanel currentPhase={currentPhase} lang={lang} />
           </div>
         </div>
 
@@ -370,11 +411,11 @@ export function JourneyStickyScroll({
               className={pi > 0 ? "mt-16" : ""}
             >
               <div className="mb-12">
-                <PhaseHeader phase={phase} reduce={reduce} tone={tone} />
+                <PhaseHeader phase={phase} reduce={reduce} tone={tone} lang={lang} />
               </div>
               <div className="flex flex-col gap-5">
                 {phase.stops.map((stop) => (
-                  <StopCard key={stop.n} stop={stop} reduce={reduce} />
+                  <StopCard key={stop.n} stop={stop} reduce={reduce} lang={lang} />
                 ))}
               </div>
             </div>
