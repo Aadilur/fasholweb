@@ -20,7 +20,7 @@ const TAIL_LINKS = [
 
 const CLOSE_DELAY_MS = 200;
 
-// Pages whose hero sits directly under the nav in a dark tone — the green
+// Pages whose hero sits directly under the nav in a dark tone - the green
 // Fashol logo becomes invisible there, so we recolor it to cream. Add future
 // stakeholder pages here as their dark-hero heroes are built out.
 const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
@@ -50,7 +50,7 @@ export function Nav() {
   const [mobileExpanded, setMobileExpanded] = useState<MenuId | null>(null);
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const triggerRefs = useRef<Record<MenuId, HTMLAnchorElement | null>>({
+  const triggerRefs = useRef<Record<MenuId, HTMLButtonElement | null>>({
     products: null,
     solutions: null,
   });
@@ -157,7 +157,7 @@ export function Nav() {
             : (currentIdx - 1 + items.length) % items.length;
         items[nextIdx]?.focus();
       }
-      // Enter/Space on the link falls through to default navigation
+      // Enter/Space activates the button, toggling the menu via onClick
     },
     [openMenu, openMenuFor]
   );
@@ -206,7 +206,7 @@ export function Nav() {
         </span>
 
         <div className="relative flex items-center justify-between gap-4 h-12 tablet:h-14 px-4 tablet:px-5">
-          {/* Logo — recolored to cream on pages whose hero is dark (see DARK_HERO_PATHS). */}
+          {/* Logo - recolored to cream on pages whose hero is dark (see DARK_HERO_PATHS). */}
           <Link
             href="/"
             aria-label="Fashol home"
@@ -260,19 +260,20 @@ export function Nav() {
 
             {NAV_MENUS.map((menu) => {
               const isOpen = openMenu === menu.id;
-              const sectionActive = pathname?.startsWith(menu.href);
+              const sectionActive = pathname?.startsWith(`/${menu.id}`);
               const panelId = `nav-panel-${menu.id}`;
               return (
-                <Link
+                <button
                   key={menu.id}
+                  type="button"
                   ref={(el) => {
                     triggerRefs.current[menu.id] = el;
                   }}
-                  href={menu.href}
                   aria-haspopup="true"
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onMouseEnter={() => openMenuFor(menu.id)}
+                  onClick={() => (isOpen ? closeAllMenus() : openMenuFor(menu.id))}
                   onKeyDown={(e) => handleMenuKeydown(e, menu)}
                   className={clsx(
                     "group relative inline-flex items-center gap-1 font-[var(--font-display)] text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors duration-200 tracking-tight cursor-pointer",
@@ -299,7 +300,7 @@ export function Nav() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </Link>
+                </button>
               );
             })}
 
@@ -369,7 +370,7 @@ export function Nav() {
 
             {NAV_MENUS.map((menu) => {
               const expanded = mobileExpanded === menu.id;
-              const sectionActive = pathname?.startsWith(menu.href);
+              const sectionActive = pathname?.startsWith(`/${menu.id}`);
               const isProducts = menu.id === "products";
               return (
                 <li key={menu.id}>

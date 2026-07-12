@@ -13,7 +13,7 @@ const SECTIONS = [
  title: "§ 01 Acceptance of terms",
  items: [
  "By accessing or using Fashol's platform or mobile applications, you agree to be bound by these Terms.",
- "These terms apply to all users — farmers, retailers, field agents, buyers, and other stakeholders.",
+ "These terms apply to all users - farmers, retailers, field agents, buyers, and other stakeholders.",
  "If you do not agree with these terms, please do not use our services.",
  "We reserve the right to modify these terms with appropriate notice; continued use after changes constitutes acceptance.",
  ],
@@ -56,7 +56,7 @@ const SECTIONS = [
  "Our aggregate liability is limited to the amount paid for services in the twelve months preceding the event.",
  "We are not responsible for the quality, safety, or legality of the agricultural products traded through the platform.",
  "Users are responsible for their own business decisions and the transactions they enter into.",
- "Force-majeure events — including natural disasters — may affect service availability.",
+ "Force-majeure events - including natural disasters - may affect service availability.",
  "Third-party integrations and external services are governed by their respective terms.",
  ],
  },
@@ -78,7 +78,7 @@ export default function TermsPage() {
  <><PageHeader
  eyebrow="§ Legal · Terms"
  title="Terms of Service."
- lede="These terms govern access to and use of the Fashol platform — websites, mobile applications, and related services — provided by Fashol Dotcom Limited. By using our services, you enter into a legally binding agreement with us."
+ lede="These terms govern access to and use of the Fashol platform - websites, mobile applications, and related services - provided by Fashol Dotcom Limited. By using our services, you enter into a legally binding agreement with us."
  />
 
  <Section tone="paper">

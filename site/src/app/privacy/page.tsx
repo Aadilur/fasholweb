@@ -12,11 +12,11 @@ const SECTIONS = [
  {
  title: "§ 01 Information we collect",
  items: [
- "Personal information — name, email, phone number, and location — when you register for our services.",
- "Agricultural data — crop information, farm details, transaction and settlement history — when you use Jogaan or the Fashol platform.",
+ "Personal information - name, email, phone number, and location - when you register for our services.",
+ "Agricultural data - crop information, farm details, transaction and settlement history - when you use Jogaan or the Fashol platform.",
  "Device information and usage analytics to monitor platform stability and to improve performance.",
  "Location data, when permitted, to provide location-based services and to plan logistics routes.",
- "Communication records — messages exchanged with customer support — for service improvement.",
+ "Communication records - messages exchanged with customer support - for service improvement.",
  ],
  },
  {
@@ -34,7 +34,7 @@ const SECTIONS = [
  title: "§ 03 How information is shared",
  items: [
  "We do not sell your personal information to third parties.",
- "Information may be shared with verified business partners — buyers, logistics operators, banking partners — for the sole purpose of facilitating a transaction.",
+ "Information may be shared with verified business partners - buyers, logistics operators, banking partners - for the sole purpose of facilitating a transaction.",
  "Service providers (hosting, analytics, communications) who assist in operating the platform may access data under a data-processing agreement.",
  "Legal authorities may receive information when required by law, by court order, or by a valid regulatory request.",
  "Aggregated, de-identified data may be shared for research, benchmarking, and platform improvement.",

@@ -28,13 +28,13 @@ const bengali = Hind_Siliguri({
 export const metadata: Metadata = {
   metadataBase: new URL("https://fashol.com"),
   title: {
-    default: "Fashol — A supply chain for 40,000 smallholder farmers in Bangladesh",
+    default: "Fashol - A supply chain for 60,000 smallholder farmers in Bangladesh",
     template: "%s · Fashol",
   },
   description:
     "Fashol moves perishable produce from smallholder farms in Bangladesh to buyers in Dhaka, Singapore, and Dubai. Direct pricing, real-time logistics, 26 percent less waste.",
   openGraph: {
-    title: "Fashol — A supply chain for 40,000 smallholder farmers in Bangladesh",
+    title: "Fashol - A supply chain for 60,000 smallholder farmers in Bangladesh",
     description:
       "Direct-from-farm produce, four-tier quality grading, 24-hour settlement. Nine districts, 40+ hubs.",
     type: "website",

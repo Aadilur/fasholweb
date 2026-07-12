@@ -34,7 +34,7 @@ const PRODUCTS: Product[] = [
   {
     num: "01",
     name: "Jogaan",
-    bn: "যোগান",
+    bn: null,
     audience: "Farmers and field agents.",
     headline: "The grower's view of the Fashol network.",
     body: "Farmers and Fashol's field agents use Jogaan to check live buyer demand across all nine operating districts, confirm mobile-money payments within 24 hours of weighing, and keep a full record of every sale without any paperwork. The app also includes a marketplace for seed, feed, and farm equipment, plus a community feed where registered growers share advice and prices.",
@@ -56,7 +56,7 @@ const PRODUCTS: Product[] = [
     cta: "Get Hyperfarm",
     action: { type: "platforms" },
     img: "/images/content/platform-02-hyperfarm.jpg",
-    imgAlt: "Interior of a large Bangladeshi warehouse with mounds of golden grain, workers moving product, and sacks of feed stacked in the foreground — the procurement floor Hyperfarm digitises.",
+    imgAlt: "Interior of a large Bangladeshi warehouse with mounds of golden grain, workers moving product, and sacks of feed stacked in the foreground - the procurement floor Hyperfarm digitises.",
     span: "tablet:col-span-1 desktop:col-span-6",
     nameColor: "text-[var(--color-ink)]",
     layout: "flagship",

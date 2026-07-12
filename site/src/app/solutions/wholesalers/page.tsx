@@ -276,13 +276,7 @@ export default function WholesalersPage() {
       <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
-            <Reveal
-              as="span"
-              className="block t-eyebrow"
-            >
-              BEFORE AND AFTER FASHOL
-            </Reveal>
-            <Reveal as="h2" className="t-h2 mt-6">
+            <Reveal as="h2" className="t-h2">
               The same trader. A different ceiling.
             </Reveal>
           </div>

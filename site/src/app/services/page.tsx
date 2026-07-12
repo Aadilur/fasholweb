@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 const SPECS = [
  ["App", "যোগান · Jogaan · Android"],
  ["Language", "Bengali (primary) · English"],
- ["Users", "40,000+ farmers · 5,000+ buyers · 140 field agents"],
+ ["Users", "60,000+ farmers · 7,000+ buyers · 140 field agents"],
  ["Modules", "06"],
- ["Settlement", "Within 24 h of weigh-in — named bank / bKash"],
+ ["Settlement", "Within 24 h of weigh-in - named bank / bKash"],
  ["Coverage", "9 districts · expanding to 15 in 2026"],
 ];
 
@@ -30,12 +30,12 @@ const SERVICES = [
  image: "/images/content/farmer-cabbage.jpg",
  alt: "A registered farmer holding a cabbage in a Fashol.com branded shirt at harvest in the field.",
  body: [
- "The base layer. Farmers register through Jogaan, listing crop, quantity, harvest window, and expected price. Buyers post demand. The platform matches the two directly — no aratdars, no price opacity, no delayed settlement.",
+ "The base layer. Farmers register through Jogaan, listing crop, quantity, harvest window, and expected price. Buyers post demand. The platform matches the two directly - no aratdars, no price opacity, no delayed settlement.",
  "Pricing is visible to both sides from the point of agreement. Every transaction is logged against a farmer ID that they own and can show to banks, extension officers, or offtakers outside the platform.",
  ],
  specs: [
  ["Tag", "Fashol · B2B"],
- ["Users", "40,000+ farmers · 5,000+ buyers"],
+ ["Users", "60,000+ farmers · 7,000+ buyers"],
  ["Coverage", "09 districts, BD"],
  ["Settlement", "Within 24 hours of weighing"],
  ],
@@ -66,8 +66,8 @@ const SERVICES = [
  image: "/images/content/market-women.jpg",
  alt: "Women selling fresh vegetables at a subcontinental market.",
  body: [
- "Buyers — MSMEs, quick-commerce operators, exporters, wholesalers — use a tailored ordering interface with live inventory, tier-graded produce, and delivery-window visibility.",
- "Bulk and recurring orders are supported. Foodpanda, Chaldal, Daraz, and Domino's are among the 5,000+ buyer accounts currently on the platform.",
+ "Buyers - MSMEs, quick-commerce operators, exporters, wholesalers - use a tailored ordering interface with live inventory, tier-graded produce, and delivery-window visibility.",
+ "Bulk and recurring orders are supported. Foodpanda, Chaldal, Daraz, and Domino's are among the 7,000+ buyer accounts currently on the platform.",
  ],
  specs: [
  ["Tag", "SaaS · Retail"],
@@ -84,7 +84,7 @@ const SERVICES = [
  image: "/images/content/market-aerial-bd.jpg",
  alt: "Aerial view of a bustling outdoor vegetable market in rural Bangladesh.",
  body: [
- "The same price signals that commodity desks and urban wholesalers rely on — published daily to the Jogaan app in Bengali, with a seven-day trailing chart and a twelve-month seasonal comparison.",
+ "The same price signals that commodity desks and urban wholesalers rely on - published daily to the Jogaan app in Bengali, with a seven-day trailing chart and a twelve-month seasonal comparison.",
  "The audience is smallholder growers in climate-vulnerable districts for whom a day-late price signal is a week-late planting decision.",
  ],
  specs: [
@@ -102,7 +102,7 @@ const SERVICES = [
  image: "/images/content/farmer-watering.jpg",
  alt: "A farmer waters eggplant crops in a field at daylight.",
  body: [
- "Produce is graded on weight, visual defect, storage-life, and provenance before it leaves the district. The tier is set at the hub, not at the urban wholesale market — which is the common practice elsewhere and the origin of most adulteration.",
+ "Produce is graded on weight, visual defect, storage-life, and provenance before it leaves the district. The tier is set at the hub, not at the urban wholesale market - which is the common practice elsewhere and the origin of most adulteration.",
  "Grade A goes to exporters and quick commerce; Grade B to MSMEs; Grade C to wholesale; Grade D is rejected and routed to animal feed or compost contractors.",
  ],
  specs: [
@@ -120,7 +120,7 @@ const SERVICES = [
  image: "/images/content/farmer-sowing.jpg",
  alt: "A farmer in an orange shirt sowing seed in a paddy field.",
  body: [
- "Farmers are paid through mobile financial services (upay, bKash, Nagad) within 24 hours of weighing — against a traditional 2-to-6-week cycle elsewhere in the chain.",
+ "Farmers are paid through mobile financial services (upay, bKash, Nagad) within 24 hours of weighing - against a traditional 2-to-6-week cycle elsewhere in the chain.",
  "Farmers with a twelve-month track record on the platform qualify for seasonal credit from banking partners, underwritten against their registered volumes rather than their land.",
  ],
  specs: [
@@ -139,7 +139,7 @@ export default function ServicesPage() {
  title={<>The platform <em>is</em> an app in the farmer&apos;s hand.</>}
  lede={
  <>
- Every Fashol service — onboarding, pricing, collection, grading, settlement, and order book — runs through
+ Every Fashol service - onboarding, pricing, collection, grading, settlement, and order book - runs through
  <em> Jogaan</em>, the Bengali-first Android app our field agents carry and our farmers receive a notification
  from at 19:00 each evening. The six modules below are the work that sits behind the app.
  </>
@@ -150,8 +150,7 @@ export default function ServicesPage() {
  <Section tone="surface" size="sm">
  <div className="grid desktop:grid-cols-12 gap-10 items-start">
  <div className="desktop:col-span-5">
- <Eyebrow>Platform specifications</Eyebrow>
- <div className="grid grid-cols-1 gap-y-5 mt-8">
+ <div className="grid grid-cols-1 gap-y-5">
  {SPECS.map(([k, v]) => (
  <div key={k} className="border-t border-[var(--color-line)] pt-3 flex justify-between gap-4">
  <span className="t-mono text-[11px] text-[var(--color-ink-muted)] shrink-0">{k}</span>
@@ -166,7 +165,7 @@ export default function ServicesPage() {
  <div key={s} className="relative aspect-[9/16] rounded-3xl overflow-hidden border border-[var(--color-line)] bg-white shadow-[var(--shadow-layered)]">
  <Image
  src={`/images/content/${s}.png`}
- alt={["Jogaan app — farmer registration screen, Bengali-first.", "Jogaan app — next-day offer price and collection slot.", "Jogaan app — settlement confirmation and payout."][i]}
+ alt={["Jogaan app - farmer registration screen, Bengali-first.", "Jogaan app - next-day offer price and collection slot.", "Jogaan app - settlement confirmation and payout."][i]}
  fill
  sizes="(min-width: 1200px) 240px, 30vw"
  className="object-cover"
@@ -226,7 +225,7 @@ export default function ServicesPage() {
  <div className="grid desktop:grid-cols-12 gap-10 items-center">
  <div className="desktop:col-span-7">
  <h2 className="t-h2 mt-6 max-w-2xl">
- <span className="lang-bn">যোগান</span> — Jogaan. The app the field runs on.
+ <span className="lang-bn">যোগান</span> - Jogaan. The app the field runs on.
  </h2>
  <p className="t-body-lg !text-[rgba(255,255,255,0.75)] mt-6 max-w-2xl">
  Bengali verb meaning &ldquo;to supply.&rdquo; Built for field agents and farmers who handle registration, price lock,
@@ -251,7 +250,7 @@ export default function ServicesPage() {
  <div className="desktop:col-span-5 relative aspect-[9/16] max-w-sm mx-auto w-full">
  <Image
  src="/images/content/jogaan-2.png"
- alt="Jogaan app — pricing and collection screen."
+ alt="Jogaan app - pricing and collection screen."
  fill
  sizes="(min-width: 1200px) 380px, 80vw"
  className="object-cover rounded-3xl border border-[rgba(255,255,255,0.15)]"
@@ -266,7 +265,7 @@ export default function ServicesPage() {
  <div className="grid tablet:grid-cols-3 gap-6 mt-14">
  {[
  { n: "01", t: "Register as farmer", b: "Bring your last season's records. WhatsApp a field agent.", href: "https://wa.me/+8801810187230?text=Hello!%20I%E2%80%99d%20like%20to%20register%20as%20a%20farmer%20with%20Fashol." },
- { n: "02", t: "Open a buyer account", b: "MSME, QC, exporter, wholesale — 10-minute set-up.", href: "https://wa.me/+8801810187230?text=Hello!%20I%E2%80%99d%20like%20to%20open%20a%20buyer%20account%20with%20Fashol." },
+ { n: "02", t: "Open a buyer account", b: "MSME, QC, exporter, wholesale - 10-minute set-up.", href: "https://wa.me/+8801810187230?text=Hello!%20I%E2%80%99d%20like%20to%20open%20a%20buyer%20account%20with%20Fashol." },
  { n: "03", t: "Integration & partnerships", b: "Logistics, cold chain, financial rails, NGO partners.", href: "/contact" },
  ].map((c) => (
  <div key={c.n} className="card-plain p-8 flex flex-col gap-4">

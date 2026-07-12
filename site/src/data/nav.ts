@@ -21,7 +21,7 @@ export type NavMenu = {
 export const PRODUCTS_MENU: NavMenu = {
   id: "products",
   label: "Products",
-  href: "/products",
+  href: "/products/jogaan",
   groups: [
     {
       items: [
@@ -49,7 +49,7 @@ export const PRODUCTS_MENU: NavMenu = {
 export const SOLUTIONS_MENU: NavMenu = {
   id: "solutions",
   label: "Solutions",
-  href: "/solutions",
+  href: "/solutions/restaurants",
   groups: [
     {
       eyebrow: "Buyers",

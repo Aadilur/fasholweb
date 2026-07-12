@@ -368,10 +368,7 @@ export default function SupershopsPage() {
       <Section tone="surface-deep">
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
-            <Reveal as="span" className="block t-eyebrow">
-              WHAT FASHOL DELIVERS TO A SUPERSHOP CHAIN
-            </Reveal>
-            <Reveal as="h2" className="t-h2 mt-6">
+            <Reveal as="h2" className="t-h2">
               Four things the procurement desk and the CFO both want.
             </Reveal>
           </div>

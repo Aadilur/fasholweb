@@ -24,7 +24,7 @@ function detectPlatform(): "ios" | "android" | "desktop" {
   if (typeof navigator === "undefined") return "desktop";
   const ua = navigator.userAgent || "";
   if (/iPad|iPhone|iPod/.test(ua)) return "ios";
-  // iPadOS 13+ reports as Mac with touch support — catch that too.
+  // iPadOS 13+ reports as Mac with touch support - catch that too.
   if (
     navigator.platform === "MacIntel" &&
     typeof navigator.maxTouchPoints === "number" &&

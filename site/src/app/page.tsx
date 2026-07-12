@@ -100,27 +100,20 @@ export default function HomePage() {
  {/* Headline block - pulled up into the image's faded floor so 4 stat cards land at the viewport fold */}
  <div className="container-page text-center relative z-10 pt-0 pb-4 -mt-24 tablet:-mt-32 desktop:-mt-40 tablet:pb-5">
  <Reveal as="h1" className="t-hero !text-[30px] tablet:!text-[44px] desktop:!text-[56px] !text-[var(--color-deep-green)] max-w-[900px] mx-auto">
- Building a better food supply chain
+ Building a safe, sustainable food supply chain
  </Reveal>
- {/* <Reveal
+ <Reveal
  as="p"
  delay={0.16}
  className="t-body-lg !text-[var(--color-ink-subtle)] mt-4 max-w-2xl mx-auto"
  >
- Fashol moves perishable produce from farms across Bangladesh to buyers in Dhaka,
- Singapore, and Dubai. Direct pricing. Real-time logistics.{" "}
- <span className="text-[var(--color-deep-green)] font-medium">26 percent less waste.</span>
- </Reveal> */}
+ Better pay and better inputs for the farmers who grow it, and{" "}
+ <span className="text-[var(--color-deep-green)] font-medium">safe, traceable produce</span>{" "}
+ for every buyer and family. Built together with farmers and every stakeholder in the chain.
+ </Reveal>
  <Reveal delay={0.24} className="mt-4 tablet:mt-5 flex flex-col tablet:flex-row gap-3 justify-center items-center">
  <Button variant="primary" href="/contact" className="!h-10 !px-5 !text-[13px]">
  Partner with Fashol
- </Button>
- <Button
- variant="secondary"
- href="/data"
- className="!h-10 !px-5 !text-[13px] !text-[var(--color-deep-green)] !border-[var(--color-deep-green)] hover:!bg-[rgba(6,94,58,0.06)]"
- >
- Read the data
  </Button>
  </Reveal>
  </div>
@@ -175,14 +168,14 @@ export default function HomePage() {
  <Section tone="paper">
  <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
  <Reveal as="h2" className="t-h2 desktop:col-span-6">
- We buy direct from farmers and deliver to the buyer&apos;s door.
+ Safe food, direct from the farmer&apos;s field to the buyer&apos;s door.
  </Reveal>
  <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
  <p>
  Fashol moves fresh produce from farms in nine Bangladeshi districts to buyers in Dhaka, Singapore, Dubai, and Bangkok. Our field agents buy direct from the farmer. Our hubs grade and cold-store the produce. Our trucks run on Fashol&apos;s own delivery routes. Farmers are paid by mobile money within 24 hours of weighing.
  </p>
  <p className="mt-5">
- Owning every step of that route is the point. It keeps the price fair for the farmer, the quality consistent for the buyer, and the journey short enough to move fresh food across borders. The same platform that runs nine districts in Bangladesh today is what we are taking into the rest of South Asia next.
+ Owning every step of that route is the point. It keeps the price fair for the farmer, the quality consistent for the buyer, and the journey short enough to move fresh food across borders. We work hand in hand with farmers and every stakeholder in the chain to keep food safe, growers paid fairly, and the whole system sustainable.
  </p>
  </Reveal>
  </div>
@@ -213,10 +206,7 @@ export default function HomePage() {
  { n: "05", t: "BUYER'S DOOR", s: "Order to delivery", stat: "7,000+ buyers", d: "From a Dhaka MSME to an exporter shipping into Singapore, Dubai, or Bangkok." },
  ].map((c) => (
  <div key={c.n} className="p-5 tablet:p-6 bg-[var(--color-paper)] flex flex-col gap-2.5">
- <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] text-[10px] t-mono">
- {c.n}
- </span>
- <h4 className="t-h5 tracking-[-0.02em] mt-2" style={{ fontWeight: 500 }}>{c.t}</h4>
+ <h4 className="t-h5 tracking-[-0.02em]" style={{ fontWeight: 500 }}>{c.t}</h4>
  <p className="t-caption">{c.s}</p>
  <p className="t-body-sm text-[var(--color-ink-subtle)] mt-1">{c.stat}</p>
  <p className="t-caption">{c.d}</p>
@@ -228,13 +218,27 @@ export default function HomePage() {
 
  </Section>
 
+ {/* ───────────── Wash, grading & processing centres ───────────── */}
+ <Section tone="ink">
+ <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
+ <Reveal as="h2" className="t-h2 !text-[var(--color-paper)] desktop:col-span-6">
+ Wash, grading &amp; processing centres - coming to every region.
+ </Reveal>
+ <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg !text-[rgba(255,251,234,0.75)]">
+ <p>
+ The next layer of the safe food supply chain. Fashol is building agri-product wash, grading, and processing centres across Bangladesh - so produce is cleaned, graded, and processed to a consistent safety standard close to where it is grown. Better returns for farmers, longer shelf life, less waste, and safe, traceable food for every buyer.
+ </p>
+ <p className="mt-5 !text-[var(--color-lime)]" style={{ fontWeight: 500 }}>
+ Rolling out district by district.
+ </p>
+ </Reveal>
+ </div>
+ </Section>
+
  {/* ───────────── Farmer Value ───────────── */}
  <Section tone="surface" className="!py-6 tablet:!py-8 desktop:!py-10">
  <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
  <Reveal className="desktop:col-span-6">
- <span className="t-mono text-[11px] tracking-[0.14em] uppercase text-[var(--color-ink-muted)] block mb-5">
- FARMER VALUE
- </span>
  <h2 className="t-h2">
  Four things a farmer on Fashol has, that a farmer off it usually does not.
  </h2>
@@ -289,9 +293,6 @@ export default function HomePage() {
  />
  </div>
  <div className="p-6 desktop:p-7 flex flex-col gap-3 flex-1 min-w-0">
- <span className="t-mono text-[11px] tracking-[0.12em] uppercase !text-[var(--color-ink-muted)]">
- {c.product}
- </span>
  <h3 className="t-h5" style={{ fontWeight: 500 }}>
  {c.headline}
  </h3>
@@ -300,69 +301,6 @@ export default function HomePage() {
  </article>
  </Reveal>
  ))}
- </div>
- </Section>
-
- {/* ───────────── Operations register ───────────── */}
- <Section tone="surface" size="sm" className="!py-10 tablet:!py-12 desktop:!py-14">
- <div className="grid desktop:grid-cols-12 gap-8 items-end">
- <Reveal as="h2" className="t-h2 desktop:col-span-5">
- One network behind every farmer.
- </Reveal>
- <Reveal delay={0.08} className="desktop:col-span-7 t-body">
- A farmer on Jogaan does not sell to one buyer. They sell into a network of 40 Fashol hubs, 200+ wholesale markets across 50 Bangladeshi locations, plus cross-border buyers in Singapore, the UAE, and Thailand. Fashol owns the cold chain, the grading, and the route. The farmer gets the reach.
- </Reveal>
- </div>
-
- {/* Scoreboard + hub table - two-column dense row */}
- <div className="grid desktop:grid-cols-12 gap-8 desktop:gap-10 mt-8 items-start">
- {/* Scoreboard - vertical compact list */}
- <Reveal className="desktop:col-span-5 flex flex-col">
- <p className="text-[10px] text-[var(--color-terracotta)] uppercase mb-2" style={{ fontWeight: 500, letterSpacing: "0.08em" }}>At a glance</p>
- <dl className="flex flex-col gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-xl overflow-hidden">
- {[
- { v: "40+", l: "Hubs" },
- { v: "200+", l: "Markets" },
- { v: "50", l: "Locations" },
- { v: "60K+", l: "Farmers" },
- { v: "3.5K+ MT", l: "Volume / mo" },
- { v: "4", l: "Countries" },
- ].map((s) => (
- <div key={s.l} className="bg-[var(--color-grain)] px-4 py-2.5 flex items-baseline justify-between gap-3">
- <dd className="t-tabular text-[15px] !text-[var(--color-deep-green)]" style={{ fontWeight: 500 }}>{s.v}</dd>
- <dt className="t-caption !text-[var(--color-ink-muted)] text-right">{s.l}</dt>
- </div>
- ))}
- </dl>
- </Reveal>
-
- {/* Hub footprint - editorial directory list */}
- <Reveal delay={0.08} className="desktop:col-span-7">
- <p className="text-[10px] text-[var(--color-terracotta)] uppercase mb-3" style={{ fontWeight: 500, letterSpacing: "0.08em" }}>Hub footprint</p>
- <ul className="divide-y divide-[var(--color-line)] border-t border-b border-[var(--color-line)]">
- {[
- { hubs: "15", name: "Khulna", crops: "Paddy, Cabbage, Tomato" },
- { hubs: "09", name: "Rajshahi", crops: "Paddy, Mango, Potato" },
- { hubs: "04", name: "Mymensingh", crops: "Tomato, Gourd, Okra" },
- { hubs: "04", name: "Chattogram", crops: "Paddy, Chilli, Bottle Gourd" },
- { hubs: "05", name: "Dhaka", crops: "Leafy greens, Radish" },
- { hubs: "03", name: "Sylhet", crops: "Tea, Lemon, Ginger" },
- { hubs: "-", name: "Barishal", crops: "Onboarding, 2026 Q2" },
- ].map((d) => (
- <li key={d.name} className="grid grid-cols-12 gap-3 items-baseline py-2.5">
- <span className="col-span-2 t-tabular text-[18px] !text-[var(--color-deep-green)]" style={{ fontWeight: 500 }}>
- {d.hubs}
- </span>
- <span className="col-span-4 text-[14px]" style={{ fontWeight: 500 }}>
- {d.name}
- </span>
- <span className="col-span-6 t-caption">
- {d.crops}
- </span>
- </li>
- ))}
- </ul>
- </Reveal>
  </div>
  </Section>
 
@@ -421,16 +359,10 @@ export default function HomePage() {
  className="object-cover"
  />
  </div>
- <span className="t-mono text-[10px] text-[var(--color-ink-muted)] mt-4">
- {c.num}
- </span>
- <h3 className="t-h5 mt-1.5" style={{ fontWeight: 500 }}>
+ <h3 className="t-h5 mt-4" style={{ fontWeight: 500 }}>
  {c.title}
  </h3>
  <p className="t-body-sm mt-2">{c.body}</p>
- <p className="text-[12px] tracking-[-0.005em] text-[var(--color-terracotta)] mt-auto pt-3" style={{ fontWeight: 500 }}>
- {c.standout}
- </p>
  </article>
  </Reveal>
  ))}
@@ -443,9 +375,6 @@ export default function HomePage() {
  <div className="relative max-w-[1120px] mx-auto">
  {/* Top hero card - vertical padding tightened (~25%); title zone sits above a reserved globe zone so text never collides with the halo */}
  <div className="relative bg-[var(--color-deep-green)] rounded-[32px] px-6 tablet:px-10 desktop:px-14 pt-10 tablet:pt-14 desktop:pt-16 pb-[125px] tablet:pb-[150px] desktop:pb-[175px] text-center overflow-visible">
- <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.55)] block mb-4 tablet:mb-5 uppercase">
- GLOBAL CAPABILITY
- </span>
  <h2 className="!text-[var(--color-paper)] max-w-[720px] mx-auto text-[28px] tablet:text-[38px] desktop:text-[46px] leading-[1.08] tracking-[-0.015em]" style={{ fontWeight: 500 }}>
  We source in Bangladesh. We deliver across the region.
  </h2>
@@ -469,8 +398,7 @@ export default function HomePage() {
  <div className="grid grid-cols-1 desktop:grid-cols-3 gap-4 tablet:gap-5 mt-4 tablet:mt-5">
  {/* OFFICES - big 4 paired with a city/role directory */}
  <div className="bg-[var(--color-ink)] rounded-[32px] p-8 tablet:p-10 pt-[190px] tablet:pt-[230px] desktop:pt-[260px] flex flex-col">
- <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.5)] uppercase">OFFICES</span>
- <div className="mt-6 flex items-start gap-5 tablet:gap-6">
+ <div className="flex items-start gap-5 tablet:gap-6">
  <div className="t-tabular text-[64px] tablet:text-[72px] desktop:text-[80px] leading-[0.9] !text-[var(--color-paper)] flex-shrink-0" style={{ fontWeight: 500 }}>
  4
  </div>
@@ -489,8 +417,7 @@ export default function HomePage() {
 
  {/* EXPORT - middle tile, sits directly beneath the globe */}
  <div className="bg-[var(--color-ink)] rounded-[32px] p-8 tablet:p-10 pt-[190px] tablet:pt-[230px] desktop:pt-[260px] flex flex-col">
- <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.5)] uppercase">EXPORT</span>
- <h3 className="mt-6 text-[24px] tablet:text-[28px] desktop:text-[32px] leading-[1.1] tracking-[-0.015em] !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>
+ <h3 className="text-[24px] tablet:text-[28px] desktop:text-[32px] leading-[1.1] tracking-[-0.015em] !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>
  Four corridors out of Dhaka.
  </h3>
  <p className="mt-5 text-[14px] tablet:text-[15px] leading-[1.55] !text-[rgba(255,251,234,0.72)]">
@@ -500,8 +427,7 @@ export default function HomePage() {
 
  {/* TECHNOLOGY - replaces the prior PLATFORM tile */}
  <div className="bg-[var(--color-ink)] rounded-[32px] p-8 tablet:p-10 pt-[190px] tablet:pt-[230px] desktop:pt-[260px] flex flex-col">
- <span className="t-mono text-[11px] tracking-[0.14em] !text-[rgba(255,251,234,0.5)] uppercase">TECHNOLOGY</span>
- <h3 className="mt-6 text-[24px] tablet:text-[28px] desktop:text-[32px] leading-[1.1] tracking-[-0.015em] !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>
+ <h3 className="text-[24px] tablet:text-[28px] desktop:text-[32px] leading-[1.1] tracking-[-0.015em] !text-[var(--color-paper)]" style={{ fontWeight: 500 }}>
  The eagle-eye view of your supply.
  </h3>
  <p className="mt-5 text-[14px] tablet:text-[15px] leading-[1.55] !text-[rgba(255,251,234,0.72)]">
@@ -554,9 +480,6 @@ export default function HomePage() {
  key={`${v.name}-${i}`}
  className="shrink-0 w-[320px] tablet:w-[380px] bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8 flex flex-col gap-6 min-h-[280px]"
  >
- <span className="t-mono text-[11px] tracking-[0.12em] uppercase !text-[var(--color-ink-muted)]">
- {v.eyebrow}
- </span>
  <blockquote className="text-[15px] leading-[1.55] !text-[var(--color-ink)] flex-1">
  {v.quote}
  </blockquote>
@@ -593,9 +516,6 @@ export default function HomePage() {
  </Reveal>
 
  <div className="mt-14 tablet:mt-16">
- <p className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mb-4">
- PARTNERS
- </p>
  <div className="grid grid-cols-3 tablet:grid-cols-4 desktop:grid-cols-6 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
  {PARTNERS.map((p) => (
  <div key={p.alt} className="bg-white aspect-[4/3] flex items-center justify-center p-4 tablet:p-5">
@@ -606,9 +526,6 @@ export default function HomePage() {
  </div>
 
  <div className="mt-12 tablet:mt-14">
- <p className="t-mono text-[11px] tracking-[0.14em] uppercase !text-[var(--color-ink-muted)] mb-4">
- INVESTORS
- </p>
  <div className="grid grid-cols-2 tablet:grid-cols-5 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
  {INVESTORS.map((p) => (
  <div key={p.alt} className="bg-white aspect-[4/3] flex items-center justify-center p-6">
@@ -625,9 +542,6 @@ export default function HomePage() {
  <Reveal as="h2" className="t-h2 desktop:col-span-7">
  Six principles. Operational, not aspirational.
  </Reveal>
- <Reveal delay={0.08} className="desktop:col-span-5 t-body-lg">
- Written into how we decide, hire, and settle with farmers.
- </Reveal>
  </div>
  <div className="grid tablet:grid-cols-2 desktop:grid-cols-3 gap-x-10 gap-y-12 mt-14 border-t border-[var(--color-line-strong)] pt-12">
  {[
@@ -638,9 +552,8 @@ export default function HomePage() {
  { p: "P.05", t: "Optimisation", b: "Data first. First principles next. Opinion last. Decisions are traceable to numbers we can show." },
  { p: "P.06", t: "Leadership", b: "Bangladesh's agricultural infrastructure deserves to be designed, not inherited. We carry that responsibility." },
  ].map((p) => (
- <div key={p.p}>
- <div className="t-mono text-[11px] text-[var(--color-terracotta)]">{p.p}</div>
- <h3 className="t-h5 mt-2" style={{ fontWeight: 500 }}>{p.t}</h3>
+ <div key={p.t}>
+ <h3 className="t-h5" style={{ fontWeight: 500 }}>{p.t}</h3>
  <p className="t-body mt-3">{p.b}</p>
  </div>
  ))}
@@ -660,7 +573,6 @@ export default function HomePage() {
  { n: "03", t: "Work with us", b: "Open roles in engineering, logistics, field operations, and data.", cta: "Work with us", href: "/career" },
  ].map((c) => (
  <StaggerItem key={c.n} className="rounded-3xl border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.04)] p-8 flex flex-col gap-4">
- <span className="t-mono text-[11px] !text-[rgba(255,255,255,0.55)]">{c.n}</span>
  <h3 className="t-h4" style={{ fontWeight: 500 }}>{c.t}</h3>
  <p className="t-body !text-[rgba(255,255,255,0.7)]">{c.b}</p>
  <div className="mt-auto pt-4">

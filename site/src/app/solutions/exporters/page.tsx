@@ -275,13 +275,7 @@ export default function ExportersPage() {
       {/* Section 4 - The Journey (surface tone per rotation). */}
       <section className={toneClass["surface-deep"]}>
         <div className="container-page pt-20 tablet:pt-28 desktop:pt-32 pb-10 tablet:pb-12">
-          <Reveal
-            as="span"
-            className="block t-eyebrow"
-          >
-            THE EXPORT JOURNEY
-          </Reveal>
-          <div className="mt-6 grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
+          <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
             <Reveal as="h2" className="t-h2 desktop:col-span-7">
               From RFQ to retail shelf, twelve operational stops under one roof.
             </Reveal>

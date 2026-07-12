@@ -15,7 +15,7 @@ const VIOLET_SOFT = "rgba(126,0,255,0.10)";
 const VIOLET_LINE = "rgba(126,0,255,0.18)";
 const CREAM = "#F4EFD8";
 
-// Sourced from /site/src/data/site.ts (PARTNERS) — alt copy mapped 1:1 from the
+// Sourced from /site/src/data/site.ts (PARTNERS) - alt copy mapped 1:1 from the
 // brief's logo list. Where a brand has no PNG asset in the repo (Shwapno,
 // Foodie), the row falls back to a styled wordmark in muted gray so the row
 // stays uniform.
@@ -34,7 +34,7 @@ const LOGOS: ReadonlyArray<Logo> = [
   { kind: "word", alt: "Foodie", word: "Foodie" },
 ];
 
-// 4 small avatar tints for the trust badge cluster — abstract violet-tinted
+// 4 small avatar tints for the trust badge cluster - abstract violet-tinted
 // circles, no AI-generated faces.
 const AVATAR_TINTS: ReadonlyArray<{ from: string; to: string; initials: string }> = [
   { from: "#7E00FF", to: "#B469FF", initials: "RA" },
@@ -211,9 +211,9 @@ function Body({
 export default function HyperfarmPage() {
   return (
     <div style={{ background: CREAM }}>
-      {/* SECTION 1 — HERO */}
+      {/* SECTION 1 - HERO */}
       <section className="relative overflow-hidden">
-        {/* Mobile / tablet stacked image — appears ABOVE the headline on
+        {/* Mobile / tablet stacked image - appears ABOVE the headline on
             mobile so the hand-with-phone leads the page. Owns the nav
             clearance padding on mobile/tablet.
             Mobile (<810px): image bleeds to ~2x viewport width and is shifted
@@ -233,7 +233,7 @@ export default function HyperfarmPage() {
                 sizes="(min-width: 810px) 80vw, 200vw"
                 className="block h-auto w-full"
               />
-              {/* Bottom fade — softens the wrist cutoff into the cream surface */}
+              {/* Bottom fade - softens the wrist cutoff into the cream surface */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-[14%]"
@@ -283,7 +283,7 @@ export default function HyperfarmPage() {
                 </div>
               </Reveal>
 
-              {/* H1 — forced to two visual lines via per-line nowrap spans. */}
+              {/* H1 - forced to two visual lines via per-line nowrap spans. */}
               <Reveal delay={0.06} className="mt-7">
                 <h1
                   style={{
@@ -324,7 +324,7 @@ export default function HyperfarmPage() {
           </div>
         </div>
 
-        {/* Desktop hero image — anchored to the right ~65% of the canvas, sized
+        {/* Desktop hero image - anchored to the right ~65% of the canvas, sized
             to sit close to the headline column on the left. */}
         <div className="hidden desktop:block absolute top-1/2 -translate-y-1/2 right-0 w-[65%] max-w-[1066px] z-0 pointer-events-none">
           <Reveal delay={0.1}>
@@ -339,7 +339,7 @@ export default function HyperfarmPage() {
                 className="block w-full h-auto"
                 aria-hidden
               />
-              {/* Bottom fade — softens the wrist cutoff into the cream surface */}
+              {/* Bottom fade - softens the wrist cutoff into the cream surface */}
               <div
                 aria-hidden
                 className="absolute inset-x-0 bottom-0 h-[14%]"
@@ -352,7 +352,7 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 2 — LOGO STRIP. Pulled up under the hero's bottom padding so
+      {/* SECTION 2 - LOGO STRIP. Pulled up under the hero's bottom padding so
           the logo bar peeks into the initial viewport without touching the
           hero content above. */}
       <section className="relative -mt-[48px] tablet:-mt-[72px] desktop:-mt-[30px] pt-0 pb-[48px] tablet:pb-[60px] desktop:pb-[72px]">
@@ -416,11 +416,11 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 3 — MARKETPLACE */}
+      {/* SECTION 3 - MARKETPLACE */}
       <section className="py-[100px] tablet:py-[130px] desktop:py-[160px]">
         <div className="container-page">
           <Reveal>
-            {/* Inline h2 — uses min()/vw scaling + nowrap so the line fits on
+            {/* Inline h2 - uses min()/vw scaling + nowrap so the line fits on
                 one line across viewport sizes without forcing a wrap. */}
             <h2
               style={{
@@ -451,7 +451,7 @@ export default function HyperfarmPage() {
                   sizes="(min-width: 1200px) 1080px, (min-width: 810px) 88vw, 100vw"
                   className="block h-auto w-full"
                 />
-                {/* Bottom fade — softens the wrist cutoff into the cream surface */}
+                {/* Bottom fade - softens the wrist cutoff into the cream surface */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-x-0 bottom-0 h-[14%]"
@@ -462,7 +462,7 @@ export default function HyperfarmPage() {
               </div>
             </Reveal>
 
-            {/* Floating cards — desktop only. Rendered without per-card Reveal
+            {/* Floating cards - desktop only. Rendered without per-card Reveal
                 so they sit visibly in the cluster the moment the section is
                 in view, instead of waiting for the cards' own scroll-trigger
                 threshold (which fired late since the cards sit deep inside
@@ -491,7 +491,7 @@ export default function HyperfarmPage() {
               />
             </div>
 
-            {/* Stacked cards — mobile / tablet */}
+            {/* Stacked cards - mobile / tablet */}
             <div className="desktop:hidden mt-10 grid grid-cols-1 gap-4 max-w-[520px] mx-auto">
               <FloatingCard
                 rotate={0}
@@ -516,7 +516,7 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 4 — PROBLEM BLOCK */}
+      {/* SECTION 4 - PROBLEM BLOCK */}
       <section className="py-[100px] tablet:py-[130px] desktop:py-[160px]">
         <div className="container-page">
           <div className="max-w-[820px] mx-auto text-center">
@@ -553,7 +553,7 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 5 — FEATURE 1: ORDER ANY TIME (text left / image right) */}
+      {/* SECTION 5 - FEATURE 1: ORDER ANY TIME (text left / image right) */}
       <FeatureRow
         imageSide="right"
         image="/ph2.png"
@@ -568,7 +568,7 @@ export default function HyperfarmPage() {
         body="Daily prices, refreshed every morning. Browse 1,000+ SKUs by category. Tap to order. Done in under a minute."
       />
 
-      {/* SECTION 6 — FEATURE 2: FROM FARM TO YOU (image left / text right) */}
+      {/* SECTION 6 - FEATURE 2: FROM FARM TO YOU (image left / text right) */}
       <FeatureRow
         imageSide="left"
         image="/ph3.png"
@@ -582,7 +582,7 @@ export default function HyperfarmPage() {
         body="Place the order tonight. Wake up to your supply already at the door. Track the truck on the way."
       />
 
-      {/* SECTION 7 — FEATURE 3: SNAP, ORDER, DONE (text left / image right) */}
+      {/* SECTION 7 - FEATURE 3: SNAP, ORDER, DONE (text left / image right) */}
       <FeatureRow
         imageSide="right"
         image="/ph4.png"
@@ -595,7 +595,7 @@ export default function HyperfarmPage() {
         body="Snap a photo of your order list. Hyperfarm reads the handwriting, finds the right SKUs, and builds the order. You confirm. Done."
       />
 
-      {/* SECTION 8 — STATS BLOCK */}
+      {/* SECTION 8 - STATS BLOCK */}
       <section className="py-[100px] tablet:py-[120px] desktop:py-[140px]">
         <div className="container-page">
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 max-w-[1080px] mx-auto desktop:flex desktop:flex-row desktop:justify-between desktop:items-start desktop:gap-x-10">
@@ -607,7 +607,7 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 9 — CLOSING CTA BAND */}
+      {/* SECTION 9 - CLOSING CTA BAND */}
       <section
         style={{ background: VIOLET }}
         className="py-[50px] tablet:py-[65px] desktop:py-[80px]"
