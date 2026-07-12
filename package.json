@@ -1,0 +1,12 @@
+{
+  "name": "fasholweb",
+  "private": true,
+  "scripts": {
+    "build": "cd site && npm install && npm run build",
+    "start": "cd site && npm run start",
+    "dev": "cd site && npm run dev"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

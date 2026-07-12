@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+buildCommand = "cd site && npm install && npm run build"
+configPath = "site"
+
+[deploy]
+startCommand = "cd site && npm run start"
+numReplicas = 1
