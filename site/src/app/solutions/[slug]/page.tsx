@@ -41,8 +41,8 @@ export default async function SolutionPage({
           <Button variant="primary" href="/contact">
             Partner with Fashol
           </Button>
-          <Link href="/solutions" className="link-arrow">
-            All solutions
+          <Link href="/" className="link-arrow">
+            Back to home
           </Link>
         </div>
       </div>

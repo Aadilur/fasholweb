@@ -14,6 +14,8 @@ import {
   DelayedFade,
 } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { t, type Lang } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n.server";
 
 export const metadata: Metadata = {
   title: "Retailers - Fashol",
@@ -24,13 +26,14 @@ export const metadata: Metadata = {
 const HERO_IMAGE_PATH = "/rehero.jpg";
 
 type HeroStat =
-  | { kind: "text"; value: string; label: string }
+  | { kind: "text"; value: string; valueBn: string; label: string; labelBn: string }
   | {
       kind: "number";
       n: number;
       format: "comma" | "plain";
       suffix: string;
       label: string;
+      labelBn: string;
     };
 
 const HERO_STATS: ReadonlyArray<HeroStat> = [
@@ -40,16 +43,21 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     format: "comma",
     suffix: "+",
     label: "Mudi shops served, six years of supply",
+    labelBn: "মুদি দোকানে সরবরাহ, ছয় বছর ধরে",
   },
   {
     kind: "text",
     value: "Before 6 AM",
+    valueBn: "ভোর 6টার আগে",
     label: "Daily delivery to your shop",
+    labelBn: "প্রতিদিন আপনার দোকানে ডেলিভারি",
   },
   {
     kind: "text",
     value: "Grade matched",
+    valueBn: "গ্রেড মিলিয়ে",
     label: "Quality dialed to your shop",
+    labelBn: "আপনার দোকান অনুযায়ী কোয়ালিটি",
   },
 ];
 
@@ -60,19 +68,24 @@ type ClaimCard = {
   imageSrc: string;
   imageAlt: string;
   statement: string;
+  statementBn: string;
   body: string;
+  bodyBn: string;
 };
 
 type ProofCard = {
   kind: "proof";
   display: string;
+  displayBn: string;
   displayScale: "lg" | "md" | "sm";
   body: string;
+  bodyBn: string;
 };
 
 type ClosingCard = {
   kind: "closing";
   statement: string;
+  statementBn: string;
 };
 
 type BentoCard = ClaimCard | ProofCard | ClosingCard;
@@ -91,7 +104,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric mudi shop with produce arriving at the door from a delivery van, owner opening the shutter",
       statement: "Your sleep back.",
+      statementBn: "আপনার ঘুম ফিরে পান।",
       body: "Fashol delivers to your shop before 6 AM, every day. Stop sleeping four hours. Stop driving to Karwan Bazar. Open your shop rested, with produce already stacked at the door.",
+      bodyBn: "ফসল প্রতিদিন ভোর 6টার আগেই আপনার দোকানে পৌঁছে দেয়। চার ঘণ্টার ঘুম আর নয়। কারওয়ান বাজারে ছোটাছুটি আর নয়। বিশ্রাম নিয়ে দোকান খুলুন, সবজি তখন দরজাতেই সাজানো।",
     },
   },
   {
@@ -102,7 +117,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric phone showing a simple price list with a stable flat-line indicator",
       statement: "Wholesale prices, delivered.",
+      statementBn: "পাইকারি দাম, দোরগোড়ায়।",
       body: "The same prices you would pay at the wholesale market, with delivery included. No more vendor haggling. No more price shocks on tomato days. You know the price before you order.",
+      bodyBn: "পাইকারি বাজারে আপনি যে দাম দিতেন, ঠিক সেই দাম - সাথে ডেলিভারিও। বিক্রেতার সাথে দরদাম আর নয়। টমেটোর দিনে দামের ধাক্কা আর নয়। অর্ডার দেওয়ার আগেই আপনি দাম জানেন।",
     },
   },
   {
@@ -110,8 +127,10 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "proof",
       display: "6 years",
+      displayBn: "6 বছর",
       displayScale: "lg",
       body: "Of daily mudi shop supply across Bangladesh. Same shops, same routes, same trust.",
+      bodyBn: "সারা বাংলাদেশে মুদি দোকানে দৈনিক সরবরাহের। একই দোকান, একই পথ, একই আস্থা।",
     },
   },
   {
@@ -122,7 +141,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric row of mudi shops receiving produce in crates of varying fills, suggesting different quality grades without labels",
       statement: "Whatever grade you want.",
-      body: "A shop in one neighborhood does not serve the same customer as a shop in another. Fashol grades produce to match what your customers buy. Premium grade where premium sells. Standard grade where standard sells. Your margin holds because your quality matches your price.",
+      statementBn: "আপনি যে গ্রেড চান।",
+      body: "Different neighborhoods, different customers. Fashol grades produce to match what your customers buy - premium where premium sells, standard where standard sells. Your margin holds because quality matches price.",
+      bodyBn: "ভিন্ন এলাকা, ভিন্ন ক্রেতা। ফসল সবজি এমনভাবে গ্রেড করে যা আপনার ক্রেতারা কেনেন তার সাথে মেলে - যেখানে প্রিমিয়াম বিকোয় সেখানে প্রিমিয়াম, যেখানে সাধারণ বিকোয় সেখানে সাধারণ। কোয়ালিটি দামের সাথে মেলে বলেই আপনার মুনাফা ঠিক থাকে।",
     },
   },
   {
@@ -130,8 +151,10 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "proof",
       display: "Cash on delivery",
+      displayBn: "ক্যাশ অন ডেলিভারি",
       displayScale: "sm",
       body: "Pay on delivery, every order. No contracts, no deposits, no monthly invoicing. The business runs on the same terms your shop does.",
+      bodyBn: "প্রতিটি অর্ডারে ডেলিভারির সময় টাকা দিন। কোনো চুক্তি নেই, জামানত নেই, মাসিক চালান নেই। আপনার দোকান যে শর্তে চলে, এই ব্যবসাও সেই শর্তেই চলে।",
     },
   },
   {
@@ -140,6 +163,7 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       kind: "closing",
       statement:
         "The market comes to the shop now. Not the other way around.",
+      statementBn: "এখন বাজারই দোকানে আসে। উল্টোটা নয়।",
     },
   },
 ];
@@ -147,51 +171,72 @@ const BENTO: ReadonlyArray<BentoEntry> = [
 const STEPS: ReadonlyArray<{
   n: string;
   headline: string;
+  headlineBn: string;
   body: string;
+  bodyBn: string;
 }> = [
   {
     n: "01",
     headline: "WhatsApp message.",
+    headlineBn: "হোয়াটসঅ্যাপ বার্তা।",
     body: "Send a message to Fashol's mudi shop team listing what you usually buy and where your shop is located. A team member confirms within an hour.",
+    bodyBn: "ফসলের মুদি দোকান টিমকে একটি বার্তা পাঠান, যেখানে আপনি সাধারণত যা কেনেন আর আপনার দোকান কোথায় তা লিখুন। এক ঘণ্টার মধ্যে একজন টিম সদস্য নিশ্চিত করবেন।",
   },
   {
     n: "02",
     headline: "Next-day delivery.",
+    headlineBn: "পরদিনই ডেলিভারি।",
     body: "The next morning, before 6 AM, Fashol delivers your first order to your shop. Cold-chain, graded for your shop, wholesale prices. Pay cash on delivery.",
+    bodyBn: "পরদিন সকালে, ভোর 6টার আগেই, ফসল আপনার প্রথম অর্ডার দোকানে পৌঁছে দেয়। কোল্ড-চেইন, আপনার দোকান অনুযায়ী গ্রেড করা, পাইকারি দাম। ডেলিভারির সময় ক্যাশে পরিশোধ করুন।",
   },
   {
     n: "03",
     headline: "Daily or weekly orders.",
+    headlineBn: "দৈনিক বা সাপ্তাহিক অর্ডার।",
     body: "Order daily, weekly, or whenever you need. Change your order by WhatsApp any evening before 9 PM. No minimum, no maximum, no contract.",
+    bodyBn: "প্রতিদিন, প্রতি সপ্তাহে, বা যখন দরকার তখনই অর্ডার দিন। রাত 9টার আগে যেকোনো সন্ধ্যায় হোয়াটসঅ্যাপে অর্ডার বদলান। কোনো ন্যূনতম নেই, সর্বোচ্চ নেই, চুক্তিও নেই।",
   },
   {
     n: "04",
     headline: "Your sleep back.",
+    headlineBn: "আপনার ঘুম ফিরে পান।",
     body: "Stop going to the market. Open your shop when it is time to open, rested, with produce already at the door.",
+    bodyBn: "বাজারে যাওয়া বন্ধ করুন। যখন দোকান খোলার সময় তখনই খুলুন - বিশ্রাম নিয়ে, সবজি তখন দরজাতেই।",
   },
 ];
 
 const RELATED: ReadonlyArray<{
   name: string;
+  nameBn: string;
   description: string;
+  descriptionBn: string;
   href: string;
 }> = [
   {
     name: "Restaurants",
+    nameBn: "রেস্তোরাঁ",
     description:
       "Morning delivery for 400+ restaurants including Domino's, with grading at the hub and transparent wholesale pricing.",
+    descriptionBn:
+      "ডমিনোজসহ 400+ রেস্তোরাঁর জন্য সকালের ডেলিভারি, সঙ্গে হাবে গ্রেডিং আর স্বচ্ছ পাইকারি দাম।",
     href: "/solutions/restaurants",
   },
   {
     name: "Supershops",
+    nameBn: "সুপারশপ",
     description:
       "Daily replenishment for Shwapno, Meena Bazar, Agora, and Daily Shopping, with pricing locked for the week.",
+    descriptionBn:
+      "স্বপ্ন, মীনা বাজার, আগোরা আর ডেইলি শপিংয়ের জন্য দৈনিক পুনঃসরবরাহ, সঙ্গে সপ্তাহজুড়ে নির্ধারিত দাম।",
     href: "/solutions/supershops",
   },
   {
     name: "Quick commerce",
+    nameBn: "কুইক কমার্স",
     description:
       "Fill rate above 95% for Foodpanda, Chaldal, and Foodie, with same-day fulfillment to every dark store.",
+    descriptionBn:
+      "ফুডপান্ডা, চালডাল আর ফুডির জন্য 95%-এর বেশি ফিল রেট, সঙ্গে প্রতিটি ডার্ক স্টোরে একই দিনে সরবরাহ।",
     href: "/solutions/quick-commerce",
   },
 ];
@@ -200,7 +245,8 @@ function publicFileExists(relative: string): boolean {
   return existsSync(join(process.cwd(), "public", relative));
 }
 
-export default function RetailersPage() {
+export default async function RetailersPage() {
+  const lang = await getLang();
   const heroImageExists = publicFileExists(HERO_IMAGE_PATH);
 
   return (
@@ -233,15 +279,18 @@ export default function RetailersPage() {
               as="h1"
               className="t-hero !text-[var(--color-paper)] !text-[56px] tablet:!text-[72px] desktop:!text-[88px]"
             >
-              Retailers.
+              {t(lang, "Retailers.", "রিটেইলার।")}
             </Reveal>
             <Reveal
               delay={0.2}
               as="p"
               className="t-body-lg mt-6 max-w-[620px] !text-[rgba(255,251,234,0.78)]"
             >
-              Fresh produce at your shop before 6 AM. Wholesale prices. No minimum
-              order.
+              {t(
+                lang,
+                "Fresh produce at your shop before 6 AM. Wholesale prices. No minimum order.",
+                "ভোর 6টার আগেই আপনার দোকানে টাটকা সবজি। পাইকারি দাম। কোনো ন্যূনতম অর্ডার নেই।",
+              )}
             </Reveal>
             <dl className="mt-10 tablet:mt-12 flex flex-col tablet:flex-row items-start gap-6 tablet:gap-10">
               {HERO_STATS.map((s, i) => (
@@ -273,12 +322,12 @@ export default function RetailersPage() {
                         duration={0.6}
                         y={0}
                       >
-                        {s.value}
+                        {t(lang, s.value, s.valueBn)}
                       </Reveal>
                     )}
                   </dd>
                   <dt className="t-caption mt-2 !text-[rgba(255,251,234,0.65)]">
-                    {s.label}
+                    {t(lang, s.label, s.labelBn)}
                   </dt>
                 </div>
               ))}
@@ -295,29 +344,30 @@ export default function RetailersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              A mudi shop owner does three jobs before the shop opens.
+              {t(lang, "A mudi shop owner does three jobs before the shop opens.", "দোকান খোলার আগেই একজন মুদি দোকানি তিনটি কাজ সেরে ফেলেন।")}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Running a mudi shop in Bangladesh means running three businesses before
-              sunrise. At 4 AM the owner is at Karwan Bazar or the nearest wholesale
-              market, haggling for the day&apos;s produce. By 6 AM the load is back at
-              the shop, getting sorted and stacked for display. By 7 AM the shutters
-              come up and the owner works the counter for the next twelve hours. The
-              morning market run is not optional. The shop cannot open without it.
+              {t(
+                lang,
+                "A mudi shop in Bangladesh is three businesses before sunrise. At 4 AM the owner haggles for the day's produce at Karwan Bazar or the nearest wholesale market. By 6 AM it is back and stacked for display. By 7 AM the shutters go up and the counter runs twelve hours. The morning run is not optional.",
+                "বাংলাদেশে একটি মুদি দোকান সূর্য ওঠার আগেই যেন তিনটি ব্যবসা। ভোর 4টায় দোকানি কারওয়ান বাজার বা কাছের পাইকারি বাজারে গিয়ে সেদিনের সবজির দরদাম করেন। 6টার মধ্যে তা দোকানে ফিরে সাজানো হয়। 7টার মধ্যে শাটার ওঠে, আর কাউন্টার চলে টানা বারো ঘণ্টা। সকালের এই ছোটাছুটি এড়ানোর উপায় নেই।",
+              )}
             </p>
             <p className="mt-5">
-              The morning run costs more than hours. The prices are whatever the
-              vendor decides that day. Quality is whatever was left by the time the
-              shopkeeper reached the stall. Transport back to the shop is another
-              cost, another delay, another risk. A single owner cannot compete with
-              the supershop chains on price or freshness, and cannot scale without
-              hiring help they cannot afford.
+              {t(
+                lang,
+                "The run costs more than hours. Prices are whatever the vendor decides; quality is whatever is left on arrival. Transport back adds cost, delay, and risk. One owner cannot match the supershop chains on price or freshness, or scale without help they cannot afford.",
+                "এই ছোটাছুটির দাম শুধু সময় নয়। দাম যা বিক্রেতা ঠিক করেন তা-ই; মান বলতে পৌঁছানোর পর যা পড়ে থাকে তা-ই। ফেরার পরিবহন যোগ করে বাড়তি খরচ, দেরি আর ঝুঁকি। একা একজন দোকানি দাম বা সতেজতায় সুপারশপ চেইনের সাথে পেরে ওঠেন না, আর যে সাহায্য তাঁর সাধ্যের বাইরে তা ছাড়া বড়ও হতে পারেন না।",
+              )}
             </p>
             <p className="mt-5">
-              A mudi shop does not need a procurement team. It needs a supply partner
-              that brings the market to the shop, not the other way around.
+              {t(
+                lang,
+                "A mudi shop does not need a procurement team. It needs a supply partner that brings the market to the shop, not the other way around.",
+                "একটি মুদি দোকানের কোনো সংগ্রহ টিম লাগে না। লাগে এমন একজন সাপ্লাই পার্টনার, যে বাজারকে দোকানে এনে দেয় - উল্টোটা নয়।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -336,7 +386,7 @@ export default function RetailersPage() {
               fontWeight: 500,
             }}
           >
-            No minimum order.
+            {t(lang, "No minimum order.", "কোনো ন্যূনতম অর্ডার নেই।")}
           </LetterSpaceReveal>
           <DelayedFade
             as="p"
@@ -346,10 +396,11 @@ export default function RetailersPage() {
             viewportMargin="0px 0px -30% 0px"
           >
             <span style={{ color: "rgba(255, 251, 234, 0.75)" }}>
-              Order what you need, when you need it. Fashol delivers to mudi shops
-              starting from a single crate. No wholesale contracts, no volume
-              commitments, no haggling. Cash on delivery, wholesale prices, quality
-              graded for your shop.
+              {t(
+                lang,
+                "Order what you need, when you need it. Fashol delivers to mudi shops starting from a single crate. No wholesale contracts, no volume commitments, no haggling. Cash on delivery, wholesale prices, quality graded for your shop.",
+                "যা দরকার, যখন দরকার, ততটুকুই অর্ডার করুন। ফসল মুদি দোকানে পৌঁছে দেয় একটি ঝুড়ি থেকেই শুরু করে। কোনো পাইকারি চুক্তি নেই, পরিমাণের বাধ্যবাধকতা নেই, দরদাম নেই। ক্যাশ অন ডেলিভারি, পাইকারি দাম, আর আপনার দোকান অনুযায়ী গ্রেড করা কোয়ালিটি।",
+              )}
             </span>
           </DelayedFade>
         </div>
@@ -360,14 +411,16 @@ export default function RetailersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              Four reasons to stop going to the market.
+              {t(lang, "Four reasons to stop going to the market.", "বাজারে যাওয়া বন্ধ করার চারটি কারণ।")}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Your sleep back, wholesale prices, quality dialed to your shop, and no
-              minimum order. Every Fashol delivery to a mudi shop is built around
-              these four.
+              {t(
+                lang,
+                "Your sleep back, wholesale prices, quality dialed to your shop, and no minimum order. Every Fashol delivery to a mudi shop is built around these four.",
+                "আপনার ঘুম ফিরে পাওয়া, পাইকারি দাম, দোকান অনুযায়ী কোয়ালিটি, আর কোনো ন্যূনতম অর্ডার নয়। মুদি দোকানে ফসলের প্রতিটি ডেলিভারি এই চারটি ঘিরেই গড়া।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -378,7 +431,7 @@ export default function RetailersPage() {
         >
           {BENTO.map((entry, i) => (
             <StaggerItem key={i} className={entry.span} y={20}>
-              <BentoCardView card={entry.card} />
+              <BentoCardView card={entry.card} lang={lang} />
             </StaggerItem>
           ))}
         </StaggerChildren>
@@ -388,7 +441,7 @@ export default function RetailersPage() {
       <Section tone="paper">
         <div className="text-center max-w-[720px] mx-auto">
           <Reveal as="h2" className="t-h2">
-            The product behind this work.
+            {t(lang, "The product behind this work.", "এই কাজের পেছনের প্রোডাক্ট।")}
           </Reveal>
         </div>
 
@@ -404,13 +457,15 @@ export default function RetailersPage() {
                 className="h-20 tablet:h-24 w-auto object-contain"
               />
               <p className="t-body mt-6">
-                The buyer procurement desk. Mudi shop owners order daily from
-                Hyperfarm - by phone, by WhatsApp, or from the app - and receive
-                cold-chain delivery before opening hours at wholesale prices.
+                {t(
+                  lang,
+                  "The buyer procurement desk. Mudi shop owners order daily from Hyperfarm - by phone, by WhatsApp, or from the app - and receive cold-chain delivery before opening hours at wholesale prices.",
+                  "বায়ারের সংগ্রহ ডেস্ক। মুদি দোকানিরা হাইপারফার্ম থেকে প্রতিদিন অর্ডার দেন - ফোনে, হোয়াটসঅ্যাপে, কিংবা অ্যাপ থেকে - আর দোকান খোলার আগেই পাইকারি দামে কোল্ড-চেইন ডেলিভারি পান।",
+                )}
               </p>
               <div className="mt-6">
                 <Link href="/products/hyperfarm" className="link-arrow">
-                  Open product page
+                  {t(lang, "Open product page", "প্রোডাক্ট পৃষ্ঠা দেখুন")}
                 </Link>
               </div>
             </article>
@@ -425,12 +480,11 @@ export default function RetailersPage() {
             className="!text-[var(--color-paper)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
           >
-            &ldquo;I went to Karwan Bazar every morning at 4 AM for nineteen years.
-            My daughter asked me once when the last time was I had breakfast with her
-            before school. I could not remember. I stopped going to the market six
-            months ago when Fashol started bringing the produce to the shop. Now I
-            have breakfast with my daughter. That is the real thing this business
-            gave me.&rdquo;
+            &ldquo;{t(
+              lang,
+              "I went to Karwan Bazar every morning at 4 AM for nineteen years. My daughter asked me once when the last time was I had breakfast with her before school. I could not remember. I stopped going to the market six months ago when Fashol started bringing the produce to the shop. Now I have breakfast with my daughter. That is the real thing this business gave me.",
+              "উনিশ বছর ধরে আমি প্রতিদিন ভোর 4টায় কারওয়ান বাজারে যেতাম। একদিন আমার মেয়ে জিজ্ঞেস করল, স্কুলে যাওয়ার আগে শেষ কবে তার সাথে নাশতা করেছিলাম। মনে করতে পারিনি। ছয় মাস আগে ফসল যখন দোকানে সবজি আনতে শুরু করল, আমি বাজারে যাওয়া বন্ধ করে দিলাম। এখন মেয়ের সাথে নাশতা করি। এই ব্যবসা আমাকে আসলে এটাই দিয়েছে।",
+            )}&rdquo;
           </QuoteReveal>
           <Reveal delay={0.16}>
             <figcaption className="mt-8 flex flex-col items-center">
@@ -438,13 +492,13 @@ export default function RetailersPage() {
                 className="text-[14px]"
                 style={{ fontWeight: 500, color: "var(--color-paper)" }}
               >
-                Mohammad Salam
+                {t(lang, "Mohammad Salam", "মোহাম্মদ সালাম")}
               </span>
               <span
                 className="text-[12px] mt-1"
                 style={{ color: "rgba(255,251,234,0.6)" }}
               >
-                Mudi shop owner, Mohakhali, Dhaka
+                {t(lang, "Mudi shop owner, Mohakhali, Dhaka", "মুদি দোকানি, মহাখালী, ঢাকা")}
               </span>
             </figcaption>
           </Reveal>
@@ -456,15 +510,16 @@ export default function RetailersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              One WhatsApp message. Next morning, delivered.
+              {t(lang, "One WhatsApp message. Next morning, delivered.", "একটি হোয়াটসঅ্যাপ বার্তা। পরদিন সকালেই ডেলিভারি।")}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Mudi shops do not need contracts or onboarding. Send a WhatsApp message
-              to Fashol&apos;s mudi shop team, list what you normally buy, and Fashol
-              delivers the next morning. Payment is cash on delivery. The
-              relationship grows from there.
+              {t(
+                lang,
+                "Mudi shops need no contracts or onboarding. WhatsApp Fashol's mudi shop team what you normally buy, and Fashol delivers the next morning, cash on delivery. It grows from there.",
+                "মুদি দোকানের কোনো চুক্তি বা অনবোর্ডিং লাগে না। আপনি সাধারণত যা কেনেন তা ফসলের মুদি দোকান টিমকে হোয়াটসঅ্যাপে জানান, আর ফসল পরদিন সকালে ক্যাশ অন ডেলিভারিতে পৌঁছে দেয়। এরপর সেখান থেকেই বাড়তে থাকে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -477,9 +532,9 @@ export default function RetailersPage() {
                   {s.n}
                 </span>
                 <h3 className="t-h5 mt-4" style={{ fontWeight: 500 }}>
-                  {s.headline}
+                  {t(lang, s.headline, s.headlineBn)}
                 </h3>
-                <p className="t-body-sm mt-3">{s.body}</p>
+                <p className="t-body-sm mt-3">{t(lang, s.body, s.bodyBn)}</p>
               </article>
             </Reveal>
           ))}
@@ -487,7 +542,7 @@ export default function RetailersPage() {
 
         <Reveal delay={0.16} className="mt-10 tablet:mt-12">
           <Link href="/contact" className="link-arrow">
-            Message Fashol&apos;s mudi shop team
+            {t(lang, "Message Fashol's mudi shop team", "ফসলের মুদি দোকান টিমকে বার্তা পাঠান")}
           </Link>
         </Reveal>
       </Section>
@@ -497,7 +552,7 @@ export default function RetailersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The rest of the demand side runs on Fashol too.
+              {t(lang, "The rest of the demand side runs on Fashol too.", "চাহিদার দিকের বাকি অংশও ফসলে চলে।")}
             </Reveal>
           </div>
         </div>
@@ -507,12 +562,12 @@ export default function RetailersPage() {
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">
                 <h3 className="t-h5" style={{ fontWeight: 500 }}>
-                  {r.name}
+                  {t(lang, r.name, r.nameBn)}
                 </h3>
-                <p className="t-body-sm mt-3">{r.description}</p>
+                <p className="t-body-sm mt-3">{t(lang, r.description, r.descriptionBn)}</p>
                 <div className="mt-auto pt-6">
                   <Link href={r.href} className="link-arrow">
-                    Learn more
+                    {t(lang, "Learn more", "আরও জানুন")}
                   </Link>
                 </div>
               </article>
@@ -531,13 +586,13 @@ export default function RetailersPage() {
 // full-width centered statement.
 // ------------------------------------------------------------------
 
-function BentoCardView({ card }: { card: BentoCard }) {
-  if (card.kind === "claim") return <ClaimCardView card={card} />;
-  if (card.kind === "proof") return <ProofCardView card={card} />;
-  return <ClosingCardView card={card} />;
+function BentoCardView({ card, lang }: { card: BentoCard; lang: Lang }) {
+  if (card.kind === "claim") return <ClaimCardView card={card} lang={lang} />;
+  if (card.kind === "proof") return <ProofCardView card={card} lang={lang} />;
+  return <ClosingCardView card={card} lang={lang} />;
 }
 
-function ClaimCardView({ card }: { card: ClaimCard }) {
+function ClaimCardView({ card, lang }: { card: ClaimCard; lang: Lang }) {
   const imageReady = publicFileExists(card.imageSrc);
   return (
     <article
@@ -585,7 +640,7 @@ function ClaimCardView({ card }: { card: ClaimCard }) {
           color: "var(--color-deep-green)",
         }}
       >
-        {card.statement}
+        {t(lang, card.statement, card.statementBn)}
       </h3>
       <p
         className="mt-4"
@@ -596,13 +651,13 @@ function ClaimCardView({ card }: { card: ClaimCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </article>
   );
 }
 
-function ProofCardView({ card }: { card: ProofCard }) {
+function ProofCardView({ card, lang }: { card: ProofCard; lang: Lang }) {
   const displayStyle =
     card.displayScale === "lg"
       ? {
@@ -638,7 +693,7 @@ function ProofCardView({ card }: { card: ProofCard }) {
           ...displayStyle,
         }}
       >
-        {card.display}
+        {t(lang, card.display, card.displayBn)}
       </h3>
       <p
         className="mt-auto pt-6"
@@ -649,13 +704,13 @@ function ProofCardView({ card }: { card: ProofCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </article>
   );
 }
 
-function ClosingCardView({ card }: { card: ClosingCard }) {
+function ClosingCardView({ card, lang }: { card: ClosingCard; lang: Lang }) {
   return (
     <article
       className="relative flex items-center justify-center rounded-[12px] text-center px-8 tablet:px-12"
@@ -676,7 +731,7 @@ function ClosingCardView({ card }: { card: ClosingCard }) {
           color: "var(--color-deep-green)",
         }}
       >
-        {card.statement}
+        {t(lang, card.statement, card.statementBn)}
       </p>
     </article>
   );

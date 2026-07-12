@@ -13,6 +13,8 @@ import {
   LetterSpaceReveal,
 } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { t, type Lang } from "@/lib/i18n";
+import { getLang } from "@/lib/i18n.server";
 
 export const metadata: Metadata = {
   title: "Cold storage operators - Fashol",
@@ -30,6 +32,7 @@ type HeroStat = {
   suffix: string;
   tail: string;
   label: string;
+  labelBn: string;
 };
 
 const HERO_STATS: ReadonlyArray<HeroStat> = [
@@ -39,6 +42,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "+",
     tail: "",
     label: "Inbound farmer base",
+    labelBn: "ইনবাউন্ড কৃষকভিত্তি",
   },
   {
     n: 7000,
@@ -46,6 +50,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "+",
     tail: "",
     label: "Mudi shops, supershops, restaurants",
+    labelBn: "মুদি দোকান, সুপারশপ, রেস্তোরাঁ",
   },
   {
     n: 50,
@@ -53,6 +58,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     suffix: "",
     tail: "",
     label: "Districts of operation",
+    labelBn: "জেলায় কার্যক্রম",
   },
 ];
 
@@ -61,13 +67,17 @@ type AnchorCard = {
   imageSrc: string;
   imageAlt: string;
   title: string;
+  titleBn: string;
   body: string;
+  bodyBn: string;
 };
 
 type TextCard = {
   kind: "text";
   title: string;
+  titleBn: string;
   body: string;
+  bodyBn: string;
 };
 
 type BentoCard = AnchorCard | TextCard;
@@ -86,7 +96,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric diagram of farmer nodes routing to a cold storage facility, organized by season and district",
       title: "The farmer pipeline",
-      body: "60,000 farmers on the network need cold storage across the calendar. Fashol's hub team routes them to your facility, by crop and season, in your district.",
+      titleBn: "কৃষকের পাইপলাইন",
+      body: "60,000 farmers on the network need storage year-round. Fashol's hub team routes them to your facility by crop and season, in your district.",
+      bodyBn: "নেটওয়ার্কের 60,000 কৃষকের সারা বছরই স্টোরেজ লাগে। ফসলের হাব টিম ফসল আর মৌসুম বুঝে, আপনার জেলাতেই তাদের আপনার স্টোরেজে পাঠায়।",
     },
   },
   {
@@ -97,7 +109,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
       imageAlt:
         "An isometric diagram of a cold storage facility with outbound orders flowing to retailers, restaurants, and supershops",
       title: "The buyer network",
-      body: "7,000 mudi shops, 400+ restaurants, and 400+ supershop outlets place orders against what is in storage. Your outbound turns from cold calls into a ledger of buyers waiting.",
+      titleBn: "বায়ারের নেটওয়ার্ক",
+      body: "7,000 mudi shops, 400+ restaurants, and 400+ supershop outlets order against what is in storage. Your outbound turns from cold calls into a ledger of waiting buyers.",
+      bodyBn: "7,000 মুদি দোকান, 400+ রেস্তোরাঁ আর 400+ সুপারশপ আউটলেট স্টোরেজে যা আছে তার বিপরীতে অর্ডার দেয়। আপনার আউটবাউন্ড আর খুঁজে খুঁজে বিক্রি নয়, অপেক্ষমাণ বায়ারদের একটা খতিয়ান।",
     },
   },
   {
@@ -105,7 +119,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Year-round, not just potato season",
+      titleBn: "সারা বছর, শুধু আলুর মৌসুমে নয়",
       body: "Vegetables in summer, ginger and onion in winter, potato through spring. The calendar runs longer because the crop mix runs wider.",
+      bodyBn: "গরমে সবজি, শীতে আদা আর পেঁয়াজ, বসন্তজুড়ে আলু। ফসলের বৈচিত্র্য বাড়ে বলেই মৌসুমের হিসাব দীর্ঘ হয়।",
     },
   },
   {
@@ -113,7 +129,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Bookings verified on the ledger",
+      titleBn: "খতিয়ানে যাচাই করা বুকিং",
       body: "Every reservation is confirmed through the Fashol platform before the sacks arrive. No held slots that do not show up.",
+      bodyBn: "বস্তা পৌঁছানোর আগেই প্রতিটি বুকিং ফসল প্ল্যাটফর্মে নিশ্চিত হয়। ধরে রাখা জায়গা খালি পড়ে থাকার ঝুঁকি নেই।",
     },
   },
   {
@@ -121,7 +139,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Volume forecast on harvest data",
+      titleBn: "ফসলের তথ্যে পরিমাণের পূর্বাভাস",
       body: "Fashol's hub team projects regional harvest weeks ahead and books against your capacity. You plan against real numbers, not phone calls.",
+      bodyBn: "ফসলের হাব টিম সপ্তাহ আগেই আঞ্চলিক ফসলের পূর্বাভাস দেয় আর আপনার ক্যাপাসিটির বিপরীতে বুকিং করে। ফোনকল নয়, সত্যিকারের সংখ্যার ভিত্তিতে আপনি পরিকল্পনা করেন।",
     },
   },
   {
@@ -129,73 +149,116 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     card: {
       kind: "text",
       title: "Payment and reconciliation through Fashol",
+      titleBn: "ফসলের মাধ্যমে পেমেন্ট ও হিসাব মেলানো",
       body: "Orders clear through the platform, reconciled against your storage records. No chasing traders for settlement.",
+      bodyBn: "অর্ডার প্ল্যাটফর্মের মাধ্যমে সেটেলমেন্ট হয়, আপনার স্টোরেজের রেকর্ডের সঙ্গে মিলিয়ে দেখা হয়। টাকার জন্য ব্যবসায়ীদের পেছনে ছুটতে হয় না।",
     },
   },
 ];
 
-type ProofTile = { figure: string; label: string };
+type ProofTile = {
+  figure: string;
+  figureBn: string;
+  label: string;
+  labelBn: string;
+};
 
 const PROOF_STRIP: ReadonlyArray<ProofTile> = [
-  { figure: "50 districts", label: "Of operational coverage" },
-  { figure: "Full-cycle settlement", label: "Through the Fashol ledger" },
+  {
+    figure: "50 districts",
+    figureBn: "50 জেলা",
+    label: "Of operational coverage",
+    labelBn: "কার্যক্রমের বিস্তারে",
+  },
+  {
+    figure: "Full-cycle settlement",
+    figureBn: "পূর্ণ চক্রের সেটেলমেন্ট",
+    label: "Through the Fashol ledger",
+    labelBn: "ফসলের খতিয়ানের মাধ্যমে",
+  },
 ];
 
 type Step = {
   n: string;
   headline: string;
+  headlineBn: string;
   tagline: string;
+  taglineBn: string;
   body: string;
+  bodyBn: string;
 };
 
 const STEPS: ReadonlyArray<Step> = [
   {
     n: "01",
     headline: "Walk-through.",
+    headlineBn: "সরেজমিন পরিদর্শন।",
     tagline: "We visit your facility.",
+    taglineBn: "আমরা আপনার স্টোরেজে যাই।",
     body: "Understand your capacity, your current utilization rhythm, your crop mix. Map your district against our farmer base and buyer network.",
+    bodyBn: "আপনার ক্যাপাসিটি, এখনকার ব্যবহারের ধরন আর ফসলের বৈচিত্র্য বুঝে নিই। আপনার জেলাকে আমাদের কৃষকভিত্তি ও বায়ার নেটওয়ার্কের সঙ্গে মিলিয়ে দেখি।",
   },
   {
     n: "02",
     headline: "Integration.",
+    headlineBn: "সংযুক্তি।",
     tagline: "The ledger connects.",
-    body: "Your booking system connects to the Fashol platform. Capacity becomes visible to our inbound pipeline. Inventory becomes visible to our buyer desk.",
+    taglineBn: "খতিয়ান যুক্ত হয়।",
+    body: "Your booking system connects to the Fashol platform. Capacity becomes visible to our inbound pipeline, inventory to our buyer desk.",
+    bodyBn: "আপনার বুকিং ব্যবস্থা ফসল প্ল্যাটফর্মের সঙ্গে যুক্ত হয়। ক্যাপাসিটি আমাদের ইনবাউন্ড পাইপলাইনে, স্টক আমাদের বায়ার ডেস্কে দৃশ্যমান হয়।",
   },
   {
     n: "03",
     headline: "First cycle.",
+    headlineBn: "প্রথম চক্র।",
     tagline: "Traffic begins.",
-    body: "Inbound farmers start routing through your facility. Outbound orders start pulling from your floor. The Fashol hub team handles grading, pickup, and reconciliation.",
+    taglineBn: "চলাচল শুরু হয়।",
+    body: "Inbound farmers route through your facility, outbound orders pull from your floor. The Fashol hub team handles grading, pickup, and reconciliation.",
+    bodyBn: "ইনবাউন্ড কৃষকেরা আপনার স্টোরেজ দিয়ে চলে, আউটবাউন্ড অর্ডার আপনার ফ্লোর থেকে টেনে নেয়। ফসলের হাব টিম গ্রেডিং, তুলে নেওয়া আর হিসাব মেলানো সামলায়।",
   },
   {
     n: "04",
     headline: "Standing partnership.",
+    headlineBn: "স্থায়ী পার্টনারশিপ।",
     tagline: "The rhythm holds.",
+    taglineBn: "ছন্দ ধরে থাকে।",
     body: "Pricing, volume forecasting, and seasonal planning happen together. You run a networked facility, not a rented one.",
+    bodyBn: "দাম নির্ধারণ, পরিমাণের পূর্বাভাস আর মৌসুমি পরিকল্পনা একসঙ্গে হয়। আপনি ভাড়া দেওয়া নয়, নেটওয়ার্কযুক্ত একটি স্টোরেজ চালান।",
   },
 ];
 
 const RELATED: ReadonlyArray<{
   name: string;
+  nameBn: string;
   description: string;
+  descriptionBn: string;
   href: string;
 }> = [
   {
     name: "Commission agents",
+    nameBn: "আড়তদার",
     description:
-      "Traditional arotdars on a modern stack, with transparent pricing and digital settlement on Banijjo.",
+      "Traditional arotdars on a modern stack, with transparent pricing and digital settlement.",
+    descriptionBn:
+      "ঐতিহ্যবাহী আড়তদার আধুনিক স্ট্যাকে, স্বচ্ছ দাম আর ডিজিটাল সেটেলমেন্টসহ।",
     href: "/solutions/commission-agents",
   },
   {
     name: "Wholesalers",
+    nameBn: "পাইকার",
     description:
       "A modern supply stack behind the wholesale trade, with 50-district sourcing and same-day settlement.",
+    descriptionBn:
+      "পাইকারি ব্যবসার পেছনে একটি আধুনিক সাপ্লাই স্ট্যাক, 50 জেলা থেকে সোর্সিং আর একই দিনে সেটেলমেন্টসহ।",
     href: "/solutions/wholesalers",
   },
   {
     name: "Farmers",
+    nameBn: "কৃষক",
     description:
       "60,000 farmers on Jogaan, selling produce with transparent pricing, same-day settlement, and access to inputs and machinery.",
+    descriptionBn:
+      "যোগানে 60,000 কৃষক, স্বচ্ছ দামে পণ্য বিক্রি করছেন, একই দিনে সেটেলমেন্ট পাচ্ছেন, আর পাচ্ছেন ইনপুট ও মেশিনারির সুবিধা।",
     href: "/solutions/farmers",
   },
 ];
@@ -204,7 +267,8 @@ function publicFileExists(relative: string): boolean {
   return existsSync(join(process.cwd(), "public", relative));
 }
 
-export default function ColdStorageOperatorsPage() {
+export default async function ColdStorageOperatorsPage() {
+  const lang = await getLang();
   const heroImageExists = publicFileExists(HERO_IMAGE_PATH);
 
   return (
@@ -242,7 +306,11 @@ export default function ColdStorageOperatorsPage() {
               as="h1"
               className="t-hero !text-[var(--color-paper)] !text-[44px] tablet:!text-[58px] desktop:!text-[72px]"
             >
-              Cold storage that sits inside the supply chain, not beside it.
+              {t(
+                lang,
+                "Cold storage that sits inside the supply chain, not beside it.",
+                "কোল্ড স্টোরেজ, যা সাপ্লাই চেইনের পাশে নয়, ভেতরে থাকে।",
+              )}
             </Reveal>
             <dl className="mt-10 tablet:mt-12 flex flex-col tablet:flex-row items-start gap-6 tablet:gap-10">
               {HERO_STATS.map((s, i) => (
@@ -278,14 +346,14 @@ export default function ColdStorageOperatorsPage() {
                       letterSpacing: "0.14em",
                     }}
                   >
-                    {s.label}
+                    {t(lang, s.label, s.labelBn)}
                   </dt>
                 </div>
               ))}
             </dl>
             <Reveal delay={0.48} className="mt-8 tablet:mt-10">
               <Button variant="on-dark" href="/contact">
-                Partner with Fashol
+                {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
               </Button>
             </Reveal>
           </div>
@@ -297,18 +365,20 @@ export default function ColdStorageOperatorsPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              A building between two markets, integrated into neither.
+              {t(
+                lang,
+                "A building between two markets, integrated into neither.",
+                "দুই বাজারের মাঝখানে দাঁড়ানো একটা ভবন, অথচ কোনোটার সঙ্গেই যুক্ত নয়।",
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              The cold storage in Bangladesh is full for three months and empty for nine.
-              Potato comes in after harvest, goes out before the next one, and in between
-              the facility sits with lights on and no traffic. Farmers book space and do
-              not always deliver. Traders reserve slots and do not always pay. Rates are
-              set by an association, and margins stay thin. All of it happens in isolation
-              - no direct line to the farmers who need storage, no direct line to the
-              buyers who need what is stored.
+              {t(
+                lang,
+                "Cold storage in Bangladesh is full for three months and empty for nine. Potato comes in after harvest and leaves before the next; in between the lights stay on with no traffic. Farmers book space and skip delivery. Traders reserve slots and skip payment. Rates are set by an association, margins stay thin, and it all runs in isolation - no direct line to the farmers who need storage or the buyers who need what is stored.",
+                "বাংলাদেশে কোল্ড স্টোরেজ তিন মাস ভরা থাকে, নয় মাস খালি। ফসল কাটার পর আলু ঢোকে আর পরের মৌসুম আসার আগেই বেরিয়ে যায়; এর মাঝে কোনো চলাচল ছাড়াই বাতি জ্বলে থাকে। কৃষকেরা জায়গা বুকিং করে, কিন্তু পণ্য দেয় না। ব্যবসায়ীরা জায়গা ধরে রাখে, কিন্তু টাকা দেয় না। দাম ঠিক করে সমিতি, মার্জিন থাকে সরু, আর পুরোটাই চলে বিচ্ছিন্নভাবে - যে কৃষকের স্টোরেজ দরকার কিংবা যে বায়ারের স্টক পণ্য দরকার, কারও সঙ্গেই সরাসরি যোগ নেই।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -324,7 +394,11 @@ export default function ColdStorageOperatorsPage() {
                 color: "var(--color-ink)",
               }}
             >
-              The facility is built. The network around it is not.
+              {t(
+                lang,
+                "The facility is built. The network around it is not.",
+                "স্টোরেজটা তৈরি। কিন্তু তার চারপাশের নেটওয়ার্কটা নয়।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -343,7 +417,7 @@ export default function ColdStorageOperatorsPage() {
               fontWeight: 500,
             }}
           >
-            Booked inbound. Sold outbound.
+            {t(lang, "Booked inbound. Sold outbound.", "ঢোকে বুকিংয়ে। বেরোয় বিক্রিতে।")}
           </LetterSpaceReveal>
         </div>
       </Section>
@@ -353,14 +427,20 @@ export default function ColdStorageOperatorsPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              What a Fashol partnership brings through your door.
+              {t(
+                lang,
+                "What a Fashol partnership brings through your door.",
+                "ফসলের সঙ্গে পার্টনারশিপ আপনার দরজায় যা নিয়ে আসে।",
+              )}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Two flows of traffic. Inbound from farmers, outbound to buyers. Underneath,
-              a ledger that verifies bookings, forecasts volume, and clears payment across
-              the cycle.
+              {t(
+                lang,
+                "Two flows of traffic. Inbound from farmers, outbound to buyers. Underneath, a ledger that verifies bookings, forecasts volume, and clears payment across the cycle.",
+                "দুই দিকের চলাচল। কৃষকের দিক থেকে ইনবাউন্ড, বায়ারের দিকে আউটবাউন্ড। এর নিচে একটি খতিয়ান, যা বুকিং যাচাই করে, পরিমাণের পূর্বাভাস দেয় আর গোটা চক্রজুড়ে পেমেন্ট সেটেলমেন্ট করে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -371,7 +451,7 @@ export default function ColdStorageOperatorsPage() {
         >
           {BENTO.map((entry, i) => (
             <StaggerItem key={i} className={entry.span} y={20}>
-              <BentoCardView card={entry.card} />
+              <BentoCardView card={entry.card} lang={lang} />
             </StaggerItem>
           ))}
         </StaggerChildren>
@@ -390,7 +470,7 @@ export default function ColdStorageOperatorsPage() {
                   color: "var(--color-deep-green)",
                 }}
               >
-                {p.figure}
+                {t(lang, p.figure, p.figureBn)}
               </span>
               <span
                 className="mt-2 uppercase"
@@ -401,7 +481,7 @@ export default function ColdStorageOperatorsPage() {
                   color: "var(--color-ink-muted)",
                 }}
               >
-                {p.label}
+                {t(lang, p.label, p.labelBn)}
               </span>
             </Reveal>
           ))}
@@ -419,7 +499,11 @@ export default function ColdStorageOperatorsPage() {
                 color: "var(--color-ink)",
               }}
             >
-              Cold storage that sits inside the supply chain, not beside it.
+              {t(
+                lang,
+                "Cold storage that sits inside the supply chain, not beside it.",
+                "কোল্ড স্টোরেজ, যা সাপ্লাই চেইনের পাশে নয়, ভেতরে থাকে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -430,7 +514,11 @@ export default function ColdStorageOperatorsPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The systems that route through your facility.
+              {t(
+                lang,
+                "The systems that route through your facility.",
+                "যে সিস্টেমগুলো আপনার স্টোরেজ দিয়ে চলে।",
+              )}
             </Reveal>
           </div>
         </div>
@@ -459,16 +547,18 @@ export default function ColdStorageOperatorsPage() {
                   color: "var(--color-deep-green)",
                 }}
               >
-                Inbound from the farmer side.
+                {t(lang, "Inbound from the farmer side.", "কৃষকের দিক থেকে ইনবাউন্ড।")}
               </p>
               <p className="t-body mt-4">
-                Farmers booking storage through the Fashol hub route their harvest to
-                your facility. Jogaan handles registration, volume forecasting, and
-                booking verification.
+                {t(
+                  lang,
+                  "Farmers booking storage through the Fashol hub route their harvest to your facility. Jogaan handles registration, volume forecasting, and booking verification.",
+                  "ফসল হাবের মাধ্যমে স্টোরেজ বুকিং করা কৃষকেরা তাদের ফসল আপনার স্টোরেজে পাঠায়। যোগান নিবন্ধন, পরিমাণের পূর্বাভাস আর বুকিং যাচাই সামলায়।",
+                )}
               </p>
               <div className="mt-auto pt-8">
                 <Link href="/products/jogaan" className="link-arrow">
-                  Open product page
+                  {t(lang, "Open product page", "প্রোডাক্ট পেজ খুলুন")}
                 </Link>
               </div>
             </article>
@@ -495,16 +585,18 @@ export default function ColdStorageOperatorsPage() {
                   color: "var(--color-deep-green)",
                 }}
               >
-                Outbound to the buyer side.
+                {t(lang, "Outbound to the buyer side.", "বায়ারের দিকে আউটবাউন্ড।")}
               </p>
               <p className="t-body mt-4">
-                Fashol&apos;s buyer desk places orders against inventory in your cold
-                room. Hyperfarm runs the order flow for restaurants, supershops, and
-                quick commerce. Banijjo runs the wholesale side.
+                {t(
+                  lang,
+                  "Fashol's buyer desk places orders against inventory in your cold room. Hyperfarm runs the order flow for restaurants, supershops, quick commerce, and the wholesale trade.",
+                  "ফসলের বায়ার ডেস্ক আপনার কোল্ড রুমের স্টকের বিপরীতে অর্ডার দেয়। হাইপারফার্ম রেস্তোরাঁ, সুপারশপ, কুইক কমার্স আর পাইকারি ব্যবসার অর্ডার প্রবাহ চালায়।",
+                )}
               </p>
               <div className="mt-auto pt-8">
                 <Link href="/products/hyperfarm" className="link-arrow">
-                  Open product page
+                  {t(lang, "Open product page", "প্রোডাক্ট পেজ খুলুন")}
                 </Link>
               </div>
             </article>
@@ -519,11 +611,11 @@ export default function ColdStorageOperatorsPage() {
             className="!text-[var(--color-paper)] text-[22px] tablet:text-[28px] desktop:text-[32px] leading-[1.4]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 400 }}
           >
-            &ldquo;We ran the cold storage for eighteen years. Full from February to
-            May, empty the rest. Farmers would come with potato, and after potato
-            moved out we would wait. Now Fashol sends us ginger farmers in October,
-            onion in December, potato from February. And when it is time to sell,
-            their buyers come to our door. It is not the same business anymore.&rdquo;
+            {t(
+              lang,
+              "“We ran the cold storage for eighteen years. Full from February to May, empty the rest. Farmers would come with potato, and after potato moved out we would wait. Now Fashol sends us ginger farmers in October, onion in December, potato from February. And when it is time to sell, their buyers come to our door. It is not the same business anymore.”",
+              "“আঠারো বছর ধরে কোল্ড স্টোরেজ চালিয়েছি। ফেব্রুয়ারি থেকে মে ভরা, বাকি সময় খালি। কৃষকেরা আলু নিয়ে আসত, আর আলু বেরিয়ে গেলে আমরা বসে থাকতাম। এখন ফসল আমাদের কাছে অক্টোবরে আদার কৃষক, ডিসেম্বরে পেঁয়াজ, ফেব্রুয়ারি থেকে আলু পাঠায়। আর বিক্রির সময় হলে ওদের বায়াররা আমাদের দরজায় আসে। এটা আর আগের সেই ব্যবসা নেই।”",
+            )}
           </QuoteReveal>
           <Reveal delay={0.16}>
             <figcaption className="mt-8 flex flex-col items-center">
@@ -531,13 +623,13 @@ export default function ColdStorageOperatorsPage() {
                 className="text-[14px]"
                 style={{ fontWeight: 500, color: "var(--color-paper)" }}
               >
-                Shahidul Islam
+                {t(lang, "Shahidul Islam", "শাহিদুল ইসলাম")}
               </span>
               <span
                 className="text-[12px] mt-1"
                 style={{ color: "rgba(255,251,234,0.65)" }}
               >
-                Cold storage operator, Munshiganj
+                {t(lang, "Cold storage operator, Munshiganj", "কোল্ড স্টোরেজ পরিচালক, মুন্সিগঞ্জ")}
               </span>
             </figcaption>
           </Reveal>
@@ -549,13 +641,16 @@ export default function ColdStorageOperatorsPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              How the partnership starts.
+              {t(lang, "How the partnership starts.", "পার্টনারশিপ যেভাবে শুরু হয়।")}
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Partnership, not sign-up. A cycle of steps that sets the facility up to
-              run networked.
+              {t(
+                lang,
+                "Partnership, not sign-up. A cycle of steps that sets the facility up to run networked.",
+                "নিছক সাইন-আপ নয়, পার্টনারশিপ। কয়েক ধাপের একটি চক্র, যা স্টোরেজটিকে নেটওয়ার্কযুক্ত হয়ে চলার জন্য প্রস্তুত করে।",
+              )}
             </p>
           </Reveal>
         </div>
@@ -568,7 +663,7 @@ export default function ColdStorageOperatorsPage() {
                   {s.n}
                 </span>
                 <h3 className="t-h5 mt-4" style={{ fontWeight: 500 }}>
-                  {s.headline}
+                  {t(lang, s.headline, s.headlineBn)}
                 </h3>
                 <p
                   className="mt-3"
@@ -582,9 +677,9 @@ export default function ColdStorageOperatorsPage() {
                     color: "var(--color-deep-green)",
                   }}
                 >
-                  {s.tagline}
+                  {t(lang, s.tagline, s.taglineBn)}
                 </p>
-                <p className="t-body-sm mt-3">{s.body}</p>
+                <p className="t-body-sm mt-3">{t(lang, s.body, s.bodyBn)}</p>
               </article>
             </Reveal>
           ))}
@@ -592,7 +687,7 @@ export default function ColdStorageOperatorsPage() {
 
         <Reveal delay={0.16} className="mt-10 tablet:mt-12">
           <Button variant="primary" href="/contact">
-            Partner with Fashol
+            {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
           </Button>
         </Reveal>
       </Section>
@@ -602,7 +697,11 @@ export default function ColdStorageOperatorsPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The rest of the chain runs on Fashol too.
+              {t(
+                lang,
+                "The rest of the chain runs on Fashol too.",
+                "চেইনের বাকি অংশও চলে ফসলে।",
+              )}
             </Reveal>
           </div>
         </div>
@@ -612,12 +711,12 @@ export default function ColdStorageOperatorsPage() {
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">
                 <h3 className="t-h5" style={{ fontWeight: 500 }}>
-                  {r.name}
+                  {t(lang, r.name, r.nameBn)}
                 </h3>
-                <p className="t-body-sm mt-3">{r.description}</p>
+                <p className="t-body-sm mt-3">{t(lang, r.description, r.descriptionBn)}</p>
                 <div className="mt-auto pt-6">
                   <Link href={r.href} className="link-arrow">
-                    Learn more
+                    {t(lang, "Learn more", "আরও জানুন")}
                   </Link>
                 </div>
               </article>
@@ -635,12 +734,13 @@ export default function ColdStorageOperatorsPage() {
 // "less is more" rule.
 // ------------------------------------------------------------------
 
-function BentoCardView({ card }: { card: BentoCard }) {
-  if (card.kind === "anchor") return <AnchorCardView card={card} />;
-  return <TextCardView card={card} />;
+function BentoCardView({ card, lang }: { card: BentoCard; lang: Lang }) {
+  if (card.kind === "anchor")
+    return <AnchorCardView card={card} lang={lang} />;
+  return <TextCardView card={card} lang={lang} />;
 }
 
-function AnchorCardView({ card }: { card: AnchorCard }) {
+function AnchorCardView({ card, lang }: { card: AnchorCard; lang: Lang }) {
   const imageReady = publicFileExists(card.imageSrc);
   return (
     <article
@@ -688,7 +788,7 @@ function AnchorCardView({ card }: { card: AnchorCard }) {
           color: "var(--color-deep-green)",
         }}
       >
-        {card.title}
+        {t(lang, card.title, card.titleBn)}
       </h3>
       <p
         className="mt-4"
@@ -699,13 +799,13 @@ function AnchorCardView({ card }: { card: AnchorCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </article>
   );
 }
 
-function TextCardView({ card }: { card: TextCard }) {
+function TextCardView({ card, lang }: { card: TextCard; lang: Lang }) {
   return (
     <article
       className="relative h-full flex flex-col rounded-[12px] p-6 tablet:p-8"
@@ -721,7 +821,7 @@ function TextCardView({ card }: { card: TextCard }) {
           color: "var(--color-deep-green)",
         }}
       >
-        {card.title}
+        {t(lang, card.title, card.titleBn)}
       </h3>
       <p
         className="mt-auto pt-6"
@@ -732,7 +832,7 @@ function TextCardView({ card }: { card: TextCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </article>
   );

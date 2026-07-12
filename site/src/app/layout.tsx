@@ -3,6 +3,8 @@ import { Plus_Jakarta_Sans, Geist_Mono, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
+import { LanguageProvider } from "@/components/site/LanguageProvider";
+import { getLang } from "@/lib/i18n.server";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -28,13 +30,13 @@ const bengali = Hind_Siliguri({
 export const metadata: Metadata = {
   metadataBase: new URL("https://fashol.com"),
   title: {
-    default: "Fashol — A supply chain for 40,000 smallholder farmers in Bangladesh",
+    default: "Fashol - Building a Safe, Sustainable food supply chain",
     template: "%s · Fashol",
   },
   description:
     "Fashol moves perishable produce from smallholder farms in Bangladesh to buyers in Dhaka, Singapore, and Dubai. Direct pricing, real-time logistics, 26 percent less waste.",
   openGraph: {
-    title: "Fashol — A supply chain for 40,000 smallholder farmers in Bangladesh",
+    title: "Fashol - Building a Safe, Sustainable food supply chain",
     description:
       "Direct-from-farm produce, four-tier quality grading, 24-hour settlement. Nine districts, 40+ hubs.",
     type: "website",
@@ -43,22 +45,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await getLang();
   return (
     <html
-      lang="en"
+      lang={lang}
+      data-lang={lang}
       className={`${plusJakarta.variable} ${geistMono.variable} ${bengali.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-paper text-ink">
-        <Nav />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <LanguageProvider lang={lang}>
+          <Nav />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

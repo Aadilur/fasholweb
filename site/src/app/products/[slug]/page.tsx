@@ -41,8 +41,8 @@ export default async function ProductPage({
           <Button variant="primary" href="/contact">
             Partner with Fashol
           </Button>
-          <Link href="/products" className="link-arrow">
-            All products
+          <Link href="/" className="link-arrow">
+            Back to home
           </Link>
         </div>
       </div>

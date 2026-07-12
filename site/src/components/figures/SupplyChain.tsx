@@ -1,9 +1,9 @@
 const NODES = [
-  { n: "01", name: "FARMER",      role: "Smallholder",            m1: "40,000 onboarded",         m2: "Records via Jogaan app",  t: "T + 0h" },
+  { n: "01", name: "FARMER",      role: "Smallholder",            m1: "60,000 onboarded",         m2: "Records via Jogaan app",  t: "T + 0h" },
   { n: "02", name: "FIELD AGENT", role: "Collection & price lock", m1: "40+ hubs",                m2: "4-tier grade at intake",  t: "T + 4h" },
   { n: "03", name: "COLD HUB",    role: "Storage & dispatch",      m1: "26% waste reduction",     m2: "Route-planned fleet",     t: "T + 12h" },
   { n: "04", name: "PLATFORM",    role: "Matching & settlement",   m1: "24h farmer payout",       m2: "Mobile financial services", t: "T + 18h" },
-  { n: "05", name: "BUYER",       role: "MSME / QC / Exporter",    m1: "5,000+ buyer accounts",   m2: "Dhaka / SG / Dubai",      t: "(final)" },
+  { n: "05", name: "BUYER",       role: "MSME / QC / Exporter",    m1: "7,000+ buyer accounts",   m2: "Dhaka / SG / Dubai",      t: "(final)" },
 ];
 
 export function SupplyChainFigure() {

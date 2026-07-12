@@ -1,93 +1,114 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Eyebrow } from "@/components/ui/Eyebrow";
+import { getLang } from "@/lib/i18n.server";
+import { t, type Lang } from "@/lib/i18n";
 
-const platformLinks = [
-  { href: "/#platform-jogaan", label: "Jogaan" },
-  { href: "/#platform-hyperfarm", label: "Hyperfarm" },
-  { href: "/#platform-banijjo", label: "Banijjo" },
-  { href: "/#platform-myfarm", label: "Myfarm" },
+type FLink = { href: string; en: string; bn: string; external?: boolean };
+
+const companyLinks: FLink[] = [
+  { href: "/", en: "Overview", bn: "হোম" },
+  { href: "/about", en: "About", bn: "আমাদের সম্পর্কে" },
+  { href: "/services", en: "Services", bn: "সার্ভিস" },
+  { href: "/career", en: "Career", bn: "ক্যারিয়ার" },
+  { href: "/contact", en: "Contact", bn: "যোগাযোগ" },
 ];
 
-type SolutionsGroup = {
-  eyebrow: string;
-  links: { href: string; label: string }[];
-};
-
-const solutionsGroups: SolutionsGroup[] = [
-  {
-    eyebrow: "Urban buyers",
-    links: [
-      { href: "/solutions/restaurants", label: "Restaurants" },
-      { href: "/solutions/retailers", label: "Retailers" },
-      { href: "/solutions/quick-commerce", label: "Quick commerce" },
-      { href: "/solutions/supershops", label: "Supershops" },
-    ],
-  },
-  {
-    eyebrow: "Trade buyers",
-    links: [
-      { href: "/solutions/importers", label: "Importers" },
-      { href: "/solutions/exporters", label: "Exporters" },
-      { href: "/solutions/commission-agents", label: "Commission agents" },
-      { href: "/solutions/wholesalers", label: "Wholesalers" },
-    ],
-  },
-  {
-    eyebrow: "Suppliers",
-    links: [
-      { href: "/solutions/farmers", label: "Farmers" },
-      { href: "/solutions/agri-input-suppliers", label: "Agri input suppliers" },
-      { href: "/solutions/agri-machinery-suppliers", label: "Agri machinery suppliers" },
-    ],
-  },
-  {
-    eyebrow: "Partners & financial",
-    links: [
-      { href: "/solutions/cold-storage-operators", label: "Cold storage operators" },
-      { href: "/solutions/logistics-partners", label: "Logistics partners" },
-      { href: "/solutions/supply-chain-financing", label: "Supply chain financing" },
-    ],
-  },
+const platformLinks: FLink[] = [
+  { href: "/#platform-jogaan", en: "Jogaan", bn: "যোগান" },
+  { href: "/#platform-hyperfarm", en: "Hyperfarm", bn: "হাইপারফার্ম" },
+  { href: "/solutions/restaurants", en: "Solutions", bn: "সলিউশন" },
+  { href: "/privacy", en: "Privacy policy", bn: "প্রাইভেসি পলিসি" },
+  { href: "/terms", en: "Terms of service", bn: "টার্মস অব সার্ভিস" },
 ];
 
-const companyLinks = [
-  { href: "/", label: "Overview" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/case-study", label: "Case study" },
-  { href: "/data", label: "Data" },
-  { href: "/career", label: "Career" },
-  { href: "/contact", label: "Contact" },
+const connectLinks: FLink[] = [
+  { href: "tel:+8809613105505", en: "+880 9613 105 505", bn: "+৮৮০ ৯৬১৩ ১০৫ ৫০৫" },
+  { href: "mailto:info@fashol.com", en: "info@fashol.com", bn: "info@fashol.com" },
+  { href: "https://www.facebook.com/fasholcom/", en: "Facebook", bn: "ফেসবুক", external: true },
+  { href: "https://www.linkedin.com/company/fashol", en: "LinkedIn", bn: "লিংকডইন", external: true },
+  { href: "https://www.youtube.com/channel/UCMAWUuelzAQc9nYKZ2s-fxQ", en: "YouTube", bn: "ইউটিউব", external: true },
 ];
 
-const offices = [
-  { tag: "BD", line: "130 Kabbokash, Kawran Bazar, Dhaka 1215" },
-  { tag: "SG", line: "33A Pagoda Street, Singapore 059192" },
-  { tag: "AE", line: "Office 406, Abdullah Fahed Bldg 2, Al Qussais 2, Dubai" },
-  { tag: "TH", line: "ITF Tower, Silom, Bangkok" },
-];
-
-const connectLinks: Array<{ href: string; label: string; external?: boolean }> = [
-  { href: "tel:+8809613105505", label: "+880 9613 105 505" },
-  { href: "mailto:info@fashol.com", label: "info@fashol.com" },
-  { href: "https://www.facebook.com/fasholcom/", label: "Facebook", external: true },
-  { href: "https://www.linkedin.com/company/fashol", label: "LinkedIn", external: true },
-  { href: "https://www.youtube.com/channel/UCMAWUuelzAQc9nYKZ2s-fxQ", label: "YouTube", external: true },
-];
-
-const eyebrowOnDark =
-  "!text-[rgba(255,255,255,0.55)] [&::before]:!bg-[rgba(255,255,255,0.4)]";
 const linkOnDark =
-  "text-[rgba(255,255,255,0.75)] hover:text-white transition-colors";
+  "text-[rgba(0,0,0,0.72)] hover:text-black transition-colors";
+const headingOnDark = "text-[var(--color-ink)] text-[15px] tracking-[-0.01em]";
 
-export function Footer() {
+function LinkColumn({
+  heading,
+  links,
+  lang,
+}: {
+  heading: string;
+  links: FLink[];
+  lang: Lang;
+}) {
   return (
-    <footer className="bg-[var(--color-ink)] text-[var(--color-paper)]">
-      <div className="container-page pt-20 pb-10 desktop:pt-24">
-        <div className="grid grid-cols-1 tablet:grid-cols-12 gap-12">
+    <div>
+      <p className={headingOnDark} style={{ fontWeight: 600 }}>
+        {heading}
+      </p>
+      <ul className="mt-5 space-y-3.5 t-body-sm">
+        {links.map((l) => (
+          <li key={l.href}>
+            {l.external ? (
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkOnDark}
+              >
+                {t(lang, l.en, l.bn)}
+              </a>
+            ) : (
+              <Link href={l.href} className={linkOnDark}>
+                {t(lang, l.en, l.bn)}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export async function Footer() {
+  const lang = await getLang();
+  return (
+    <footer className="relative isolate overflow-hidden bg-[var(--color-ink)] text-[var(--color-ink)]">
+      {/* Background photograph */}
+      <Image
+        src="/footer-field.jpg"
+        alt=""
+        aria-hidden="true"
+        fill
+        sizes="100vw"
+        className="object-cover object-[center_32%] -z-10 select-none pointer-events-none"
+      />
+      {/* Whisper of a warm veil - lifts the palest sky just enough to seat dark text, keeps the photo fully visible */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(255,240,214,0.28) 0%, rgba(255,232,190,0.10) 30%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.18) 100%)",
+        }}
+      />
+      {/* Mobile only: the footer is tall on phones, so content stacks into the dark
+          lower half of the photo. A paper wash keeps the content zone light for the
+          dark text, then fades out near the base so the white wordmark still reads. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 tablet:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(248,243,222,0.90) 0%, rgba(248,243,222,0.86) 62%, rgba(248,243,222,0.80) 80%, rgba(255,251,234,0) 90%, rgba(0,0,0,0.22) 100%)",
+        }}
+      />
+
+      <div className="relative container-page pt-16 tablet:pt-20 desktop:pt-24">
+        <div className="grid grid-cols-1 tablet:grid-cols-12 gap-12 desktop:gap-8">
           {/* Brand column */}
-          <div className="tablet:col-span-4">
+          <div className="tablet:col-span-5">
             <Link href="/" aria-label="Fashol home" className="inline-flex items-center">
               <Image
                 src="/fashol-logo-full.png"
@@ -97,137 +118,38 @@ export function Footer() {
                 className="h-10 w-auto object-contain"
               />
             </Link>
-            <p className="mt-6 t-body-lg max-w-sm text-[rgba(255,255,255,0.75)]">
-              <span className="lang-bn">ফসল</span>{" "}
-              <span className="text-[rgba(255,255,255,0.55)]">
-                - Bengali noun. A harvest.
-              </span>
-            </p>
-            <p className="mt-4 t-body max-w-md text-[rgba(255,255,255,0.65)]">
-              A farm-to-business platform operating out of Dhaka, Singapore, and Dubai. Founded 2019.
-              Registered as Fashol Dotcom Limited (BD), Fashol Singapore Pte Ltd (SG).
-            </p>
 
-            <div className="mt-10">
-              <Eyebrow className={eyebrowOnDark}>Newsletter</Eyebrow>
-              <form className="mt-4 flex gap-2 max-w-md">
-                <input
-                  type="email"
-                  required
-                  placeholder="your@email.com"
-                  className="flex-1 h-11 rounded-full px-4 bg-[rgba(255,255,255,0.08)] border border-[rgba(255,255,255,0.18)] text-white placeholder:text-[rgba(255,255,255,0.45)] text-[14px] focus:outline-none focus:border-[var(--color-lime)]"
-                />
-                <button type="submit" className="btn btn-primary !h-11 !px-5 !text-[13px]">
-                  Subscribe
-                </button>
-              </form>
-            </div>
+            <h2
+              className="mt-7 text-[24px] tablet:text-[28px] leading-[1.15] tracking-[-0.02em] text-[var(--color-ink)] max-w-sm"
+              style={{ fontWeight: 600 }}
+            >
+              {t(lang, "A safe, sustainable food supply chain.", "নিরাপদ, টেকসই সাপ্লাই চেইন।")}
+            </h2>
           </div>
 
-          {/* Four link columns */}
-          <div className="tablet:col-span-8 grid grid-cols-1 tablet:grid-cols-4 gap-12">
-            <div>
-              <Eyebrow className={eyebrowOnDark}>Platform</Eyebrow>
-              <ul className="mt-5 space-y-3 t-body-sm">
-                {platformLinks.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className={linkOnDark}>
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <Eyebrow className={eyebrowOnDark}>Company</Eyebrow>
-              <ul className="mt-5 space-y-3 t-body-sm">
-                {companyLinks.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className={linkOnDark}>
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <Eyebrow className={eyebrowOnDark}>Offices</Eyebrow>
-              <ul className="mt-5 space-y-4 t-body-sm">
-                {offices.map((o) => (
-                  <li key={o.tag} className="flex gap-3 text-[rgba(255,255,255,0.75)]">
-                    <span className="t-mono text-white w-5 shrink-0">{o.tag}</span>
-                    <span>{o.line}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <Eyebrow className={eyebrowOnDark}>Connect</Eyebrow>
-              <ul className="mt-5 space-y-3 t-body-sm">
-                {connectLinks.map((l) => (
-                  <li key={l.href}>
-                    {l.external ? (
-                      <a
-                        href={l.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={linkOnDark}
-                      >
-                        {l.label}
-                      </a>
-                    ) : (
-                      <a href={l.href} className={linkOnDark}>
-                        {l.label}
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* Link columns */}
+          <div className="tablet:col-span-7 grid grid-cols-2 tablet:grid-cols-3 gap-10">
+            <LinkColumn heading={t(lang, "Company", "কোম্পানি")} links={companyLinks} lang={lang} />
+            <LinkColumn heading={t(lang, "Navigation", "নেভিগেশন")} links={platformLinks} lang={lang} />
+            <LinkColumn heading={t(lang, "Connect", "যোগাযোগ")} links={connectLinks} lang={lang} />
           </div>
         </div>
+      </div>
 
-        {/* Solutions - full-width band below the main link grid */}
-        <div className="mt-16">
-          <Link
-            href="/solutions"
-            className={`inline-flex items-center gap-2 ${eyebrowOnDark} t-eyebrow eyebrow-bar hover:!text-white transition-colors`}
-          >
-            Solutions
-          </Link>
-          <div className="mt-6 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-10">
-            {solutionsGroups.map((group) => (
-              <div key={group.eyebrow}>
-                <p className="t-mono text-[11px] tracking-[0.12em] uppercase !text-[rgba(255,255,255,0.45)]">
-                  {group.eyebrow}
-                </p>
-                <ul className="mt-4 space-y-3 t-body-sm">
-                  {group.links.map((l) => (
-                    <li key={l.href}>
-                      <Link href={l.href} className={linkOnDark}>
-                        {l.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <hr className="rule-dark mt-16" />
-
-        <div className="mt-6 flex flex-col tablet:flex-row items-start tablet:items-center justify-between gap-4 t-caption text-[rgba(255,255,255,0.55)]">
-          <p>© 2019–2026 Fashol Dotcom Limited · Dhaka, Bangladesh</p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-white">Privacy</Link>
-            <Link href="/terms" className="hover:text-white">Terms</Link>
-            <span>v 2026.04</span>
-          </div>
-        </div>
+      {/* Oversized logo wordmark - cut in half by the bottom edge, in white */}
+      <div
+        className="relative mt-10 mx-auto w-[86%] overflow-hidden"
+        style={{ aspectRatio: "1370 / 280" }}
+        aria-hidden="true"
+      >
+        <Image
+          src="/fashol-wordmark.png"
+          alt=""
+          fill
+          sizes="86vw"
+          className="object-cover object-top select-none pointer-events-none"
+          style={{ filter: "brightness(0) invert(1)" }}
+        />
       </div>
     </footer>
   );

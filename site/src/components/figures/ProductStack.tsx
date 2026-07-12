@@ -1,10 +1,7 @@
-const TOP_BOXES = [
+const BOXES = [
   { name: "Jogaan", descriptor: "farmer app" },
-  { name: "Banijjo", descriptor: "wholesale layer" },
   { name: "Hyperfarm", descriptor: "buyer desk" },
 ];
-
-const BOTTOM_BOX = { name: "Myfarm", descriptor: "financing" };
 
 export function ProductStack() {
   return (
@@ -12,12 +9,12 @@ export function ProductStack() {
       className="w-full"
       style={{ color: "var(--color-deep-green)" }}
       role="img"
-      aria-label="Diagram: Jogaan, Banijjo, and Hyperfarm form a left-to-right supply chain. Myfarm sits below, financing the transactions recorded across the three."
+      aria-label="Diagram: Jogaan, the farmer app, feeds a left-to-right supply chain into Hyperfarm, the buyer desk."
     >
       {/* Desktop diagram */}
       <div className="hidden tablet:block">
         <svg
-          viewBox="0 0 900 420"
+          viewBox="0 0 720 200"
           width="100%"
           xmlns="http://www.w3.org/2000/svg"
           className="block"
@@ -37,60 +34,26 @@ export function ProductStack() {
             </marker>
           </defs>
 
-          {/* Horizontal flow: Jogaan -> Banijjo -> Hyperfarm */}
+          {/* Horizontal flow: Jogaan -> Hyperfarm */}
           <line
-            x1="280"
-            y1="125"
-            x2="340"
-            y2="125"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            markerEnd="url(#product-stack-arrow)"
-          />
-          <line
-            x1="560"
-            y1="125"
-            x2="620"
-            y2="125"
+            x1="320"
+            y1="100"
+            x2="400"
+            y2="100"
             stroke="currentColor"
             strokeWidth="1.25"
             markerEnd="url(#product-stack-arrow)"
           />
 
-          {/* Convergence into Myfarm */}
-          <polyline
-            points="170,170 170,240 400,240 400,290"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            markerEnd="url(#product-stack-arrow)"
-          />
-          <line
-            x1="450"
-            y1="170"
-            x2="450"
-            y2="290"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            markerEnd="url(#product-stack-arrow)"
-          />
-          <polyline
-            points="730,170 730,240 500,240 500,290"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.25"
-            markerEnd="url(#product-stack-arrow)"
-          />
-
-          {/* Top row boxes */}
-          {TOP_BOXES.map((box, i) => {
-            const x = 60 + i * 280;
+          {/* Two boxes */}
+          {BOXES.map((box, i) => {
+            const x = i === 0 ? 80 : 420;
             const cx = x + 110;
             return (
               <g key={box.name}>
                 <rect
                   x={x}
-                  y={80}
+                  y={55}
                   width={220}
                   height={90}
                   rx={8}
@@ -100,7 +63,7 @@ export function ProductStack() {
                 />
                 <text
                   x={cx}
-                  y={118}
+                  y={93}
                   textAnchor="middle"
                   fontFamily="var(--font-plus-jakarta)"
                   fontSize={19}
@@ -112,7 +75,7 @@ export function ProductStack() {
                 </text>
                 <text
                   x={cx}
-                  y={144}
+                  y={119}
                   textAnchor="middle"
                   fontFamily="var(--font-plus-jakarta)"
                   fontSize={13}
@@ -123,46 +86,12 @@ export function ProductStack() {
               </g>
             );
           })}
-
-          {/* Bottom box: Myfarm */}
-          <rect
-            x={340}
-            y={290}
-            width={220}
-            height={90}
-            rx={8}
-            fill="var(--color-paper)"
-            stroke="currentColor"
-            strokeWidth={1.25}
-          />
-          <text
-            x={450}
-            y={328}
-            textAnchor="middle"
-            fontFamily="var(--font-plus-jakarta)"
-            fontSize={19}
-            fontWeight={500}
-            fill="var(--color-ink)"
-            style={{ letterSpacing: "-0.01em" }}
-          >
-            {BOTTOM_BOX.name}
-          </text>
-          <text
-            x={450}
-            y={354}
-            textAnchor="middle"
-            fontFamily="var(--font-plus-jakarta)"
-            fontSize={13}
-            fill="var(--color-ink-muted)"
-          >
-            {BOTTOM_BOX.descriptor}
-          </text>
         </svg>
       </div>
 
       {/* Mobile diagram: vertical stack */}
       <div className="tablet:hidden flex flex-col items-center gap-3">
-        {[...TOP_BOXES, BOTTOM_BOX].map((box, i, arr) => (
+        {BOXES.map((box, i, arr) => (
           <div key={box.name} className="w-full max-w-[280px] flex flex-col items-center">
             <div
               className="w-full rounded-lg px-5 py-4 text-center"

@@ -49,9 +49,9 @@ export function RouteEfficiencyFigure() {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-4 t-mono text-[10px] text-[var(--color-ink-muted)]">
-        <span className="inline-flex items-center gap-2"><span className="w-3 h-3 rounded-sm bg-[var(--color-lime)]" /> Below threshold — profitable</span>
-        <span className="inline-flex items-center gap-2"><span className="w-3 h-3 rounded-sm bg-[var(--color-clay)]" /> Above threshold — requires cross-subsidy</span>
-        <span className="inline-flex items-center gap-2">— — Profitable threshold: 20 km / MT</span>
+        <span className="inline-flex items-center gap-2"><span className="w-3 h-3 rounded-sm bg-[var(--color-lime)]" /> Below threshold - profitable</span>
+        <span className="inline-flex items-center gap-2"><span className="w-3 h-3 rounded-sm bg-[var(--color-clay)]" /> Above threshold - requires cross-subsidy</span>
+        <span className="inline-flex items-center gap-2">- - Profitable threshold: 20 km / MT</span>
       </div>
     </div>
   );

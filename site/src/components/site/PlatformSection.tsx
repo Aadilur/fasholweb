@@ -2,24 +2,28 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
+import { t } from "@/lib/i18n";
+import { useLang } from "@/components/site/LanguageProvider";
 
 type Action =
   | { type: "link"; href: string }
-  | { type: "platforms" }
-  | { type: "form" };
+  | { type: "platforms" };
 
 type Product = {
   num: string;
   name: string;
   bn: string | null;
   audience: string;
+  audienceBn: string;
   headline: string;
+  headlineBn: string;
   body: string;
+  bodyBn: string;
   cta: string;
+  ctaBn: string;
   action: Action;
   img: string;
   imgAlt: string;
@@ -27,7 +31,7 @@ type Product = {
   nameColor: string;
   layout: "flagship" | "wide" | "full";
   // Optional: when the product has its own brand logo, show it in the image slot
-  // instead of a photograph (e.g. Banijjo has a distinct wordmark).
+  // instead of a photograph.
   logo?: string;
   logoBg?: string;
 };
@@ -36,15 +40,19 @@ const PRODUCTS: Product[] = [
   {
     num: "01",
     name: "Jogaan",
-    bn: "যোগান",
+    bn: null,
     audience: "Farmers and field agents.",
+    audienceBn: "কৃষক ও ফিল্ড এজেন্টদের জন্য।",
     headline: "The grower's view of the Fashol network.",
-    body: "Farmers and Fashol's field agents use Jogaan to check live buyer demand across all nine operating districts, confirm mobile-money payments within 24 hours of weighing, and keep a full record of every sale without any paperwork. The app also includes a marketplace for seed, feed, and farm equipment, plus a community feed where registered growers share advice and prices.",
+    headlineBn: "ফসল নেটওয়ার্কের চাষির চোখে দেখা রূপ।",
+    body: "Farmers and field agents use Jogaan to check live buyer demand across nine districts, get paid by mobile money within 24 hours of weighing, and keep a paperless record of every sale. It also carries a marketplace for seed, feed, and equipment.",
+    bodyBn: "কৃষক আর ফিল্ড এজেন্টরা যোগান দিয়ে নয়টি জেলায় বায়ারের সরাসরি চাহিদা দেখেন, ওজনের 24 ঘণ্টার মধ্যে মোবাইল মানিতে টাকা পান, আর প্রতিটি বিক্রির কাগজবিহীন হিসাব রাখেন। এতে বীজ, খাবার আর যন্ত্রপাতির একটি মার্কেটপ্লেসও আছে।",
     cta: "Open Jogaan on Google Play",
+    ctaBn: "গুগল প্লে-তে যোগান খুলুন",
     action: { type: "link", href: "https://play.google.com/store/apps/details?id=com.fashol.agent" },
     img: "/images/content/card-image-2.jpg",
     imgAlt: "A Bangladeshi smallholder farmer in a paddy field checking the Jogaan app on a smartphone in warm morning light.",
-    span: "tablet:col-span-2 desktop:col-span-6 desktop:row-span-2",
+    span: "tablet:col-span-1 desktop:col-span-6",
     nameColor: "text-[var(--color-deep-green)]",
     layout: "flagship",
   },
@@ -53,59 +61,32 @@ const PRODUCTS: Product[] = [
     name: "Hyperfarm",
     bn: null,
     audience: "Restaurants, retailers, quick-commerce, wholesalers, and exporters.",
+    audienceBn: "রেস্তোরাঁ, রিটেইলার, কুইক-কমার্স, পাইকার আর এক্সপোর্টারদের জন্য।",
     headline: "The buyer's procurement desk.",
-    body: "Hyperfarm lets buyers order fresh produce, groceries, meat, poultry, and daily staples directly from verified farmers and hubs. Prices update every morning, stock is visible before you order, and delivery runs on Fashol's own route plans rather than on a wholesaler's schedule. Setup takes about ten minutes. Available on iOS, Android, and the web.",
+    headlineBn: "বায়ারের প্রোকিউরমেন্ট ডেস্ক।",
+    body: "Buyers order fresh produce, groceries, meat, poultry, and staples straight from verified farmers and hubs. Prices update each morning, stock shows before you order, and delivery runs on Fashol's own routes. Setup takes ten minutes; available on iOS, Android, and web.",
+    bodyBn: "বায়াররা যাচাই করা কৃষক আর হাব থেকে সরাসরি তাজা পণ্য, মুদি সামগ্রী, মাংস, পোলট্রি আর নিত্যপণ্য অর্ডার করেন। প্রতিদিন সকালে দাম হালনাগাদ হয়, অর্ডারের আগেই স্টক দেখা যায়, আর ডেলিভারি চলে ফসলের নিজস্ব রুটে। সেটআপ লাগে দশ মিনিট; পাওয়া যায় iOS, Android আর ওয়েবে।",
     cta: "Get Hyperfarm",
+    ctaBn: "হাইপারফার্ম নিন",
     action: { type: "platforms" },
     img: "/images/content/platform-02-hyperfarm.jpg",
-    imgAlt: "Interior of a large Bangladeshi warehouse with mounds of golden grain, workers moving product, and sacks of feed stacked in the foreground — the wholesale and procurement floor Hyperfarm digitises.",
+    imgAlt: "Interior of a large Bangladeshi warehouse with mounds of golden grain, workers moving product, and sacks of feed stacked in the foreground - the procurement floor Hyperfarm digitises.",
     span: "tablet:col-span-1 desktop:col-span-6",
     nameColor: "text-[var(--color-ink)]",
-    layout: "wide",
-  },
-  {
-    num: "03",
-    name: "Banijjo",
-    bn: "বাণিজ্য",
-    audience: "Wholesalers and distribution partners.",
-    headline: "The operations desk for the mid-chain.",
-    body: "Banijjo gives wholesalers and distributors inside the Fashol network the tools to run their shops: stock levels per store, order routing to buyers, and settlement records with farmers on one side and buyers on the other. It is the part of the platform the wholesale layer actually works in day to day.",
-    cta: "Open Banijjo on Google Play",
-    action: { type: "link", href: "https://play.google.com/store/apps/details?id=com.fashol.banijjo" },
-    img: "/images/content/card-image1.jpg",
-    imgAlt: "A Bangladeshi wholesale market worker moving crates of produce through the Banijjo distribution floor.",
-    span: "tablet:col-span-1 desktop:col-span-6",
-    nameColor: "text-[var(--color-ink)]",
-    layout: "wide",
-  },
-  {
-    num: "04",
-    name: "Myfarm",
-    bn: null,
-    audience: "Farmers, distributors, and exporters.",
-    headline: "Working capital for every stage of the chain.",
-    body: "Myfarm will offer seasonal credit to farmers, inventory finance to distributors, and trade finance to exporters shipping across borders. Because Jogaan, Hyperfarm, and Banijjo already record every transaction on the platform, credit decisions start from a real ledger rather than a paper form. Launching in 2026.",
-    cta: "Register interest",
-    action: { type: "form" },
-    img: "/images/content/hero-paddy-aerial.jpg",
-    imgAlt: "A golden rice field at sunrise with a stack of Bangladeshi taka notes resting on weathered wood in the foreground.",
-    span: "tablet:col-span-2 desktop:col-span-12",
-    nameColor: "text-[var(--color-ink)]",
-    layout: "full",
+    layout: "flagship",
   },
 ];
 
 const HYPERFARM_PLATFORMS = [
-  { label: "App Store", detail: "iPhone, iPad", href: "https://apps.apple.com/bd/app/hyperfarm/" },
-  { label: "Google Play", detail: "Android", href: "https://play.google.com/store/apps/details?id=com.fashol.hyperfarm" },
-  { label: "hyperfarm.global", detail: "Web browser", href: "https://hyperfarm.global/" },
+  { label: "App Store", detail: "iPhone, iPad", detailBn: "iPhone, iPad", href: "https://apps.apple.com/bd/app/hyperfarm/" },
+  { label: "Google Play", detail: "Android", detailBn: "Android", href: "https://play.google.com/store/apps/details?id=com.fashol.hyperfarm" },
+  { label: "hyperfarm.global", detail: "Web browser", detailBn: "ওয়েব ব্রাউজার", href: "https://hyperfarm.global/" },
 ];
 
-const FASHOL_WHATSAPP = "+8801810187230";
-
-type ModalKey = "hyperfarm" | "myfarm";
+type ModalKey = "hyperfarm";
 
 export function PlatformSection() {
+  const lang = useLang();
   const [openModal, setOpenModal] = useState<ModalKey | null>(null);
 
   useEffect(() => {
@@ -126,11 +107,11 @@ export function PlatformSection() {
     <Section tone="surface">
       <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
         <Reveal as="h2" className="t-h2 desktop:col-span-6">
-          The platform, in four products.
+          {t(lang, "The platform, in two products.", "প্ল্যাটফর্ম, দুটি প্রোডাক্টে।")}
         </Reveal>
         <Reveal delay={0.08} className="desktop:col-span-6 t-body-lg">
           <p>
-            Fashol&apos;s operations run on software we built in-house. Jogaan is the farmer&apos;s app. Hyperfarm is the buyer&apos;s app. Banijjo runs the wholesale layer between them. Myfarm, launching in 2026, finances the working capital that moves on all three.
+            {t(lang, "Fashol's operations run on software we built in-house. Jogaan is the farmer's app. Hyperfarm is the buyer's app. Both run on the same stock, pricing, and settlement engine, so every order moves on one shared record.", "ফসলের সব কার্যক্রম চলে আমাদের নিজেদের তৈরি সফটওয়্যারে। যোগান কৃষকের অ্যাপ। হাইপারফার্ম বায়ারের অ্যাপ। দুটোই চলে একই স্টক, প্রাইসিং আর সেটেলমেন্ট ইঞ্জিনে, তাই প্রতিটি অর্ডার এক অভিন্ন রেকর্ডে পরিচালিত হয়।")}
           </p>
         </Reveal>
       </div>
@@ -147,9 +128,6 @@ export function PlatformSection() {
         {openModal === "hyperfarm" && (
           <HyperfarmModal key="hyperfarm" onClose={() => setOpenModal(null)} />
         )}
-        {openModal === "myfarm" && (
-          <MyfarmModal key="myfarm" onClose={() => setOpenModal(null)} />
-        )}
       </AnimatePresence>
     </Section>
   );
@@ -162,19 +140,14 @@ function PlatformTile({
   product: Product;
   onOpenModal: (k: ModalKey) => void;
 }) {
+  const lang = useLang();
   const tileClass =
     "group relative flex h-full w-full min-h-[240px] flex-col overflow-hidden rounded-3xl bg-[var(--color-paper)] text-[var(--color-ink)] text-left border border-[var(--color-line)] p-7 tablet:p-10";
 
   const identity = (
     <div className="flex flex-col min-w-0">
-      <span
-        className="text-[11px] font-medium tracking-[0.14em] uppercase text-[var(--color-ink-muted)]"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        {product.num}
-      </span>
       <h3
-        className={`${product.layout === "flagship" ? "t-h2" : "t-h3"} mt-4 ${product.nameColor}`}
+        className={`${product.layout === "flagship" ? "t-h2" : "t-h3"} ${product.nameColor}`}
         style={{ fontWeight: 500, letterSpacing: "-0.02em" }}
       >
         {product.name}
@@ -187,18 +160,18 @@ function PlatformTile({
           {product.bn}
         </p>
       )}
-      <p className="t-body-sm mt-4 text-[var(--color-ink-muted)]">For {product.audience}</p>
+      <p className="t-body-sm mt-4 text-[var(--color-ink-muted)]">{t(lang, `For ${product.audience}`, product.audienceBn)}</p>
     </div>
   );
 
   const bodyBlock = (
     <div className="flex flex-col gap-3 min-w-0">
       <h4 className={product.layout === "flagship" ? "t-h4" : "t-h5"} style={{ fontWeight: 500 }}>
-        {product.headline}
+        {t(lang, product.headline, product.headlineBn)}
       </h4>
-      <p className="t-body-sm text-[var(--color-ink-subtle)]">{product.body}</p>
+      <p className="t-body-sm text-[var(--color-ink-subtle)]">{t(lang, product.body, product.bodyBn)}</p>
       <span className="mt-2 inline-flex items-center text-[13px] font-medium text-[var(--color-deep-green)] group-hover:text-[var(--color-deep-green-pressed)] transition-colors">
-        {product.cta}
+        {t(lang, product.cta, product.ctaBn)}
       </span>
     </div>
   );
@@ -273,7 +246,7 @@ function PlatformTile({
   return (
     <button
       type="button"
-      onClick={() => onOpenModal(product.action.type === "platforms" ? "hyperfarm" : "myfarm")}
+      onClick={() => onOpenModal("hyperfarm")}
       className={tileClass}
     >
       {tileInner}
@@ -282,8 +255,9 @@ function PlatformTile({
 }
 
 function HyperfarmModal({ onClose }: { onClose: () => void }) {
+  const lang = useLang();
   return (
-    <ModalShell onClose={onClose} label="Hyperfarm platforms">
+    <ModalShell onClose={onClose} label={t(lang, "Hyperfarm platforms", "হাইপারফার্ম প্ল্যাটফর্ম")}>
       <div className="relative h-16 w-16 mb-5">
         <Image
           src="/images/content/hyperfarm-logo.png"
@@ -296,10 +270,10 @@ function HyperfarmModal({ onClose }: { onClose: () => void }) {
         />
       </div>
       <h3 className="t-h3" style={{ fontWeight: 500 }}>
-        Get Hyperfarm
+        {t(lang, "Get Hyperfarm", "হাইপারফার্ম নিন")}
       </h3>
       <p className="t-body-sm text-[var(--color-ink-muted)] mt-2">
-        Available on iOS, Android, and the web. Pick your platform.
+        {t(lang, "Available on iOS, Android, and the web. Pick your platform.", "পাওয়া যায় iOS, Android আর ওয়েবে। আপনার প্ল্যাটফর্মটি বেছে নিন।")}
       </p>
       <ul className="mt-8 flex flex-col gap-3">
         {HYPERFARM_PLATFORMS.map((p) => (
@@ -313,7 +287,7 @@ function HyperfarmModal({ onClose }: { onClose: () => void }) {
               <div>
                 <div className="t-body font-medium text-[var(--color-ink)]">{p.label}</div>
                 <div className="text-[11px] tracking-[0.14em] uppercase font-medium text-[var(--color-ink-muted)] mt-1" style={{ fontFamily: "var(--font-display)" }}>
-                  {p.detail}
+                  {t(lang, p.detail, p.detailBn)}
                 </div>
               </div>
             </a>
@@ -321,98 +295,6 @@ function HyperfarmModal({ onClose }: { onClose: () => void }) {
         ))}
       </ul>
     </ModalShell>
-  );
-}
-
-function MyfarmModal({ onClose }: { onClose: () => void }) {
-  const [phone, setPhone] = useState("");
-  const [crop, setCrop] = useState("");
-  const [address, setAddress] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const msg = `Hi Fashol, I'd like to register interest in Myfarm.\n\nContact number: ${phone}\nCurrently growing: ${crop}\nDistrict or address: ${address}`;
-    const url = `https://wa.me/${FASHOL_WHATSAPP.replace("+", "")}?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-    setSubmitted(true);
-  };
-
-  return (
-    <ModalShell onClose={onClose} label="Myfarm registration">
-      {!submitted ? (
-        <>
-          <h3 className="t-h3" style={{ fontWeight: 500 }}>
-            Register interest
-          </h3>
-          <p className="t-body-sm text-[var(--color-ink-muted)] mt-2">
-            Myfarm launches in 2026. Share a few details and we will reach out when onboarding opens.
-          </p>
-          <form className="mt-8 flex flex-col gap-5" onSubmit={onSubmit}>
-            <Field label="Contact number" value={phone} onChange={setPhone} type="tel" placeholder="01XXXXXXXXX" required />
-            <Field label="What you are growing" value={crop} onChange={setCrop} placeholder="Paddy, cabbage, mango, ..." required />
-            <Field label="District or address" value={address} onChange={setAddress} placeholder="e.g. Jashore, Khulna" required />
-            <button
-              type="submit"
-              className="mt-3 inline-flex items-center justify-center rounded-full bg-[var(--color-deep-green)] text-[var(--color-paper)] px-6 py-3 font-medium hover:bg-[var(--color-ink)] transition-colors"
-            >
-              Register interest
-            </button>
-          </form>
-        </>
-      ) : (
-        <>
-          <h3 className="t-h3" style={{ fontWeight: 500 }}>
-            Thanks, message ready.
-          </h3>
-          <p className="t-body-sm text-[var(--color-ink-muted)] mt-3">
-            We have opened WhatsApp with your details. Send the message and our team will reach out when Myfarm nears launch.
-          </p>
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-8 inline-flex items-center font-medium text-[var(--color-ink)] hover:text-[var(--color-deep-green)] transition-colors"
-          >
-            Close
-          </button>
-        </>
-      )}
-    </ModalShell>
-  );
-}
-
-function Field({
-  label,
-  value,
-  onChange,
-  type = "text",
-  placeholder,
-  required,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-}) {
-  return (
-    <label className="flex flex-col gap-2">
-      <span
-        className="text-[11px] font-medium tracking-[0.14em] uppercase text-[var(--color-ink-muted)]"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        {label}
-      </span>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        required={required}
-        className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 t-body text-[var(--color-ink)] placeholder:text-[var(--color-ink-muted)] focus:outline-none focus:border-[var(--color-deep-green)] transition-colors"
-      />
-    </label>
   );
 }
 
@@ -425,6 +307,7 @@ function ModalShell({
   label: string;
   children: React.ReactNode;
 }) {
+  const lang = useLang();
   return (
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
@@ -451,7 +334,7 @@ function ModalShell({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t(lang, "Close", "বন্ধ করুন")}
           className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full text-[var(--color-ink-muted)] hover:text-[var(--color-ink)] hover:bg-[rgba(19,19,19,0.04)] transition-colors"
         >
           <span aria-hidden className="text-[22px] leading-none">×</span>

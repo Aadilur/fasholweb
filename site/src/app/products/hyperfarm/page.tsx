@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { TryHyperfarmButton } from "@/components/site/TryHyperfarmButton";
+import { getLang } from "@/lib/i18n.server";
+import { t } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title:
@@ -15,7 +17,7 @@ const VIOLET_SOFT = "rgba(126,0,255,0.10)";
 const VIOLET_LINE = "rgba(126,0,255,0.18)";
 const CREAM = "#F4EFD8";
 
-// Sourced from /site/src/data/site.ts (PARTNERS) — alt copy mapped 1:1 from the
+// Sourced from /site/src/data/site.ts (PARTNERS) - alt copy mapped 1:1 from the
 // brief's logo list. Where a brand has no PNG asset in the repo (Shwapno,
 // Foodie), the row falls back to a styled wordmark in muted gray so the row
 // stays uniform.
@@ -34,7 +36,7 @@ const LOGOS: ReadonlyArray<Logo> = [
   { kind: "word", alt: "Foodie", word: "Foodie" },
 ];
 
-// 4 small avatar tints for the trust badge cluster — abstract violet-tinted
+// 4 small avatar tints for the trust badge cluster - abstract violet-tinted
 // circles, no AI-generated faces.
 const AVATAR_TINTS: ReadonlyArray<{ from: string; to: string; initials: string }> = [
   { from: "#7E00FF", to: "#B469FF", initials: "RA" },
@@ -208,12 +210,13 @@ function Body({
 
 // ---------- Page ----------
 
-export default function HyperfarmPage() {
+export default async function HyperfarmPage() {
+  const lang = await getLang();
   return (
     <div style={{ background: CREAM }}>
-      {/* SECTION 1 — HERO */}
+      {/* SECTION 1 - HERO */}
       <section className="relative overflow-hidden">
-        {/* Mobile / tablet stacked image — appears ABOVE the headline on
+        {/* Mobile / tablet stacked image - appears ABOVE the headline on
             mobile so the hand-with-phone leads the page. Owns the nav
             clearance padding on mobile/tablet.
             Mobile (<810px): image bleeds to ~2x viewport width and is shifted
@@ -233,7 +236,7 @@ export default function HyperfarmPage() {
                 sizes="(min-width: 810px) 80vw, 200vw"
                 className="block h-auto w-full"
               />
-              {/* Bottom fade — softens the wrist cutoff into the cream surface */}
+              {/* Bottom fade - softens the wrist cutoff into the cream surface */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-[14%]"
@@ -278,12 +281,12 @@ export default function HyperfarmPage() {
                       fontWeight: 500,
                     }}
                   >
-                    Trusted by 7,000+ businesses
+                    {t(lang, "Trusted by 7,000+ businesses", "7,000+ ব্যবসার আস্থা")}
                   </span>
                 </div>
               </Reveal>
 
-              {/* H1 — forced to two visual lines via per-line nowrap spans. */}
+              {/* H1 - forced to two visual lines via per-line nowrap spans. */}
               <Reveal delay={0.06} className="mt-7">
                 <h1
                   style={{
@@ -301,7 +304,7 @@ export default function HyperfarmPage() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    Stop running to markets.
+                    {t(lang, "Stop running to markets.", "বাজারে ছোটা বন্ধ করুন।")}
                   </span>
                   <span
                     style={{
@@ -309,9 +312,11 @@ export default function HyperfarmPage() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    Start{" "}
-                    <span style={{ color: VIOLET }}>running</span> your
-                    business.
+                    {t(lang, "Start ", "ব্যবসা ")}
+                    <span style={{ color: VIOLET }}>
+                      {t(lang, "running", "চালানো")}
+                    </span>{" "}
+                    {t(lang, "your business.", "শুরু করুন।")}
                   </span>
                 </h1>
               </Reveal>
@@ -324,7 +329,7 @@ export default function HyperfarmPage() {
           </div>
         </div>
 
-        {/* Desktop hero image — anchored to the right ~65% of the canvas, sized
+        {/* Desktop hero image - anchored to the right ~65% of the canvas, sized
             to sit close to the headline column on the left. */}
         <div className="hidden desktop:block absolute top-1/2 -translate-y-1/2 right-0 w-[65%] max-w-[1066px] z-0 pointer-events-none">
           <Reveal delay={0.1}>
@@ -339,7 +344,7 @@ export default function HyperfarmPage() {
                 className="block w-full h-auto"
                 aria-hidden
               />
-              {/* Bottom fade — softens the wrist cutoff into the cream surface */}
+              {/* Bottom fade - softens the wrist cutoff into the cream surface */}
               <div
                 aria-hidden
                 className="absolute inset-x-0 bottom-0 h-[14%]"
@@ -352,7 +357,7 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 2 — LOGO STRIP. Pulled up under the hero's bottom padding so
+      {/* SECTION 2 - LOGO STRIP. Pulled up under the hero's bottom padding so
           the logo bar peeks into the initial viewport without touching the
           hero content above. */}
       <section className="relative -mt-[48px] tablet:-mt-[72px] desktop:-mt-[30px] pt-0 pb-[48px] tablet:pb-[60px] desktop:pb-[72px]">
@@ -367,7 +372,7 @@ export default function HyperfarmPage() {
                 letterSpacing: "-0.005em",
               }}
             >
-              Powering procurement at
+              {t(lang, "Powering procurement at", "যাদের প্রোকিউরমেন্টে শক্তি জোগাচ্ছি")}
             </p>
           </Reveal>
           <Reveal delay={0.08}>
@@ -416,11 +421,11 @@ export default function HyperfarmPage() {
         </div>
       </section>
 
-      {/* SECTION 3 — MARKETPLACE */}
+      {/* SECTION 3 - MARKETPLACE */}
       <section className="py-[100px] tablet:py-[130px] desktop:py-[160px]">
         <div className="container-page">
           <Reveal>
-            {/* Inline h2 — uses min()/vw scaling + nowrap so the line fits on
+            {/* Inline h2 - uses min()/vw scaling + nowrap so the line fits on
                 one line across viewport sizes without forcing a wrap. */}
             <h2
               style={{
@@ -434,8 +439,14 @@ export default function HyperfarmPage() {
                 whiteSpace: "nowrap",
               }}
             >
-              Everything your kitchen, store, or hub{" "}
-              <span style={{ color: VIOLET }}>buys.</span>
+              {t(
+                lang,
+                "Everything your kitchen, store, or hub",
+                "আপনার রান্নাঘর, দোকান বা হাব যা কিছু",
+              )}{" "}
+              <span style={{ color: VIOLET }}>
+                {t(lang, "buys.", "কেনে।")}
+              </span>
             </h2>
           </Reveal>
 
@@ -451,7 +462,7 @@ export default function HyperfarmPage() {
                   sizes="(min-width: 1200px) 1080px, (min-width: 810px) 88vw, 100vw"
                   className="block h-auto w-full"
                 />
-                {/* Bottom fade — softens the wrist cutoff into the cream surface */}
+                {/* Bottom fade - softens the wrist cutoff into the cream surface */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-x-0 bottom-0 h-[14%]"
@@ -462,7 +473,7 @@ export default function HyperfarmPage() {
               </div>
             </Reveal>
 
-            {/* Floating cards — desktop only. Rendered without per-card Reveal
+            {/* Floating cards - desktop only. Rendered without per-card Reveal
                 so they sit visibly in the cluster the moment the section is
                 in view, instead of waiting for the cards' own scroll-trigger
                 threshold (which fired late since the cards sit deep inside
@@ -472,58 +483,88 @@ export default function HyperfarmPage() {
                 className="absolute left-[2%] top-[14%]"
                 rotate={-4}
                 icon={<IconCatalog />}
-                label="1000+ SKUs"
-                body="Every category. Every brand. One catalog."
+                label={t(lang, "1000+ SKUs", "1000+ প্রোডাক্ট")}
+                body={t(
+                  lang,
+                  "Every category. Every brand. One catalog.",
+                  "সব ক্যাটাগরি। সব ব্র্যান্ড। এক ক্যাটালগ।",
+                )}
               />
               <FloatingCard
                 className="absolute right-[2%] top-[40%]"
                 rotate={3.5}
                 icon={<IconBulk />}
-                label="Bulk Discount"
-                body="Buy more, pay less. Tiered pricing built in."
+                label={t(lang, "Bulk Discount", "বাল্ক ডিসকাউন্ট")}
+                body={t(
+                  lang,
+                  "Buy more, pay less. Tiered pricing built in.",
+                  "বেশি কিনুন, কম দিন। স্তরভিত্তিক দাম আগে থেকেই ঠিক করা।",
+                )}
               />
               <FloatingCard
                 className="absolute left-[4%] bottom-[22%]"
                 rotate={-2.5}
                 icon={<IconOutlets />}
-                label="Multi-Outlet"
-                body="From 2 outlets to 40. One dashboard."
+                label={t(lang, "Multi-Outlet", "মাল্টি-আউটলেট")}
+                body={t(
+                  lang,
+                  "From 2 outlets to 40. One dashboard.",
+                  "2টি আউটলেট থেকে 40টি - সব এক ড্যাশবোর্ডে।",
+                )}
               />
             </div>
 
-            {/* Stacked cards — mobile / tablet */}
+            {/* Stacked cards - mobile / tablet */}
             <div className="desktop:hidden mt-10 grid grid-cols-1 gap-4 max-w-[520px] mx-auto">
               <FloatingCard
                 rotate={0}
                 icon={<IconCatalog />}
-                label="1000+ SKUs"
-                body="Every category. Every brand. One catalog."
+                label={t(lang, "1000+ SKUs", "1000+ প্রোডাক্ট")}
+                body={t(
+                  lang,
+                  "Every category. Every brand. One catalog.",
+                  "সব ক্যাটাগরি। সব ব্র্যান্ড। এক ক্যাটালগ।",
+                )}
               />
               <FloatingCard
                 rotate={0}
                 icon={<IconBulk />}
-                label="Bulk Discount"
-                body="Buy more, pay less. Tiered pricing built in."
+                label={t(lang, "Bulk Discount", "বাল্ক ডিসকাউন্ট")}
+                body={t(
+                  lang,
+                  "Buy more, pay less. Tiered pricing built in.",
+                  "বেশি কিনুন, কম দিন। স্তরভিত্তিক দাম আগে থেকেই ঠিক করা।",
+                )}
               />
               <FloatingCard
                 rotate={0}
                 icon={<IconOutlets />}
-                label="Multi-Outlet"
-                body="From 2 outlets to 40. One dashboard."
+                label={t(lang, "Multi-Outlet", "মাল্টি-আউটলেট")}
+                body={t(
+                  lang,
+                  "From 2 outlets to 40. One dashboard.",
+                  "2টি আউটলেট থেকে 40টি - সব এক ড্যাশবোর্ডে।",
+                )}
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 4 — PROBLEM BLOCK */}
+      {/* SECTION 4 - PROBLEM BLOCK */}
       <section className="py-[100px] tablet:py-[130px] desktop:py-[160px]">
         <div className="container-page">
           <div className="max-w-[820px] mx-auto text-center">
             <Reveal>
               <H2 align="center">
-                Procurement, the way it&apos;s been for{" "}
-                <span style={{ color: VIOLET }}>decades.</span>
+                {t(
+                  lang,
+                  "Procurement, the way it's been for",
+                  "প্রোকিউরমেন্ট চলে আসছে যেভাবে, বহু",
+                )}{" "}
+                <span style={{ color: VIOLET }}>
+                  {t(lang, "decades.", "যুগ ধরে।")}
+                </span>
               </H2>
             </Reveal>
           </div>
@@ -531,83 +572,132 @@ export default function HyperfarmPage() {
           <div className="mt-14 tablet:mt-16 desktop:mt-20 grid grid-cols-1 tablet:grid-cols-2 gap-5 tablet:gap-6 max-w-[1080px] mx-auto">
             <ProblemTile
               icon={<IconClock />}
-              title="1am to 6am"
-              body="Procurement teams lose entire nights at Karwan Bazar and Jatrabari. Every week."
+              title={t(lang, "1am to 6am", "রাত 1টা থেকে ভোর 6টা")}
+              body={t(
+                lang,
+                "Procurement teams lose entire nights at Karwan Bazar and Jatrabari. Every week.",
+                "কারওয়ান বাজার আর যাত্রাবাড়ীতে প্রোকিউরমেন্ট টিমের গোটা রাত পার হয়ে যায়। প্রতি সপ্তাহে।",
+              )}
             />
             <ProblemTile
               icon={<IconAlertTriangle />}
-              title="Inconsistent supply"
-              body="One day rain. Next day a strike. Your supply disappears, your kitchen waits."
+              title={t(lang, "Inconsistent supply", "অনিয়মিত সাপ্লাই")}
+              body={t(
+                lang,
+                "One day rain. Next day a strike. Your supply disappears, your kitchen waits.",
+                "একদিন বৃষ্টি। পরদিন হরতাল। সাপ্লাই উধাও, আর আপনার রান্নাঘর বসে থাকে।",
+              )}
             />
             <ProblemTile
               icon={<IconScale />}
-              title="Quality you can't control"
-              body="Different vendors, different qualities. Different days, different produce."
+              title={t(lang, "Quality you can't control", "কোয়ালিটি আপনার নিয়ন্ত্রণের বাইরে")}
+              body={t(
+                lang,
+                "Different vendors, different qualities. Different days, different produce.",
+                "একেক বিক্রেতা, একেক কোয়ালিটি। একেক দিন, একেক রকম প্রোডাক্ট।",
+              )}
             />
             <ProblemTile
               icon={<IconReceipt />}
-              title="Hidden transport costs"
-              body="৳800-1,500 per trip just to get the supply back to your kitchen or shop."
+              title={t(lang, "Hidden transport costs", "লুকানো পরিবহন খরচ")}
+              body={t(
+                lang,
+                "৳800-1,500 per trip just to get the supply back to your kitchen or shop.",
+                "রান্নাঘর বা দোকানে সাপ্লাই আনতেই ট্রিপপ্রতি ৳800-1,500।",
+              )}
             />
           </div>
         </div>
       </section>
 
-      {/* SECTION 5 — FEATURE 1: ORDER ANY TIME (text left / image right) */}
+      {/* SECTION 5 - FEATURE 1: ORDER ANY TIME (text left / image right) */}
       <FeatureRow
         imageSide="right"
         image="/ph2.png"
         imageAlt="Tilted phone showing a Hyperfarm category page with bulk pricing for fresh herbs."
         headline={
           <>
-            Browse 1,000 SKUs.{" "}
-            <span style={{ color: VIOLET }}>Lock in</span>
-            {" "}today&apos;s prices.
+            {t(lang, "Browse 1,000 SKUs.", "1,000 প্রোডাক্ট দেখুন।")}{" "}
+            <span style={{ color: VIOLET }}>
+              {t(lang, "Lock in", "লক করে নিন")}
+            </span>
+            {" "}
+            {t(lang, "today's prices.", "আজকের দাম।")}
           </>
         }
-        body="Daily prices, refreshed every morning. Browse 1,000+ SKUs by category. Tap to order. Done in under a minute."
+        body={t(
+          lang,
+          "Daily prices, refreshed every morning. Browse 1,000+ SKUs by category. Tap to order. Done in under a minute.",
+          "প্রতিদিনের দাম, প্রতি সকালে আপডেট। ক্যাটাগরি ধরে 1,000+ প্রোডাক্ট দেখুন। ট্যাপ করে অর্ডার। এক মিনিটেই শেষ।",
+        )}
       />
 
-      {/* SECTION 6 — FEATURE 2: FROM FARM TO YOU (image left / text right) */}
+      {/* SECTION 6 - FEATURE 2: FROM FARM TO YOU (image left / text right) */}
       <FeatureRow
         imageSide="left"
         image="/ph3.png"
         imageAlt="Tilted phone showing a Hyperfarm order tracking screen with a live route map."
         headline={
           <>
-            From farm to You.{" "}
-            <span style={{ color: VIOLET }}>Tracked</span>, every step.
+            {t(lang, "From farm to You.", "খামার থেকে সোজা আপনার কাছে।")}{" "}
+            <span style={{ color: VIOLET }}>
+              {t(lang, "Tracked", "ট্র্যাকড")}
+            </span>
+            {t(lang, ", every step.", ", প্রতিটি ধাপে।")}
           </>
         }
-        body="Place the order tonight. Wake up to your supply already at the door. Track the truck on the way."
+        body={t(
+          lang,
+          "Place the order tonight. Wake up to your supply already at the door. Track the truck on the way.",
+          "আজ রাতে অর্ডার দিন। সকালে ঘুম ভাঙতেই দেখবেন সাপ্লাই দরজায় হাজির। পথে থাকা ট্রাক ট্র্যাক করুন।",
+        )}
       />
 
-      {/* SECTION 7 — FEATURE 3: SNAP, ORDER, DONE (text left / image right) */}
+      {/* SECTION 7 - FEATURE 3: SNAP, ORDER, DONE (text left / image right) */}
       <FeatureRow
         imageSide="right"
         image="/ph4.png"
         imageAlt="Tilted phone showing a Hyperfarm screen reading a handwritten Bengali order list and matching items into the cart."
         headline={
           <>
-            <span style={{ color: VIOLET }}>Snap.</span> Order. Done.
+            <span style={{ color: VIOLET }}>
+              {t(lang, "Snap.", "ছবি তুলুন।")}
+            </span>{" "}
+            {t(lang, "Order. Done.", "অর্ডার। ব্যস।")}
           </>
         }
-        body="Snap a photo of your order list. Hyperfarm reads the handwriting, finds the right SKUs, and builds the order. You confirm. Done."
+        body={t(
+          lang,
+          "Snap a photo of your order list. Hyperfarm reads the handwriting, finds the right SKUs, and builds the order. You confirm. Done.",
+          "আপনার অর্ডার লিস্টের ছবি তুলুন। হাইপারফার্ম হাতের লেখা পড়ে ঠিক প্রোডাক্টগুলো খুঁজে অর্ডার সাজিয়ে দেয়। আপনি শুধু কনফার্ম করুন। ব্যস।",
+        )}
       />
 
-      {/* SECTION 8 — STATS BLOCK */}
+      {/* SECTION 8 - STATS BLOCK */}
       <section className="py-[100px] tablet:py-[120px] desktop:py-[140px]">
         <div className="container-page">
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 max-w-[1080px] mx-auto desktop:flex desktop:flex-row desktop:justify-between desktop:items-start desktop:gap-x-10">
-            <Stat number="7,000+" label="mudi shops served" />
-            <Stat number="400+" label="supershop outlets supplied" />
-            <Stat number="3,500+ MT" label="delivered monthly" />
-            <Stat number="Lower than market" label="on every order" />
+            <Stat
+              number="7,000+"
+              label={t(lang, "mudi shops served", "মুদি দোকানে সেবা")}
+            />
+            <Stat
+              number="400+"
+              label={t(lang, "supershop outlets supplied", "সুপারশপ আউটলেটে সাপ্লাই")}
+            />
+            <Stat
+              number={t(lang, "3,500+ MT", "3,500+ মেট্রিক টন")}
+              label={t(lang, "delivered monthly", "প্রতি মাসে ডেলিভারি")}
+            />
+            <Stat
+              number={t(lang, "Lower than market", "বাজারের চেয়ে কম দামে")}
+              label={t(lang, "on every order", "প্রতিটি অর্ডারে")}
+            />
           </div>
         </div>
       </section>
 
-      {/* SECTION 9 — CLOSING CTA BAND */}
+      {/* SECTION 9 - CLOSING CTA BAND */}
       <section
         style={{ background: VIOLET }}
         className="py-[50px] tablet:py-[65px] desktop:py-[80px]"
@@ -624,7 +714,11 @@ export default function HyperfarmPage() {
                 color: "#FFFFFF",
               }}
             >
-              Try Hyperfarm. Sleep tonight.
+              {t(
+                lang,
+                "Try Hyperfarm. Sleep tonight.",
+                "হাইপারফার্ম ব্যবহার করুন। রাতে শান্তিতে ঘুমান।",
+              )}
             </h2>
           </Reveal>
           <Reveal delay={0.08} className="mt-5 max-w-[640px] mx-auto">
@@ -636,7 +730,11 @@ export default function HyperfarmPage() {
                 color: "rgba(255,255,255,0.85)",
               }}
             >
-              Order tonight. Track the delivery. Sleep through the rest.
+              {t(
+                lang,
+                "Order tonight. Track the delivery. Sleep through the rest.",
+                "আজ রাতে অর্ডার দিন। ডেলিভারি ট্র্যাক করুন। বাকিটা সময় নিশ্চিন্তে ঘুমান।",
+              )}
             </p>
           </Reveal>
           <Reveal delay={0.16} className="mt-9 inline-block">

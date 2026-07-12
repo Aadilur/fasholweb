@@ -8,19 +8,22 @@ import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { NavDropdown } from "@/components/site/NavDropdown";
 import { NAV_MENUS, allItems, PRODUCT_LOGOS, type NavMenu } from "@/data/nav";
+import { useLang } from "@/components/site/LanguageProvider";
+import { LanguageToggle } from "@/components/site/LanguageToggle";
+import { t } from "@/lib/i18n";
 
 type MenuId = (typeof NAV_MENUS)[number]["id"];
 
-const LEAD_LINKS = [{ href: "/", label: "Overview" }];
+const LEAD_LINKS = [{ href: "/", en: "Overview", bn: "হোম" }];
 const TAIL_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/career", label: "Career" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", en: "About", bn: "আমাদের সম্পর্কে" },
+  { href: "/career", en: "Career", bn: "ক্যারিয়ার" },
+  { href: "/contact", en: "Contact", bn: "যোগাযোগ" },
 ];
 
 const CLOSE_DELAY_MS = 200;
 
-// Pages whose hero sits directly under the nav in a dark tone — the green
+// Pages whose hero sits directly under the nav in a dark tone - the green
 // Fashol logo becomes invisible there, so we recolor it to cream. Add future
 // stakeholder pages here as their dark-hero heroes are built out.
 const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
@@ -38,6 +41,7 @@ const DARK_HERO_PATHS: ReadonlySet<string> = new Set([
 ]);
 
 export function Nav() {
+  const lang = useLang();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -50,7 +54,7 @@ export function Nav() {
   const [mobileExpanded, setMobileExpanded] = useState<MenuId | null>(null);
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const triggerRefs = useRef<Record<MenuId, HTMLAnchorElement | null>>({
+  const triggerRefs = useRef<Record<MenuId, HTMLButtonElement | null>>({
     products: null,
     solutions: null,
   });
@@ -157,7 +161,7 @@ export function Nav() {
             : (currentIdx - 1 + items.length) % items.length;
         items[nextIdx]?.focus();
       }
-      // Enter/Space on the link falls through to default navigation
+      // Enter/Space activates the button, toggling the menu via onClick
     },
     [openMenu, openMenuFor]
   );
@@ -187,7 +191,7 @@ export function Nav() {
           "mx-auto relative",
           "transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
           scrolled
-            ? "max-w-[880px] rounded-full border border-[rgba(19,19,19,0.08)] shadow-[0_4px_24px_-12px_rgba(19,19,19,0.14)]"
+            ? "max-w-[1040px] rounded-full border border-[rgba(19,19,19,0.08)] shadow-[0_4px_24px_-12px_rgba(19,19,19,0.14)]"
             : "max-w-[1360px] border border-transparent",
           "w-[calc(100%-16px)] tablet:w-[calc(100%-40px)]"
         )}
@@ -206,7 +210,7 @@ export function Nav() {
         </span>
 
         <div className="relative flex items-center justify-between gap-4 h-12 tablet:h-14 px-4 tablet:px-5">
-          {/* Logo — recolored to cream on pages whose hero is dark (see DARK_HERO_PATHS). */}
+          {/* Logo - recolored to cream on pages whose hero is dark (see DARK_HERO_PATHS). */}
           <Link
             href="/"
             aria-label="Fashol home"
@@ -252,7 +256,7 @@ export function Nav() {
               <DesktopLink
                 key={l.href}
                 href={l.href}
-                label={l.label}
+                label={t(lang, l.en, l.bn)}
                 active={pathname === l.href}
                 onHoverOther={closeAllMenus}
               />
@@ -260,19 +264,20 @@ export function Nav() {
 
             {NAV_MENUS.map((menu) => {
               const isOpen = openMenu === menu.id;
-              const sectionActive = pathname?.startsWith(menu.href);
+              const sectionActive = pathname?.startsWith(`/${menu.id}`);
               const panelId = `nav-panel-${menu.id}`;
               return (
-                <Link
+                <button
                   key={menu.id}
+                  type="button"
                   ref={(el) => {
                     triggerRefs.current[menu.id] = el;
                   }}
-                  href={menu.href}
                   aria-haspopup="true"
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onMouseEnter={() => openMenuFor(menu.id)}
+                  onClick={() => (isOpen ? closeAllMenus() : openMenuFor(menu.id))}
                   onKeyDown={(e) => handleMenuKeydown(e, menu)}
                   className={clsx(
                     "group relative inline-flex items-center gap-1 font-[var(--font-display)] text-[13px] font-medium px-3 py-1.5 rounded-full transition-colors duration-200 tracking-tight cursor-pointer",
@@ -281,7 +286,7 @@ export function Nav() {
                       : "text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)]"
                   )}
                 >
-                  <span>{menu.label}</span>
+                  <span>{t(lang, menu.label, menu.labelBn)}</span>
                   <svg
                     aria-hidden
                     viewBox="0 0 10 6"
@@ -299,7 +304,7 @@ export function Nav() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </Link>
+                </button>
               );
             })}
 
@@ -309,7 +314,7 @@ export function Nav() {
                 <DesktopLink
                   key={l.href}
                   href={l.href}
-                  label={l.label}
+                  label={t(lang, l.en, l.bn)}
                   active={!!active}
                   onHoverOther={closeAllMenus}
                 />
@@ -319,8 +324,9 @@ export function Nav() {
 
           {/* Right CTA */}
           <div className="hidden desktop:flex items-center gap-2 shrink-0">
+            <LanguageToggle />
             <Button variant="primary" href="/contact" className="!h-9 !px-4 !text-[12px]">
-              Partner with Fashol
+              {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
             </Button>
           </div>
 
@@ -364,12 +370,12 @@ export function Nav() {
         <div className="rounded-2xl bg-[var(--color-paper)] shadow-[0_20px_48px_-16px_rgba(0,0,0,0.18)] p-4 overflow-y-auto max-h-[80vh]">
           <ul className="flex flex-col">
             {LEAD_LINKS.map((l) => (
-              <MobileLink key={l.href} href={l.href} label={l.label} active={pathname === l.href} />
+              <MobileLink key={l.href} href={l.href} label={t(lang, l.en, l.bn)} active={pathname === l.href} />
             ))}
 
             {NAV_MENUS.map((menu) => {
               const expanded = mobileExpanded === menu.id;
-              const sectionActive = pathname?.startsWith(menu.href);
+              const sectionActive = pathname?.startsWith(`/${menu.id}`);
               const isProducts = menu.id === "products";
               return (
                 <li key={menu.id}>
@@ -387,7 +393,7 @@ export function Nav() {
                     )}
                   >
                     <span className="font-[var(--font-display)] text-[14px] font-medium tracking-tight">
-                      {menu.label}
+                      {t(lang, menu.label, menu.labelBn)}
                     </span>
                     <svg
                       aria-hidden
@@ -447,7 +453,7 @@ export function Nav() {
                                 className="t-eyebrow mb-2"
                                 style={{ color: "var(--color-ink-muted)" }}
                               >
-                                {group.eyebrow}
+                                {t(lang, group.eyebrow, group.eyebrowBn ?? group.eyebrow)}
                               </div>
                             )}
                             <ul className="grid grid-cols-2 gap-x-4">
@@ -457,7 +463,7 @@ export function Nav() {
                                     href={item.href}
                                     className="block py-1.5 text-[14px] font-medium text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)] transition-colors"
                                   >
-                                    {item.name}
+                                    {t(lang, item.name, item.nameBn)}
                                   </Link>
                                 </li>
                               ))}
@@ -474,14 +480,15 @@ export function Nav() {
             {TAIL_LINKS.map((l) => {
               const active = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
               return (
-                <MobileLink key={l.href} href={l.href} label={l.label} active={!!active} />
+                <MobileLink key={l.href} href={l.href} label={t(lang, l.en, l.bn)} active={!!active} />
               );
             })}
           </ul>
           <div className="mt-4 pt-4 border-t border-[rgba(19,19,19,0.08)] flex flex-col gap-2">
             <Button variant="primary" href="/contact">
-              Partner with Fashol
+              {t(lang, "Partner with Fashol", "ফসলের পার্টনার হন")}
             </Button>
+            <LanguageToggle className="!w-full" />
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ function formatNum(n: number, fmt: "comma" | "plain") {
   return fmt === "comma" ? n.toLocaleString("en-US") : String(n);
 }
 
-// useLayoutEffect on the client, useEffect on the server — avoids paint flash
+// useLayoutEffect on the client, useEffect on the server - avoids paint flash
 // when we synchronously resolve the "skip animation" branch on repeat session visits.
 const useIsoLayoutEffect: typeof useEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -123,7 +123,7 @@ export function CountUp({
     return () => {
       obs.disconnect();
     };
-    // We intentionally don't cancel RAF on unmount/strict-mode cleanup — doing so
+    // We intentionally don't cancel RAF on unmount/strict-mode cleanup - doing so
     // causes a visible flash to 0 when React strict mode double-invokes effects.
     // startedRef prevents re-setup; leaked RAFs ticking after true unmount are no-ops
     // in React 19 (setState on unmounted component is silently ignored).

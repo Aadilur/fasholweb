@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useReducedMotion } from "framer-motion";
+import { t, type Lang } from "@/lib/i18n";
+import { useLang } from "@/components/site/LanguageProvider";
 
 type CardBase = {
   id: number;
@@ -14,8 +16,10 @@ type CardBase = {
 type StatCard = CardBase & {
   kind: "stat";
   display: string;
+  displayBn: string;
   displaySize: "lg" | "phrase";
   body: string;
+  bodyBn: string;
 };
 
 type IllustrationCard = CardBase & {
@@ -27,8 +31,10 @@ type IllustrationCard = CardBase & {
   illustrationHeight: number;
   illustrationAlign: "left" | "center" | "bleed";
   statement: string;
+  statementBn: string;
   statementSize: "sm" | "md" | "lg" | "xl";
   body?: string;
+  bodyBn?: string;
 };
 
 type Card = StatCard | IllustrationCard;
@@ -46,6 +52,7 @@ const CARDS: ReadonlyArray<Card> = [
     illustrationHeight: 400,
     illustrationAlign: "left",
     statement: "One counterparty for sourcing, settlement, and grading.",
+    statementBn: "সোর্সিং, সেটেলমেন্ট ও গ্রেডিংয়ের জন্য একটিই পক্ষ।",
     statementSize: "md",
   },
   {
@@ -54,8 +61,10 @@ const CARDS: ReadonlyArray<Card> = [
     colsTablet: 1,
     kind: "stat",
     display: "50",
+    displayBn: "50",
     displaySize: "lg",
     body: "districts of network redundancy keep supply steady.",
+    bodyBn: "জেলাজুড়ে নেটওয়ার্কের বাড়তি সক্ষমতা সরবরাহ স্থির রাখে।",
   },
   {
     id: 3,
@@ -63,8 +72,10 @@ const CARDS: ReadonlyArray<Card> = [
     colsTablet: 1,
     kind: "stat",
     display: "200+",
+    displayBn: "200+",
     displaySize: "lg",
     body: "wholesale markets benchmarked for live, published pricing.",
+    bodyBn: "পাইকারি বাজার যাচাই করে লাইভ, প্রকাশিত দাম নির্ধারণ করা হয়।",
   },
   {
     id: 4,
@@ -78,6 +89,7 @@ const CARDS: ReadonlyArray<Card> = [
     illustrationHeight: 120,
     illustrationAlign: "center",
     statement: "Four-tier grading applied at the hub.",
+    statementBn: "হাবেই চার স্তরের গ্রেডিং।",
     statementSize: "sm",
   },
   {
@@ -87,13 +99,15 @@ const CARDS: ReadonlyArray<Card> = [
     kind: "illustration",
     illustrationSrc: "/images/solutions/wholesalers/comparison/credit.png",
     illustrationAlt:
-      "Credit lines extending from Banijjo and Myfarm through to downstream buyers",
+      "Credit lines extending from the Fashol network through to downstream buyers",
     illustrationWidth: 280,
     illustrationHeight: 180,
     illustrationAlign: "center",
-    statement: "Credit underwritten by Banijjo and Myfarm.",
+    statement: "Credit underwritten by the Fashol network.",
+    statementBn: "ফসল নেটওয়ার্কের নিশ্চয়তায় দেওয়া ঋণ।",
     statementSize: "md",
     body: "The trader extends downstream terms without touching personal working capital.",
+    bodyBn: "ব্যবসায়ী নিজের চলতি মূলধনে হাত না দিয়েই ডাউনস্ট্রিমে বাকির সুবিধা দিতে পারেন।",
   },
   {
     id: 6,
@@ -101,8 +115,10 @@ const CARDS: ReadonlyArray<Card> = [
     colsTablet: 1,
     kind: "stat",
     display: "T+0",
+    displayBn: "T+0",
     displaySize: "lg",
     body: "same-day settlement on delivered volume.",
+    bodyBn: "সরবরাহকৃত পরিমাণে একই দিনে সেটেলমেন্ট।",
   },
   {
     id: 7,
@@ -110,8 +126,10 @@ const CARDS: ReadonlyArray<Card> = [
     colsTablet: 1,
     kind: "stat",
     display: "At the hub.",
+    displayBn: "হাবেই।",
     displaySize: "phrase",
     body: "Quality disputes resolved before dispatch, not after.",
+    bodyBn: "কোয়ালিটির বিরোধ চালান পাঠানোর আগেই মেটানো হয়, পরে নয়।",
   },
   {
     id: 8,
@@ -125,11 +143,13 @@ const CARDS: ReadonlyArray<Card> = [
     illustrationHeight: 800,
     illustrationAlign: "bleed",
     statement: "Volume scales with the network, not the trader.",
+    statementBn: "পরিমাণ বাড়ে নেটওয়ার্কের সঙ্গে, ব্যবসায়ীর সঙ্গে নয়।",
     statementSize: "xl",
   },
 ];
 
 export function ComparisonBento() {
+  const lang = useLang();
   const reduce = useReducedMotion() ?? false;
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
@@ -170,6 +190,7 @@ export function ComparisonBento() {
           index={i}
           visible={inView}
           reduce={reduce}
+          lang={lang}
         />
       ))}
     </div>
@@ -181,11 +202,13 @@ function BentoCard({
   index,
   visible,
   reduce,
+  lang,
 }: {
   card: Card;
   index: number;
   visible: boolean;
   reduce: boolean;
+  lang: Lang;
 }) {
   const colSpanClass = buildColSpan(card.colsTablet, card.colsDesktop);
   const transitionDelay = reduce ? 0 : index * 80;
@@ -207,16 +230,16 @@ function BentoCard({
     >
       <div className="flex-1 flex flex-col">
         {card.kind === "stat" ? (
-          <StatContent card={card} />
+          <StatContent card={card} lang={lang} />
         ) : (
-          <IllustrationContent card={card} />
+          <IllustrationContent card={card} lang={lang} />
         )}
       </div>
     </article>
   );
 }
 
-function StatContent({ card }: { card: StatCard }) {
+function StatContent({ card, lang }: { card: StatCard; lang: Lang }) {
   const fontSize =
     card.displaySize === "lg"
       ? "clamp(48px, 6.5vw, 88px)"
@@ -235,7 +258,7 @@ function StatContent({ card }: { card: StatCard }) {
           margin: 0,
         }}
       >
-        {card.display}
+        {t(lang, card.display, card.displayBn)}
       </h3>
       <p
         style={{
@@ -246,13 +269,13 @@ function StatContent({ card }: { card: StatCard }) {
           color: "rgba(6, 94, 58, 0.85)",
         }}
       >
-        {card.body}
+        {t(lang, card.body, card.bodyBn)}
       </p>
     </>
   );
 }
 
-function IllustrationContent({ card }: { card: IllustrationCard }) {
+function IllustrationContent({ card, lang }: { card: IllustrationCard; lang: Lang }) {
   const statementSize =
     card.statementSize === "xl"
       ? "clamp(32px, 4vw, 48px)"
@@ -276,7 +299,7 @@ function IllustrationContent({ card }: { card: IllustrationCard }) {
           margin: "24px 0 0 0",
         }}
       >
-        {card.statement}
+        {t(lang, card.statement, card.statementBn)}
       </h3>
       {card.body && (
         <p
@@ -288,7 +311,7 @@ function IllustrationContent({ card }: { card: IllustrationCard }) {
             color: "rgba(6, 94, 58, 0.85)",
           }}
         >
-          {card.body}
+          {t(lang, card.body, card.bodyBn ?? card.body)}
         </p>
       )}
     </>

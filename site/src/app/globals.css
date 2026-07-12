@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Design tokens — Fashol brand guideline colors.
+   Design tokens - Fashol brand guideline colors.
    Primary: Deep Green + Emerald Green. Creamy White balances.
    Secondary: Yellow + Orange. Anchored in primary greens.
 ------------------------------------------------------------------ */
 :root {
-  /* brand — primary greens */
-  --color-deep-green: #065E3A;           /* Deep Green — core identity, logo, brand text */
+  /* brand - primary greens */
+  --color-deep-green: #065E3A;           /* Deep Green - core identity, logo, brand text */
   --color-deep-green-pressed: #044A2D;
-  --color-emerald: #13C171;              /* Emerald Green — vibrancy & energy */
+  --color-emerald: #13C171;              /* Emerald Green - vibrancy & energy */
   --color-emerald-pressed: #0BA55C;
 
   /* `lime` kept as an alias → emerald (minimal refactor across code that uses --color-lime) */
@@ -17,27 +17,27 @@
   --color-lime-pressed: #0BA55C;
 
   /* secondary accents */
-  --color-sun: #FFD12C;                  /* Yellow — freshness */
-  --color-orange: #FF6740;               /* Orange — warmth */
+  --color-sun: #FFD12C;                  /* Yellow - freshness */
+  --color-orange: #FF6740;               /* Orange - warmth */
   --color-sky: #13C171;                  /* keep alias pointing to emerald (no blue in brand) */
 
-  /* product accents — scoped to single product pages, never used elsewhere */
+  /* product accents - scoped to single product pages, never used elsewhere */
   --color-jogaan: #C13C73;               /* Jogaan muted magenta-pink */
   --color-jogaan-pressed: #A8305F;
 
   /* neutrals */
-  --color-ink: #000000;                  /* Deep Black — anchor */
+  --color-ink: #000000;                  /* Deep Black - anchor */
   --color-ink-subtle: #0F1A12;           /* near-black with slight green bias for body */
   --color-ink-muted: #4B5A50;            /* muted green-grey */
   --color-ink-soft: #7A8A80;
-  --color-paper: #FFFBEA;                /* Creamy White — balance */
+  --color-paper: #FFFBEA;                /* Creamy White - balance */
   --color-surface: #F4EFD8;              /* darker creamy surface */
   --color-surface-deep: #ECE4C7;         /* deeper cream, scoped to solutions pages rhythm */
   --color-card-raised: #FAF6E4;          /* mid cream for cards on surface-deep sections */
   --color-line: rgba(6, 94, 58, 0.10);
   --color-line-strong: rgba(6, 94, 58, 0.18);
 
-  /* editorial accents — legacy names kept as brand aliases */
+  /* editorial accents - legacy names kept as brand aliases */
   --color-terracotta: #FF6740;           /* → Orange */
   --color-clay: #FFE5B8;                 /* warm creamy tint */
   --color-grain: #FFFBEA;                /* → Creamy White */
@@ -112,10 +112,23 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Bangla mode - swap the display + mono stacks to the Bengali face site-wide.
+   Every type utility resolves var(--font-display), so this one override
+   re-typesets all headings and body copy. Slightly looser tracking suits Bangla. */
+html[data-lang="bn"] {
+  --font-display: var(--font-bengali), "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+  --font-mono: var(--font-bengali), "Hind Siliguri", ui-monospace, monospace;
+}
+html[data-lang="bn"] body { letter-spacing: 0; }
+html[data-lang="bn"] .t-hero,
+html[data-lang="bn"] .t-h2,
+html[data-lang="bn"] .t-h3,
+html[data-lang="bn"] .t-h4 { letter-spacing: -0.01em; }
+
 ::selection { background: var(--color-lime); color: var(--color-ink); }
 
 /* ------------------------------------------------------------------
-   Typography utilities — token-for-token from tokens.json
+   Typography utilities - token-for-token from tokens.json
 ------------------------------------------------------------------ */
 .t-hero {
   font-family: var(--font-display);
@@ -181,7 +194,7 @@ body {
   color: var(--color-ink-muted);
 }
 .t-eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 11px;
   line-height: 1;
   letter-spacing: 0.16em;
@@ -227,7 +240,7 @@ body {
 @media (min-width: 1200px) { .section-y-sm { padding-block: 80px; } }
 
 /* ------------------------------------------------------------------
-   Buttons — pill shape, two primary variants
+   Buttons - pill shape, two primary variants
 ------------------------------------------------------------------ */
 .btn {
   display: inline-flex;
@@ -282,7 +295,7 @@ body {
 }
 
 /* ------------------------------------------------------------------
-   TalkToSalesButton — pill with expanding icon on hover
+   TalkToSalesButton - pill with expanding icon on hover
 ------------------------------------------------------------------ */
 .tts-btn {
   display: inline-flex;
@@ -434,7 +447,7 @@ body {
   opacity: 0.5;
 }
 
-/* Bengali text (inline snippets only — full bn site deferred) */
+/* Bengali text (inline snippets only - full bn site deferred) */
 .lang-bn { font-family: var(--font-bengali); letter-spacing: 0; }
 
 /* reduce-motion guard */

@@ -1,22 +1,19 @@
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 
 type Props = {
-  eyebrow: string;
+  // Kept for call-site compatibility; no longer rendered.
+  eyebrow?: string;
   title: React.ReactNode;
   lede?: React.ReactNode;
   meta?: React.ReactNode;
   align?: "left" | "center";
 };
 
-export function PageHeader({ eyebrow, title, lede, meta, align = "left" }: Props) {
+export function PageHeader({ title, lede, meta, align = "left" }: Props) {
   return (
     <div className="container-page pt-[112px] tablet:pt-[144px] pb-16 tablet:pb-24">
       <div className={align === "center" ? "text-center max-w-3xl mx-auto" : "max-w-4xl"}>
-        <Reveal>
-          <Eyebrow>{eyebrow}</Eyebrow>
-        </Reveal>
-        <Reveal delay={0.08} as="h1" className="t-hero mt-6">
+        <Reveal as="h1" className="t-hero">
           {title}
         </Reveal>
         {lede && (

@@ -43,7 +43,7 @@ export function CropCalendarFigure() {
                 key={i}
                 className="h-6 mx-0.5 rounded-[4px]"
                 style={{ background: INTENSITY_COLOR[c] }}
-                title={`${r.crop} ${MONTHS[i]} — ${c}`}
+                title={`${r.crop} ${MONTHS[i]} - ${c}`}
               />
             ))}
           </div>

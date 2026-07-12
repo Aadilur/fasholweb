@@ -1,31 +1,31 @@
 /**
  * Cumulative registered farmers, Jan 2019 → Apr 2026.
- * 300 at 2019, 10,000 at Mar 2022, 20,000 at Feb 2024, 40,120 at Apr 2026.
+ * 300 at 2019, 15,000 at Mar 2022, 30,000 at Feb 2024, 60,000 at Apr 2026.
  * Plateaus in Apr 2020 (Covid) and Aug 2022 (fuel crisis).
  */
 
 const POINTS: [string, number][] = [
- ["2019-01", 300], ["2019-06", 520], ["2019-12", 1150],
- ["2020-04", 1200], ["2020-06", 1260], ["2020-12", 2480],
- ["2021-06", 5100], ["2021-12", 8400],
- ["2022-03", 10000], ["2022-08", 10200], ["2022-11", 11400],
- ["2023-04", 14200], ["2023-11", 17800],
- ["2024-02", 20300], ["2024-07", 23400], ["2024-12", 27100],
- ["2025-06", 31800], ["2025-12", 36400], ["2026-04", 40120],
+ ["2019-01", 300], ["2019-06", 630], ["2019-12", 1600],
+ ["2020-04", 1650], ["2020-06", 1750], ["2020-12", 3600],
+ ["2021-06", 7500], ["2021-12", 12500],
+ ["2022-03", 15000], ["2022-08", 15300], ["2022-11", 17000],
+ ["2023-04", 21200], ["2023-11", 26600],
+ ["2024-02", 30000], ["2024-07", 35100], ["2024-12", 40500],
+ ["2025-06", 47600], ["2025-12", 54500], ["2026-04", 60000],
 ];
 
 function mapX(i: number) {
  return 50 + (i / (POINTS.length - 1)) * 900;
 }
 function mapY(v: number) {
- return 380 - (v / 40000) * 320;
+ return 380 - (v / 60000) * 320;
 }
 
 export function OnboardingCurve() {
  const path = POINTS.map(([, v], i) => `${i === 0 ? "M" : "L"} ${mapX(i)},${mapY(v)}`).join(" ");
  const area = `${path} L ${mapX(POINTS.length - 1)},380 L ${mapX(0)},380 Z`;
  const years = ["2019","2020","2021","2022","2023","2024","2025","2026"];
- const yTicks = [0, 10000, 20000, 30000, 40000];
+ const yTicks = [0, 20000, 40000, 60000];
 
  return (
  <div className="card-plain p-4 tablet:p-8">
@@ -65,15 +65,15 @@ export function OnboardingCurve() {
  <circle key={i} cx={mapX(i)} cy={mapY(v)} r="2.5" fill="var(--color-ink)" />
  ))}
  {/* End marker */}
- <circle cx={mapX(POINTS.length - 1)} cy={mapY(40120)} r="6" fill="var(--color-terracotta)" />
- <text x={mapX(POINTS.length - 1) - 8} y={mapY(40120) - 12} fontSize="11" fontFamily="monospace" fill="var(--color-terracotta)" textAnchor="end">
- 40,120 · Apr 2026
+ <circle cx={mapX(POINTS.length - 1)} cy={mapY(60000)} r="6" fill="var(--color-terracotta)" />
+ <text x={mapX(POINTS.length - 1) - 8} y={mapY(60000) - 12} fontSize="11" fontFamily="monospace" fill="var(--color-terracotta)" textAnchor="end">
+ 60,000 · Apr 2026
  </text>
- <text x={mapX(8) + 10} y={mapY(10000) - 8} fontSize="10" fontFamily="monospace" fill="rgba(19,19,19,0.55)">
- 10,000 · Mar 2022
+ <text x={mapX(8) + 10} y={mapY(15000) - 8} fontSize="10" fontFamily="monospace" fill="rgba(19,19,19,0.55)">
+ 15,000 · Mar 2022
  </text>
- <text x={mapX(13) + 8} y={mapY(20300) - 6} fontSize="10" fontFamily="monospace" fill="rgba(19,19,19,0.55)">
- 20,000 · Feb 2024
+ <text x={mapX(13) + 8} y={mapY(30000) - 6} fontSize="10" fontFamily="monospace" fill="rgba(19,19,19,0.55)">
+ 30,000 · Feb 2024
  </text>
  </svg>
  </div>
