@@ -17,7 +17,7 @@ import { CountUp } from "@/components/ui/CountUp";
 export const metadata: Metadata = {
   title: "Agri machinery suppliers - Fashol",
   description:
-    "Tractors, tillers, pumps, threshers - sell them or finance them. Fashol puts machinery catalogs in front of 60,000 farmers on Jogaan, and Myfarm underwrites farmer financing. The machinery market in Bangladesh is not limited by demand. It is limited by financing.",
+    "Tractors, tillers, pumps, threshers - sell them or finance them. Fashol puts machinery catalogs in front of 60,000 farmers on Jogaan, and underwrites farmer financing in partnership with banks. The machinery market in Bangladesh is not limited by demand. It is limited by financing.",
 };
 
 const HERO_IMAGE_PATH = "/agmahero.jpg";
@@ -113,16 +113,16 @@ const BENTO: ReadonlyArray<BentoEntry> = [
         "An isometric split-path visualization with a tractor in the center, one path leading to a direct sale and another to a financing ledger, both arriving at a farmer figure",
       cardBg: "#F9EEDE",
       statement: "Sell the machinery, or finance it.",
-      body: "A farmer who can pay outright buys directly. A farmer who cannot pay outright qualifies for Myfarm financing, underwritten against their Jogaan transaction history and crop income. You receive full payment up front either way. Fashol and Myfarm carry the financing relationship with the farmer.",
+      body: "A farmer who can pay outright buys directly. A farmer who cannot pay outright qualifies for Fashol financing, underwritten against their Jogaan transaction history and crop income. You receive full payment up front either way. Fashol carries the financing relationship with the farmer.",
     },
   },
   {
     span: "tablet:col-span-1 desktop:col-span-1",
     card: {
       kind: "proof",
-      display: "Myfarm",
+      display: "Financing",
       displayScale: "md",
-      body: "Farmer financing underwritten by Myfarm against live transaction data on Jogaan. No credit risk to you, no collection burden, no separate financing desk to build.",
+      body: "Farmer financing underwritten by Fashol against live transaction data on Jogaan. No credit risk to you, no collection burden, no separate financing desk to build.",
     },
   },
   {
@@ -170,12 +170,12 @@ const STEPS: ReadonlyArray<{
   {
     n: "02",
     headline: "Listing goes live.",
-    body: "Your machinery goes live on Jogaan with images, specs, pricing, financing terms available through Myfarm, and warranty details. Farmers across 50 districts see your catalog.",
+    body: "Your machinery goes live on Jogaan with images, specs, pricing, Fashol financing terms, and warranty details. Farmers across 50 districts see your catalog.",
   },
   {
     n: "03",
     headline: "Farmer orders begin.",
-    body: "Farmers place orders directly on Jogaan. For outright purchases, full payment settles to you on confirmation. For Myfarm-financed orders, full payment settles to you immediately - Myfarm carries the installment relationship with the farmer.",
+    body: "Farmers place orders directly on Jogaan. For outright purchases, full payment settles to you on confirmation. For financed orders, full payment settles to you immediately - Fashol carries the installment relationship with the farmer.",
   },
   {
     n: "04",
@@ -203,15 +203,6 @@ const POWERED_BY: ReadonlyArray<ProductCard> = [
     role: "The farmer platform. Machinery suppliers list their product catalog on Jogaan and reach 60,000 registered farmers directly, with live demand visibility and order handling.",
     href: "/products/jogaan",
   },
-  {
-    name: "Myfarm",
-    logoSrc: "/myfarm.png",
-    logoWidth: 912,
-    logoHeight: 221,
-    logoHeightClass: "h-[120px] tablet:h-[144px]",
-    role: "The farmer financing product. Myfarm underwrites installment purchases of machinery, inputs, and seasonal working capital against farmer transaction history on Jogaan.",
-    href: "/products/myfarm",
-  },
 ];
 
 const RELATED: ReadonlyArray<{
@@ -230,12 +221,6 @@ const RELATED: ReadonlyArray<{
     description:
       "Seeds, pesticides, fertilizers, livestock feed direct to the farmer. Last-mile logistics and crop-cycle data built in.",
     href: "/solutions/agri-input-suppliers",
-  },
-  {
-    name: "Supply chain financing",
-    description:
-      "Working capital, input credit, machinery financing, and seasonal loans underwritten against live transaction data on Jogaan, Banijjo, and Hyperfarm.",
-    href: "/solutions/supply-chain-financing",
   },
 ];
 
@@ -290,7 +275,7 @@ export default function AgriMachinerySuppliersPage() {
               className="t-body-lg mt-6 max-w-[640px]"
             >
               Tractors, tillers, pumps, threshers. Sell them or finance them
-              through Myfarm.
+              through Fashol.
             </Reveal>
             <dl className="mt-10 tablet:mt-12 flex flex-col tablet:flex-row items-start gap-6 tablet:gap-10">
               {HERO_STATS.map((s, i) => (
@@ -406,8 +391,8 @@ export default function AgriMachinerySuppliersPage() {
             <span style={{ color: "rgba(255, 251, 234, 0.75)" }}>
               The farmers who can afford machinery outright are a small
               fraction of the 60,000 on Jogaan. The farmers who can afford
-              machinery on installments are most of them. Fashol and Myfarm
-              convert the second group into real buyers, and the addressable
+              machinery on installments are most of them. Fashol
+              converts the second group into real buyers, and the addressable
               market expands from a narrow slice to the full network.
             </span>
           </DelayedFade>
@@ -424,7 +409,7 @@ export default function AgriMachinerySuppliersPage() {
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
-              Direct farmer reach, Myfarm financing built in, last-mile
+              Direct farmer reach, Fashol financing built in, last-mile
               delivery, and post-sale service infrastructure. The complete
               stack between your catalog and the farmer&apos;s field.
             </p>
@@ -447,11 +432,11 @@ export default function AgriMachinerySuppliersPage() {
       <Section tone="paper">
         <div className="text-center max-w-[720px] mx-auto">
           <Reveal as="h2" className="t-h2">
-            The two products behind this work.
+            The product behind this work.
           </Reveal>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-2 gap-10 desktop:gap-16 items-stretch">
+        <div className="mt-10 tablet:mt-12 max-w-[520px] mx-auto">
           {POWERED_BY.map((p) => (
             <Reveal key={p.name} className="w-full h-full">
               <article className="h-full flex flex-col items-start">
@@ -493,7 +478,7 @@ export default function AgriMachinerySuppliersPage() {
             }}
           >
             Not limited by what farmers want. Limited by what they can pay.
-            Fashol and Myfarm close the gap.
+            Fashol closes the gap.
           </LetterSpaceReveal>
         </div>
       </Section>
@@ -511,7 +496,7 @@ export default function AgriMachinerySuppliersPage() {
               Machinery suppliers do not need a long rollout. Fashol&apos;s
               agri-machinery team maps your product catalog, pricing, and
               service terms onto Jogaan. Farmers begin viewing and requesting
-              demos. Orders - paid outright or financed through Myfarm -
+              demos. Orders - paid outright or financed through Fashol -
               follow.
             </p>
           </Reveal>
@@ -550,7 +535,7 @@ export default function AgriMachinerySuppliersPage() {
           </div>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-3 gap-6">
+        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6">
           {RELATED.map((r) => (
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">

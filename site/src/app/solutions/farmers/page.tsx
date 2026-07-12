@@ -9,7 +9,6 @@ import {
   StaggerItem,
 } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
-import { MyfarmRegister } from "@/components/site/MyfarmRegister";
 
 export const metadata: Metadata = {
   title: "Farmers - Fashol",
@@ -62,7 +61,7 @@ const BENEFITS: ReadonlyArray<{
   {
     n: "04",
     headline: "Financing, underwritten by the farmer's own record.",
-    body: "Myfarm, launching 2026, uses each farmer's transaction history on Jogaan to offer input loans and seasonal working capital. No collateral, no bank branch visits. The farmer's own sales record is the credit file.",
+    body: "Launching 2026, Fashol uses each farmer's transaction history on Jogaan to offer input loans and seasonal working capital, in partnership with banks. No collateral, no bank branch visits. The farmer's own sales record is the credit file.",
     img: "/images/farmer-value/value-04.png",
     imgAlt: "Hands cupping a growing plant with coins, representing financing",
   },
@@ -111,12 +110,6 @@ const RELATED: ReadonlyArray<{
     description:
       "Marketplace access to farmer demand for tractors, tillers, and harvest equipment.",
     href: "/solutions/agri-machinery-suppliers",
-  },
-  {
-    name: "Supply chain financing",
-    description:
-      "Input credit and working capital for farmers, delivered in partnership with banks.",
-    href: "/solutions/supply-chain-financing",
   },
 ];
 
@@ -339,12 +332,12 @@ export default function FarmersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The two products behind this work.
+              The product behind this work.
             </Reveal>
           </div>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16">
+        <div className="mt-10 tablet:mt-12 max-w-[520px]">
           <Reveal className="h-full">
             <article className="h-full flex flex-col">
               <Image
@@ -367,24 +360,6 @@ export default function FarmersPage() {
                 >
                   Download on Google Play
                 </Link>
-              </div>
-            </article>
-          </Reveal>
-          <Reveal className="h-full">
-            <article className="h-full flex flex-col">
-              <Image
-                src="/myfarm-wide.png"
-                alt="Myfarm"
-                width={3711}
-                height={825}
-                sizes="400px"
-                className="h-10 tablet:h-12 w-auto object-contain self-start"
-              />
-              <p className="t-body mt-6">
-                Supply chain financing, launching 2026. Underwritten by transaction history.
-              </p>
-              <div className="mt-auto pt-8">
-                <MyfarmRegister />
               </div>
             </article>
           </Reveal>
@@ -481,7 +456,7 @@ export default function FarmersPage() {
           </div>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-3 gap-6">
+        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6">
           {RELATED.map((r) => (
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">

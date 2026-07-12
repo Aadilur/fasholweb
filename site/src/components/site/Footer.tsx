@@ -5,8 +5,6 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 const platformLinks = [
   { href: "/#platform-jogaan", label: "Jogaan" },
   { href: "/#platform-hyperfarm", label: "Hyperfarm" },
-  { href: "/#platform-banijjo", label: "Banijjo" },
-  { href: "/#platform-myfarm", label: "Myfarm" },
 ];
 
 type SolutionsGroup = {
@@ -42,11 +40,10 @@ const solutionsGroups: SolutionsGroup[] = [
     ],
   },
   {
-    eyebrow: "Partners & financial",
+    eyebrow: "Partners",
     links: [
       { href: "/solutions/cold-storage-operators", label: "Cold storage operators" },
       { href: "/solutions/logistics-partners", label: "Logistics partners" },
-      { href: "/solutions/supply-chain-financing", label: "Supply chain financing" },
     ],
   },
 ];

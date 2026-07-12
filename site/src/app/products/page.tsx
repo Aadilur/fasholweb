@@ -8,7 +8,7 @@ import { ProductStack } from "@/components/figures/ProductStack";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Four products, one operating system. Jogaan, Hyperfarm, Banijjo, and Myfarm make up Fashol's platform for the food supply chain.",
+    "Two products, one operating system. Jogaan and Hyperfarm make up Fashol's platform for the food supply chain.",
 };
 
 type Block = {
@@ -53,34 +53,6 @@ const BLOCKS: Block[] = [
     linkLabel: "Learn more about Hyperfarm",
     tone: "paper",
   },
-  {
-    n: "03",
-    name: "Banijjo",
-    bengali: "বাণিজ্য",
-    audience: "For wholesalers, distributors, and commission agents.",
-    headline: "The wholesale distribution layer.",
-    body:
-      "Banijjo runs the middle of the supply chain. Store-level inventory, route-level pricing, order routing, and two-sided settlement - growers on one end, buyers on the other. Used by wholesalers and commission agents operating inside the Fashol network across 200-plus wholesale markets in Bangladesh.",
-    who: "Wholesalers, distributors, and commission agents across 40-plus Fashol hubs.",
-    status: "AVAILABLE ON GOOGLE PLAY",
-    href: "/products/banijjo",
-    linkLabel: "Learn more about Banijjo",
-    tone: "surface",
-  },
-  {
-    n: "04",
-    name: "Myfarm",
-    audience:
-      "For farmers, buyers, and exporters inside the Fashol network, in partnership with banks.",
-    headline: "Supply chain financing, underwritten by transaction history.",
-    body:
-      "Myfarm offers input financing for farmers, working capital for buyers, and export receivables financing, all underwritten by the transaction history already recorded on Jogaan, Hyperfarm, and Banijjo. No collateral, no branch visits. Delivered in partnership with banks and development finance institutions. Launching 2026.",
-    who: "Registered farmers, buyers, and exporters across the Fashol network, and partner banks.",
-    status: "LAUNCHING 2026",
-    href: "/products/myfarm",
-    linkLabel: "Learn more about Myfarm",
-    tone: "paper",
-  },
 ];
 
 const CTA_CARDS = [
@@ -117,7 +89,7 @@ export default function ProductsHubPage() {
             as="h1"
             className="t-hero !text-[var(--color-paper)] max-w-[900px]"
           >
-            Four products. One operating system.
+            Two products. One operating system.
           </Reveal>
           <Reveal
             delay={0.08}
@@ -126,9 +98,7 @@ export default function ProductsHubPage() {
           >
             Fashol runs on software we built ourselves. Jogaan gives farmers live buyer demand and
             24-hour settlement. Hyperfarm gives buyers a procurement desk with full traceability.
-            Banijjo runs the wholesale layer between them. Myfarm, launching 2026, finances the
-            working capital that moves across all three. Four products, built to work together,
-            run on the same data.
+            Two products, built to work together, run on the same data.
           </Reveal>
           <Reveal delay={0.16} className="mt-8">
             <Link
@@ -151,14 +121,13 @@ export default function ProductsHubPage() {
         </Reveal>
         <Reveal delay={0.2} className="mt-10 tablet:mt-14 max-w-[720px] mx-auto">
           <p className="t-body-sm text-[var(--color-ink-muted)] text-center">
-            Data flows from the farmer (Jogaan) through the wholesale layer (Banijjo) to the buyer
-            (Hyperfarm). Myfarm underwrites working capital based on the transaction record
-            already sitting on the platform.
+            Data flows from the farmer (Jogaan) to the buyer (Hyperfarm) on one shared record,
+            from live demand at the field to settlement at the buyer&apos;s door.
           </p>
         </Reveal>
       </Section>
 
-      {/* Section 3 - Four product blocks */}
+      {/* Section 3 - Product blocks */}
       {BLOCKS.map((block, i) => (
         <Section
           key={block.n}

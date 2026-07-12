@@ -48,14 +48,14 @@ export function NavDropdown({
             "bg-[var(--color-paper)] text-[var(--color-ink)]",
             "border border-[rgba(19,19,19,0.08)]",
             "shadow-[0_20px_48px_-16px_rgba(0,0,0,0.18)]",
-            "grid grid-cols-1 p-8 gap-8 desktop:grid-cols-[11fr_9fr]"
+            "grid grid-cols-1 p-8 gap-8 w-fit max-w-full"
           )}
         >
           {/* Left area - logo tile grid for Products, text columns for Solutions */}
           {isProducts ? (
             <div ref={listRef} className="flex flex-col">
               <div className="t-eyebrow mb-4">{menu.label}</div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 w-[554px] max-w-full">
                 {allItems(menu).map((item) => {
                   const logo = PRODUCT_LOGOS[item.slug];
                   if (!logo) return null;
@@ -151,45 +151,6 @@ export function NavDropdown({
               })}
             </div>
           )}
-
-          {/* Right column - preview panel */}
-          <div className="flex flex-col">
-            {/* Invisible eyebrow spacer on Products so the image aligns with the top of the tile grid */}
-            {isProducts && (
-              <div aria-hidden className="t-eyebrow mb-4 invisible">&nbsp;</div>
-            )}
-            <div className="relative w-full max-w-[280px] aspect-[7/3] rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[rgba(19,19,19,0.05)]">
-              <Image
-                src="/images/nav/placeholder.png"
-                alt=""
-                fill
-                sizes="280px"
-                className="object-cover"
-              />
-            </div>
-            {isProducts ? (
-              <h3 className="mt-4 t-h5 text-[var(--color-ink)]" style={{ fontWeight: 500 }}>
-                {activeItem.descriptor}
-              </h3>
-            ) : (
-              <>
-                <h3 className="mt-4 t-h5 text-[var(--color-ink)]" style={{ fontWeight: 500 }}>
-                  {activeItem.name}
-                </h3>
-                <p className="t-body-sm mt-2 text-[var(--color-ink-subtle)]">
-                  {isSolutions ? activeItem.description : activeItem.descriptor}
-                </p>
-              </>
-            )}
-            <div className="mt-3">
-              <Link
-                href={activeItem.href}
-                className="inline-flex items-center gap-2 text-[14px] font-medium text-[var(--color-deep-green)] hover:text-[var(--color-deep-green-pressed)] transition-colors"
-              >
-                Learn more
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -212,9 +173,8 @@ function buildSolutionsColumns(menu: NavMenu): Column[] {
   const buyers = byEyebrow("Buyers");
   const suppliers = byEyebrow("Suppliers");
   const partners = byEyebrow("Partners");
-  const financial = byEyebrow("Financial");
 
-  if (!buyers || !suppliers || !partners || !financial) {
+  if (!buyers || !suppliers || !partners) {
     return [flattenMenu(menu)];
   }
 
@@ -229,7 +189,6 @@ function buildSolutionsColumns(menu: NavMenu): Column[] {
   ];
   const col3: Column = [
     { eyebrow: "Suppliers", items: suppliers.items },
-    { eyebrow: "Financial", items: financial.items },
   ];
 
   return [col1, col2, col3];

@@ -58,7 +58,7 @@ const STEPS: ReadonlyArray<{
   {
     n: "02",
     headline: "SKU and volume mapping.",
-    body: "Within 24 hours, the trade team maps the trader's regular book to Banijjo SKUs with live pricing. Downstream customers on Hyperfarm are flagged for coordinated supply.",
+    body: "Within 24 hours, the trade team maps the trader's regular book to Fashol SKUs with live pricing. Downstream customers on Hyperfarm are flagged for coordinated supply.",
   },
   {
     n: "03",
@@ -322,33 +322,12 @@ export default function WholesalersPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              The two products behind this work.
+              The product behind this work.
             </Reveal>
           </div>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-10 tablet:gap-16">
-          <Reveal className="h-full">
-            <article className="h-full flex flex-col">
-              <Image
-                src="/banijjo-logo.png"
-                alt="Banijjo"
-                width={1000}
-                height={248}
-                sizes="(min-width: 810px) 780px, 650px"
-                className="h-40 tablet:h-48 w-auto object-contain self-start"
-              />
-              <p className="t-body mt-6">
-                The wholesale trade platform. Live pricing from 200-plus markets, same-day
-                settlement, and a full book of origin supply across 50 districts.
-              </p>
-              <div className="mt-auto pt-8">
-                <Link href="/products/banijjo" className="link-arrow">
-                  Open product page
-                </Link>
-              </div>
-            </article>
-          </Reveal>
+        <div className="mt-10 tablet:mt-12 max-w-[520px]">
           <Reveal className="h-full">
             <article className="h-full flex flex-col">
               <Image
@@ -416,7 +395,7 @@ export default function WholesalersPage() {
             <p>
               Wholesale traders do not need a rollout. Fashol&apos;s wholesale desk can run a
               live supply load within three days of the first conversation. The trade team scopes
-              volume, maps SKUs to Banijjo pricing, and turns on the first delivery. The
+              volume, maps SKUs to Fashol pricing, and turns on the first delivery. The
               relationship grows from there.
             </p>
           </Reveal>

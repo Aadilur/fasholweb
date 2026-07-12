@@ -272,9 +272,9 @@ export default function HomePage() {
  {
  img: "/images/farmer-value/value-04.png",
  alt: "Working capital, underwritten by transaction history",
- product: "MYFARM · LAUNCHING 2026",
+ product: "FINANCING · LAUNCHING 2026",
  headline: "Working capital, underwritten by transaction history.",
- body: "Myfarm, launching in 2026, will offer input financing and working capital loans to Fashol farmers. Lending decisions are based on the farmer's sales history already recorded in Jogaan. No collateral, no paperwork, no bank visits.",
+ body: "Launching in 2026, Fashol will offer input financing and working capital to registered farmers in partnership with banks. Lending decisions are based on the farmer's sales history already recorded in Jogaan. No collateral, no paperwork, no bank visits.",
  },
  ].map((c) => (
  <Reveal key={c.img} className="h-full">
@@ -399,7 +399,7 @@ export default function HomePage() {
  num: "03",
  title: "Wholesalers",
  img: "/c3.webp",
- body: "Direct-from-hub bulk pricing with quality grading applied at intake, not at the urban wholesale market. Operations managed through Banijjo.",
+ body: "Direct-from-hub bulk pricing with quality grading applied at intake, not at the urban wholesale market. Operations managed on the Fashol platform.",
  standout: "The volume of aratdar, with transparency aratdar never had",
  },
  {

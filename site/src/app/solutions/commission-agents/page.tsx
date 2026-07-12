@@ -14,7 +14,7 @@ import { CountUp } from "@/components/ui/CountUp";
 export const metadata: Metadata = {
   title: "Commission agents - Fashol",
   description:
-    "The arot your father built, the tools your generation needs to extend it. Banijjo gives second-generation arotdars live pricing, same-day settlement, digital ledgers, and access to modern downstream buyers across Bangladesh.",
+    "The arot your father built, the tools your generation needs to extend it. Fashol gives second-generation arotdars live pricing, same-day settlement, digital ledgers, and access to modern downstream buyers across Bangladesh.",
 };
 
 type HeroStat =
@@ -39,7 +39,7 @@ const HERO_STATS: ReadonlyArray<HeroStat> = [
     format: "plain",
     suffix: "+",
     tail: "",
-    l: "Arotdars on Banijjo",
+    l: "Arotdars on Fashol",
   },
   {
     kind: "number",
@@ -64,18 +64,18 @@ const STEPS: ReadonlyArray<{
   },
   {
     n: "02",
-    headline: "Banijjo account live.",
-    body: "Within 24 hours, the arot's regular farmers are added to Banijjo. Downstream buyers - restaurants, supershops, wholesale partners - are mapped in if they are not already on Hyperfarm.",
+    headline: "Fashol account live.",
+    body: "Within 24 hours, the arot's regular farmers are added to the Fashol platform. Downstream buyers - restaurants, supershops, wholesale partners - are mapped in if they are not already on Hyperfarm.",
   },
   {
     n: "03",
     headline: "First transactions.",
-    body: "On day three, the first transactions flow through Banijjo with live pricing, digital settlement, and grading at the hub. The paper ledger continues in parallel for the first week.",
+    body: "On day three, the first transactions flow through Fashol with live pricing, digital settlement, and grading at the hub. The paper ledger continues in parallel for the first week.",
   },
   {
     n: "04",
     headline: "Paper becomes backup.",
-    body: "By the end of the first week, Banijjo handles the primary record. The paper ledger stays for any transactions outside the platform - personal arrangements, long-standing relationships - but the bulk of the arot runs digitally.",
+    body: "By the end of the first week, Fashol handles the primary record. The paper ledger stays for any transactions outside the platform - personal arrangements, long-standing relationships - but the bulk of the arot runs digitally.",
   },
 ];
 
@@ -248,7 +248,7 @@ export default function CommissionAgentsPage() {
             viewportMargin="0px 0px -30% 0px"
           >
             <span style={{ color: "rgba(255, 251, 234, 0.75)" }}>
-              The volume a young arotdar typically moves on Banijjo compared to the
+              The volume a young arotdar typically moves on Fashol compared to the
               old paper-and-handshake setup. Same arot, same family relationships,
               same place at the market - now with a platform that handles pricing,
               settlement, and downstream buyers.
@@ -272,48 +272,12 @@ export default function CommissionAgentsPage() {
             <p>
               Below is a side-by-side look at the same six operational dimensions of
               running an arot - first as it works without Fashol, then as it works
-              once Banijjo is plugged in.
+              once Fashol is plugged in.
             </p>
           </Reveal>
         </div>
 
         <GenerationalBento />
-      </Section>
-
-      {/* Section 5 - Powered by (surface-deep, single centered card) */}
-      <Section tone="surface-deep">
-        <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
-          <div className="desktop:col-span-6">
-            <Reveal as="h2" className="t-h2">
-              The product behind this work.
-            </Reveal>
-          </div>
-        </div>
-
-        <div className="mt-10 tablet:mt-12 flex justify-center">
-          <Reveal className="w-full max-w-[500px]">
-            <article className="flex flex-col items-start text-left">
-              <Image
-                src="/banijjo-logo.png"
-                alt="Banijjo"
-                width={1000}
-                height={248}
-                sizes="800px"
-                className="h-40 tablet:h-48 w-auto object-contain"
-              />
-              <p className="t-body mt-6">
-                The wholesale trade platform. Live pricing from 200-plus markets,
-                same-day settlement, digital ledgers, and access to downstream buyers
-                across restaurants, supershops, and quick commerce.
-              </p>
-              <div className="mt-8">
-                <Link href="/products/banijjo" className="link-arrow">
-                  Open product page
-                </Link>
-              </div>
-            </article>
-          </Reveal>
-        </div>
       </Section>
 
       {/* Section 6 - Pull quote (ink) */}
@@ -326,7 +290,7 @@ export default function CommissionAgentsPage() {
             &ldquo;My father built this arot in 1987. He knew every farmer who walked
             in by name, and every buyer who called. I took over four years ago and I
             was losing volume - the buyers I grew up with were going to younger
-            arotdars who could send a price by WhatsApp before noon. Banijjo did not
+            arotdars who could send a price by WhatsApp before noon. Fashol did not
             replace what my father built. It gave me a way to keep building it.&rdquo;
           </QuoteReveal>
           <Reveal delay={0.16}>
@@ -353,16 +317,16 @@ export default function CommissionAgentsPage() {
         <div className="grid desktop:grid-cols-12 gap-10 desktop:gap-16 items-start">
           <div className="desktop:col-span-6">
             <Reveal as="h2" className="t-h2">
-              Forty-eight hours from first conversation to running on Banijjo.
+              Forty-eight hours from first conversation to running on Fashol.
             </Reveal>
           </div>
           <Reveal delay={0.12} className="desktop:col-span-6 t-body-lg">
             <p>
               Arotdars are not onboarded overnight, but they do not need a long
               rollout either. Day one is a conversation - the arot&rsquo;s history,
-              the existing book, the family relationships. Day two is a Banijjo
+              the existing book, the family relationships. Day two is a Fashol
               account live with the arot&rsquo;s regular farmers and buyers mapped in.
-              By day three the first transactions are flowing through Banijjo
+              By day three the first transactions are flowing through Fashol
               alongside the paper ledger. By the end of the first week, the paper
               ledger becomes the backup, not the primary record.
             </p>

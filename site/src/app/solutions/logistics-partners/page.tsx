@@ -199,7 +199,7 @@ const RELATED: ReadonlyArray<{
   {
     name: "Commission agents",
     description:
-      "Traditional arotdars on a modern stack, with transparent pricing and digital settlement on Banijjo.",
+      "Traditional arotdars on a modern stack, with transparent pricing and digital settlement.",
     href: "/solutions/commission-agents",
   },
   {

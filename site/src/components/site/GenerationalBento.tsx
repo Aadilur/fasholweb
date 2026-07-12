@@ -76,7 +76,7 @@ const RIGHT_CARDS: ReadonlyArray<BentoCard> = [
   },
   {
     dim: "CREDIT",
-    text: "Banijjo settlement and Myfarm credit extend working capital without touching personal cash.",
+    text: "Same-day settlement and Fashol-backed credit extend working capital without touching personal cash.",
     wide: true,
   },
 ];

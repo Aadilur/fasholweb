@@ -129,9 +129,9 @@ const BENTO: ReadonlyArray<BentoEntry> = [
     span: "tablet:col-span-1 desktop:col-span-1",
     card: {
       kind: "proof",
-      display: "Myfarm",
+      display: "Financing",
       displayScale: "md",
-      body: "Farmers finance input purchases through Myfarm, underwritten against their Jogaan transaction history. The addressable market expands without you carrying the credit risk.",
+      body: "Farmers finance input purchases through Fashol, underwritten against their Jogaan transaction history. The addressable market expands without you carrying the credit risk.",
     },
   },
   {
@@ -186,12 +186,6 @@ const RELATED: ReadonlyArray<{
     description:
       "Marketplace access for tractors, tillers, pumps, and harvest equipment. Farmer demand, last-mile logistics, and credit underwriting built in.",
     href: "/solutions/agri-machinery-suppliers",
-  },
-  {
-    name: "Supply chain financing",
-    description:
-      "Working capital, input credit, and seasonal financing underwritten against live transaction data on Jogaan, Banijjo, and Hyperfarm.",
-    href: "/solutions/supply-chain-financing",
   },
 ];
 
@@ -430,7 +424,7 @@ export default function AgriInputSuppliersPage() {
                 The farmer platform. Input suppliers list their products on
                 Jogaan and reach 60,000 registered farmers directly, with
                 last-mile delivery through Fashol&apos;s 40+ hub network and
-                optional credit underwriting through Myfarm.
+                optional Fashol-backed credit underwriting.
               </p>
               <div className="mt-6">
                 <Link href="/products/jogaan" className="link-arrow">
@@ -528,7 +522,7 @@ export default function AgriInputSuppliersPage() {
           </div>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-3 gap-6">
+        <div className="mt-10 tablet:mt-12 grid grid-cols-1 tablet:grid-cols-2 gap-6">
           {RELATED.map((r) => (
             <Reveal key={r.name} className="h-full">
               <article className="h-full flex flex-col bg-[var(--color-grain)] rounded-[4px] p-8">

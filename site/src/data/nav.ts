@@ -41,22 +41,6 @@ export const PRODUCTS_MENU: NavMenu = {
           description:
             "The buyer's procurement desk. Real-time stock, cold-chain fulfillment, four-tier grading, and full traceability from farm gate to final invoice. Used by restaurants, retailers, quick-commerce, and exporters.",
         },
-        {
-          slug: "banijjo",
-          href: "/products/banijjo",
-          name: "Banijjo",
-          descriptor: "The wholesale distribution layer",
-          description:
-            "Inventory, pricing, and distribution tooling for wholesalers and distributors inside the Fashol network. Store-level stock visibility, order routing, and two-sided settlement.",
-        },
-        {
-          slug: "myfarm",
-          href: "/products/myfarm",
-          name: "Myfarm",
-          descriptor: "Supply chain financing, launching 2026",
-          description:
-            "Input financing and working capital for Fashol farmers, buyers, and exporters. Launching 2026. Lending decisions underwritten by transaction history already recorded on the platform.",
-        },
       ],
     },
   ],
@@ -161,7 +145,7 @@ export const SOLUTIONS_MENU: NavMenu = {
           name: "Agri machinery suppliers",
           descriptor: "Farm equipment and tooling",
           description:
-            "Marketplace access to farmer demand for tractors, tillers, and harvest equipment, with financing options through Myfarm.",
+            "Marketplace access to farmer demand for tractors, tillers, and harvest equipment, with Fashol-backed farmer financing options.",
         },
       ],
     },
@@ -186,19 +170,6 @@ export const SOLUTIONS_MENU: NavMenu = {
         },
       ],
     },
-    {
-      eyebrow: "Financial",
-      items: [
-        {
-          slug: "supply-chain-financing",
-          href: "/solutions/supply-chain-financing",
-          name: "Supply chain financing",
-          descriptor: "Farmer, buyer, and export financing with banks",
-          description:
-            "Financing infrastructure across farmers, buyers, and exporters, delivered in partnership with banks and DFIs. Input credit, working capital, and export receivables.",
-        },
-      ],
-    },
   ],
 };
 
@@ -209,8 +180,6 @@ export type ProductLogo = { src: string; alt: string; scale: number };
 export const PRODUCT_LOGOS: Record<string, ProductLogo> = {
   jogaan: { src: "/jogaanlogo.png", alt: "Jogaan", scale: 0.8 },
   hyperfarm: { src: "/images/content/hyperfarm-logo.png", alt: "Hyperfarm", scale: 1.15 },
-  banijjo: { src: "/images/content/banijjo-logo.png", alt: "Banijjo", scale: 2 },
-  myfarm: { src: "/myfarm.png", alt: "Myfarm", scale: 1.485 },
 };
 
 export function findMenuItem(menu: NavMenu, slug: string): NavItem | undefined {

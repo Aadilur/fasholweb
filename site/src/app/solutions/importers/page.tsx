@@ -177,12 +177,6 @@ const POWERED_BY: ReadonlyArray<{
   href: string;
 }> = [
   {
-    name: "Banijjo",
-    logoSrc: "/images/content/banijjo-logo.png",
-    role: "The wholesale trade platform. Importers use Banijjo to settle imported volume across the downstream book - from mudi shops to supershops - with same-day settlement and live pricing.",
-    href: "/products/banijjo",
-  },
-  {
     name: "Hyperfarm",
     logoSrc: "/images/content/hyperfarm-logo.png",
     role: "The buyer procurement desk. Importers use Hyperfarm to see live downstream demand across restaurants, supershops, and quick commerce platforms, and to plan import volumes against real buying signals.",
@@ -409,11 +403,11 @@ export default function ImportersPage() {
       <Section tone="paper">
         <div className="text-center max-w-[720px] mx-auto">
           <Reveal as="h2" className="t-h2">
-            The two products behind this work.
+            The product behind this work.
           </Reveal>
         </div>
 
-        <div className="mt-10 tablet:mt-12 grid grid-cols-1 desktop:grid-cols-2 gap-10 desktop:gap-16">
+        <div className="mt-10 tablet:mt-12 max-w-[520px] mx-auto">
           {POWERED_BY.map((p) => (
             <Reveal key={p.name} className="w-full">
               <article className="flex flex-col items-start">

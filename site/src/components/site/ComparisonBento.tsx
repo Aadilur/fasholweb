@@ -87,11 +87,11 @@ const CARDS: ReadonlyArray<Card> = [
     kind: "illustration",
     illustrationSrc: "/images/solutions/wholesalers/comparison/credit.png",
     illustrationAlt:
-      "Credit lines extending from Banijjo and Myfarm through to downstream buyers",
+      "Credit lines extending from the Fashol network through to downstream buyers",
     illustrationWidth: 280,
     illustrationHeight: 180,
     illustrationAlign: "center",
-    statement: "Credit underwritten by Banijjo and Myfarm.",
+    statement: "Credit underwritten by the Fashol network.",
     statementSize: "md",
     body: "The trader extends downstream terms without touching personal working capital.",
   },

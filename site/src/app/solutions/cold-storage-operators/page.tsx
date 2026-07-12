@@ -183,7 +183,7 @@ const RELATED: ReadonlyArray<{
   {
     name: "Commission agents",
     description:
-      "Traditional arotdars on a modern stack, with transparent pricing and digital settlement on Banijjo.",
+      "Traditional arotdars on a modern stack, with transparent pricing and digital settlement.",
     href: "/solutions/commission-agents",
   },
   {
@@ -499,8 +499,8 @@ export default function ColdStorageOperatorsPage() {
               </p>
               <p className="t-body mt-4">
                 Fashol&apos;s buyer desk places orders against inventory in your cold
-                room. Hyperfarm runs the order flow for restaurants, supershops, and
-                quick commerce. Banijjo runs the wholesale side.
+                room. Hyperfarm runs the order flow for restaurants, supershops,
+                quick commerce, and the wholesale trade.
               </p>
               <div className="mt-auto pt-8">
                 <Link href="/products/hyperfarm" className="link-arrow">

@@ -99,7 +99,7 @@ const GROUPS: Group[] = [
       },
       {
         name: "Agri machinery suppliers",
-        description: "Marketplace access to farmer demand with Myfarm financing.",
+        description: "Marketplace access to farmer demand with Fashol-backed farmer financing.",
         href: "/solutions/agri-machinery-suppliers",
       },
     ],
@@ -119,20 +119,6 @@ const GROUPS: Group[] = [
         name: "Logistics partners",
         description: "Fleet and last-mile work across 40-plus hubs and 200-plus wholesale markets.",
         href: "/solutions/logistics-partners",
-      },
-    ],
-  },
-  {
-    eyebrow: "Financial",
-    intro:
-      "Working capital is the quiet constraint in every supply chain. We finance the farmer, the buyer, and the exporter, in partnership with banks and development finance institutions.",
-    cols: 1,
-    cards: [
-      {
-        name: "Supply chain financing",
-        description:
-          "Input credit, working capital, and export receivables, underwritten by transaction history.",
-        href: "/solutions/supply-chain-financing",
       },
     ],
   },
