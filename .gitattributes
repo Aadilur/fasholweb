@@ -1,0 +1,9 @@
+# Auto-keep optimized images when pulling from upstream
+# Git can't merge binary images — always prefer local (optimized) version
+*.jpg   merge=keep-local
+*.jpeg  merge=keep-local
+*.png   merge=keep-local
+*.webp  merge=keep-local
+*.gif   merge=keep-local
+*.svg   merge=keep-local
+*.ico   merge=keep-local
