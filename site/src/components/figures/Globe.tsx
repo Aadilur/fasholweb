@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import createGlobe from "cobe";
 
 type Office = {
@@ -53,12 +53,23 @@ const OFFICES: Office[] = [
   },
 ];
 
-export function GlobeFigure({ showOffices = true }: { showOffices?: boolean } = {}) {
+export function GlobeFigure({
+  showOffices = true,
+}: { showOffices?: boolean } = {}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const phiRef = useRef(0);
+  const runningRef = useRef(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  const tick = useCallback((globe: ReturnType<typeof createGlobe>) => {
+    if (!runningRef.current) return;
+    phiRef.current += 0.0035;
+    globe.update({ phi: phiRef.current });
+    requestAnimationFrame(() => tick(globe));
+  }, []);
 
   useEffect(() => {
     if (!mounted || !canvasRef.current) return;
@@ -78,7 +89,7 @@ export function GlobeFigure({ showOffices = true }: { showOffices?: boolean } = 
       theta: 0.25,
       dark: 0,
       diffuse: 1.1,
-      mapSamples: 18000,
+      mapSamples: 6000,
       mapBrightness: 5,
       baseColor: [0.024, 0.369, 0.227],
       markerColor: [0.85, 0.4, 0.3],
@@ -89,42 +100,64 @@ export function GlobeFigure({ showOffices = true }: { showOffices?: boolean } = 
 
     window.addEventListener("resize", onResize);
 
-    let raf = 0;
-    const tick = () => {
-      phiRef.current += 0.0035;
-      globe.update({ phi: phiRef.current });
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
+    // Start the animation loop
+    runningRef.current = true;
+    requestAnimationFrame(() => tick(globe));
+
+    // Pause the rAF loop when the globe is not visible to save GPU/CPU
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        runningRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          requestAnimationFrame(() => tick(globe));
+        }
+      },
+      { threshold: 0 },
+    );
+    if (containerRef.current) {
+      visibilityObserver.observe(containerRef.current);
+    }
 
     return () => {
-      cancelAnimationFrame(raf);
+      runningRef.current = false;
+      visibilityObserver.disconnect();
       window.removeEventListener("resize", onResize);
       globe.destroy();
     };
-  }, [mounted]);
+  }, [mounted, tick]);
 
   return (
-    <div className="relative w-full max-w-[640px] mx-auto aspect-square">
+    <div
+      ref={containerRef}
+      className="relative w-full max-w-[640px] mx-auto aspect-square"
+    >
       <canvas
         ref={canvasRef}
         style={{ width: "100%", height: "100%", contain: "layout paint size" }}
         aria-hidden
       />
 
-      {showOffices && OFFICES.map((o) => (
-        <div
-          key={o.country}
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-[var(--color-paper)]/95 backdrop-blur-sm border border-[var(--color-line)] px-4 py-3 shadow-[0_8px_24px_-12px_rgba(19,19,19,0.25)] pointer-events-none"
-          style={{ top: o.top, left: o.left }}
-        >
-          <div className="text-[13px] tracking-[-0.005em] text-[var(--color-ink)]" style={{ fontWeight: 600 }}>
-            {o.country}
+      {showOffices &&
+        OFFICES.map((o) => (
+          <div
+            key={o.country}
+            className="absolute -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-[var(--color-paper)]/95 backdrop-blur-sm border border-[var(--color-line)] px-4 py-3 shadow-[0_8px_24px_-12px_rgba(19,19,19,0.25)] pointer-events-none"
+            style={{ top: o.top, left: o.left }}
+          >
+            <div
+              className="text-[13px] tracking-[-0.005em] text-[var(--color-ink)]"
+              style={{ fontWeight: 600 }}
+            >
+              {o.country}
+            </div>
+            <div className="text-[12px] text-[var(--color-ink-subtle)] mt-0.5">
+              {o.city}
+            </div>
+            <div className="text-[12px] text-[var(--color-ink-subtle)]">
+              {o.address}
+            </div>
           </div>
-          <div className="text-[12px] text-[var(--color-ink-subtle)] mt-0.5">{o.city}</div>
-          <div className="text-[12px] text-[var(--color-ink-subtle)]">{o.address}</div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
