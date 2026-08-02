@@ -1,104 +1,29 @@
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal, StaggerChildren, StaggerItem } from "@/components/ui/Reveal";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
-import { PlatformSection } from "@/components/site/PlatformSection";
 import { GlobeFigure } from "@/components/site/GlobeLazy";
-import { PARTNERS, INVESTORS } from "@/data/site";
 import { t } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n.server";
-const VOICES: ReadonlyArray<{
-  eyebrow: string;
-  quote: string;
-  quoteBn: string;
-  name: string;
-  nameBn: string;
-  role: string;
-  roleBn: string;
-  image: string;
-}> = [
-  {
-    eyebrow: "FARMER · JESSORE",
-    quote: `"Before Fashol, I used to take my cauliflower to the mahajan and accept whatever price he gave that morning. Now I see the price on my phone the night before. If it's not good, I wait a day."`,
-    quoteBn: `"ফসলে আসার আগে ফুলকপি নিয়ে মহাজনের কাছে যেতাম, সকালবেলা সে যে দাম বলত তা-ই মেনে নিতাম। এখন আগের রাতেই ফোনে দাম দেখে নিই। পছন্দ না হলে একটা দিন অপেক্ষা করি।"`,
-    name: "Abdul Karim",
-    nameBn: "আব্দুল করিম",
-    role: "Farmer",
-    roleBn: "কৃষক",
-    image: "/images/voices/voice-01.jpg",
-  },
-  {
-    eyebrow: "FARMER · RANGPUR",
-    quote: `"The money reaches my bKash by evening. On the old system I would wait two weeks, and sometimes the mahajan would deduct for transport that never happened."`,
-    quoteBn: `"সন্ধ্যার মধ্যেই টাকা আমার বিকাশে চলে আসে। আগের নিয়মে দুই সপ্তাহ অপেক্ষা করতে হতো, আর মাঝেমধ্যে মহাজন এমন পরিবহন খরচও কেটে নিত যা কখনও হয়ইনি।"`,
-    name: "Shahinur Begum",
-    nameBn: "শাহিনুর বেগম",
-    role: "Farmer",
-    roleBn: "কৃষক",
-    image: "/images/voices/voice-02.jpg",
-  },
-  {
-    eyebrow: "RESTAURANT · DHAKA",
-    quote: `"I run six branches in Dhaka. I place one order at 10 PM and it reaches all six kitchens by 6 AM. My head chef does not even come in for receiving anymore."`,
-    quoteBn: `"ঢাকায় আমার ছয়টি শাখা। রাত ১০টায় একটা অর্ডার দিই, ভোর ৬টার মধ্যে তা ছয় রান্নাঘরেই পৌঁছে যায়। মাল বুঝে নিতে আমার হেড শেফকে আর আসতেই হয় না।"`,
-    name: "Tanvir Ahmed",
-    nameBn: "তানভীর আহমেদ",
-    role: "Chef-Owner",
-    roleBn: "শেফ-মালিক",
-    image: "/images/voices/voice-03.jpg",
-  },
-  {
-    eyebrow: "FARMER · BOGURA",
-    quote: `"They came and weighed the brinjals in front of me, showed me the Grade A and Grade B on the scale, and I got the paper receipt. No arguments."`,
-    quoteBn: `"ওরা এসে আমার সামনেই বেগুন ওজন করল, স্কেলে গ্রেড এ আর গ্রেড বি দেখাল, আর আমি কাগজের রসিদ পেলাম। কোনো তর্ক নেই।"`,
-    name: "Mohammad Rafiq",
-    nameBn: "মোহাম্মদ রফিক",
-    role: "Farmer",
-    roleBn: "কৃষক",
-    image: "/images/voices/voice-04.jpg",
-  },
-  {
-    eyebrow: "IMPORTER · SINGAPORE",
-    quote: `"We import about 40 tons of fresh produce a month. The cold-chain reading on the dashboard is what our food safety team logs. It saves us a full QA step."`,
-    quoteBn: `"আমরা মাসে প্রায় 40 টন তাজা পণ্য ইমপোর্ট করি। ড্যাশবোর্ডের কোল্ড-চেইন রিডিং দেখেই আমাদের ফুড সেফটি টিম রেকর্ড রাখে। এতে আমাদের একটা পুরো কিউএ ধাপই বেঁচে যায়।"`,
-    name: "Priya Menon",
-    nameBn: "প্রিয়া মেনন",
-    role: "Head of Supply",
-    roleBn: "হেড অব সাপ্লাই",
-    image: "/images/voices/voice-05.jpg",
-  },
-  {
-    eyebrow: "FARMER · COMILLA",
-    quote: `"We grow pointed gourd for export. Earlier we had no idea where it went after we sold it. Now the field agent shows us which country it goes to and how much each crate is worth."`,
-    quoteBn: `"আমরা এক্সপোর্টের জন্য পটোল চাষ করি। আগে বিক্রির পর সেটা কোথায় যেত, কিছুই জানতাম না। এখন ফিল্ড এজেন্ট দেখিয়ে দেন কোন দেশে যাচ্ছে আর প্রতিটি ক্রেটের দাম কত।"`,
-    name: "Roushan Ara",
-    nameBn: "রওশন আরা",
-    role: "Farmer",
-    roleBn: "কৃষক",
-    image: "/images/voices/voice-06.jpg",
-  },
-  {
-    eyebrow: "WHOLESALER · DUBAI",
-    quote: `"The grade on the invoice matches the grade in the crate. That sounds obvious. In this industry it is not."`,
-    quoteBn: `"ইনভয়েসে লেখা গ্রেড আর ক্রেটের ভেতরের গ্রেড হুবহু মিলে যায়। শুনতে সাধারণ মনে হয়। এই ব্যবসায় মোটেও তা নয়।"`,
-    name: "Mohammad Al-Hassan",
-    nameBn: "মোহাম্মদ আল-হাসান",
-    role: "Procurement",
-    roleBn: "প্রোকিউরমেন্ট",
-    image: "/images/voices/voice-07.jpg",
-  },
-  {
-    eyebrow: "FIELD AGENT · JESSORE",
-    quote: `"I used to cover three villages on a motorbike with a notebook. Now the app handles the weighing, the pricing, and the payment. I cover nine villages, and the farmers trust the numbers more than they trust me."`,
-    quoteBn: `"একটা খাতা হাতে মোটরসাইকেলে তিনটা গ্রাম সামলাতাম। এখন অ্যাপই ওজন, দাম আর পেমেন্ট সব সামলায়। আমি এখন নয়টা গ্রাম কভার করি, আর কৃষকেরা আমার চেয়ে বেশি ভরসা করেন অ্যাপের হিসাবে।"`,
-    name: "Mizanur Rahman",
-    nameBn: "মিজানুর রহমান",
-    role: "Field Agent",
-    roleBn: "ফিল্ড এজেন্ট",
-    image: "/images/voices/voice-08.jpg",
-  },
-];
+
+// Code-split heavy below-fold sections to reduce initial JS bundle
+const PlatformSection = dynamic(
+  () =>
+    import("@/components/site/PlatformSection").then((m) => m.PlatformSection),
+  { ssr: true },
+);
+
+const VoicesMarquee = dynamic(
+  () => import("@/components/site/VoicesMarquee").then((m) => m.VoicesMarquee),
+  { ssr: true },
+);
+
+const TrustGrids = dynamic(
+  () => import("@/components/site/TrustGrids").then((m) => m.TrustGrids),
+  { ssr: true },
+);
 
 export default async function HomePage() {
   const lang = await getLang();
@@ -772,128 +697,12 @@ export default async function HomePage() {
 
       {/* ───────────── Customer voices (marquee) ───────────── */}
       <Section tone="ink">
-        <style>{`
- @keyframes voices-scroll {
- from { transform: translateX(0); }
- to { transform: translateX(-50%); }
- }
- .voices-track {
- animation: voices-scroll 60s linear infinite;
- will-change: transform;
- }
- .voices-viewport:hover .voices-track {
- animation-play-state: paused;
- }
- @media (prefers-reduced-motion: reduce) {
- .voices-viewport {
- overflow-x: auto;
- }
- .voices-track {
- animation: none;
- }
- }
- `}</style>
-
-        <Reveal>
-          <h2 className="t-h2 !text-[var(--color-paper)]">
-            {t(
-              lang,
-              "The network, in the words of the people on it.",
-              "নেটওয়ার্ক, যারা এর অংশ তাদের নিজেদের কথায়।",
-            )}
-          </h2>
-        </Reveal>
-
-        {/* Full-bleed marquee viewport - breaks out of container-page padding so cards bleed off both edges */}
-        <div
-          aria-label={t(lang, "Customer voices", "ক্রেতাদের কথা")}
-          className="voices-viewport relative mt-6 tablet:mt-8 left-1/2 -translate-x-1/2 w-screen overflow-hidden"
-        >
-          <div className="voices-track flex gap-6 w-max py-1">
-            {[...VOICES, ...VOICES].map((v, i) => (
-              <figure
-                key={`${v.name}-${i}`}
-                className="shrink-0 w-[320px] tablet:w-[380px] bg-[var(--color-paper)] text-[var(--color-ink)] rounded-[4px] p-8 flex flex-col gap-6 min-h-[280px]"
-              >
-                <blockquote className="text-[15px] leading-[1.55] !text-[var(--color-ink)] flex-1">
-                  {t(lang, v.quote, v.quoteBn)}
-                </blockquote>
-                <figcaption className="flex items-center gap-3 mt-auto">
-                  {/* Dev placeholder: cream 400x400 jpg clipped to a circle with a hair border so the slot is visible against the cream card. Swap the jpg files for real portraits without touching the markup. */}
-                  <div className="shrink-0 w-10 h-10 rounded-full overflow-hidden border border-[rgba(19,19,19,0.08)] bg-[var(--color-grain)]">
-                    <Image
-                      src={v.image}
-                      alt=""
-                      width={40}
-                      height={40}
-                      className="block w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <span
-                      className="text-[13px] !text-[var(--color-ink)]"
-                      style={{ fontWeight: 500 }}
-                    >
-                      {t(lang, v.name, v.nameBn)}
-                    </span>
-                    <span className="text-[12px] !text-[var(--color-ink-muted)] mt-0.5">
-                      {t(lang, v.role, v.roleBn)}
-                    </span>
-                  </div>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
+        <VoicesMarquee />
       </Section>
 
       {/* ───────────── Trust register grids ───────────── */}
       <Section tone="paper">
-        <Reveal as="h2" className="t-h2 max-w-[900px]">
-          {t(
-            lang,
-            "The buyers on the platform. The investors behind it.",
-            "প্ল্যাটফর্মে থাকা বায়াররা। পেছনে থাকা বিনিয়োগকারীরা।",
-          )}
-        </Reveal>
-
-        <div className="mt-14 tablet:mt-16">
-          <div className="grid grid-cols-3 tablet:grid-cols-4 desktop:grid-cols-6 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
-            {PARTNERS.map((p) => (
-              <div
-                key={p.alt}
-                className="bg-white aspect-[4/3] flex items-center justify-center p-4 tablet:p-5"
-              >
-                <Image
-                  src={p.src}
-                  alt={p.alt}
-                  width={240}
-                  height={120}
-                  className="max-h-[64px] w-auto max-w-[82%] object-contain"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-12 tablet:mt-14">
-          <div className="grid grid-cols-2 tablet:grid-cols-5 gap-px bg-[var(--color-line)] border border-[var(--color-line)] rounded-2xl overflow-hidden">
-            {INVESTORS.map((p) => (
-              <div
-                key={p.alt}
-                className="bg-white aspect-[4/3] flex items-center justify-center p-6"
-              >
-                <Image
-                  src={p.src}
-                  alt={p.alt}
-                  width={160}
-                  height={60}
-                  className="max-h-[52px] w-auto object-contain"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <TrustGrids />
       </Section>
 
       {/* ───────────── Join - CTA triad ───────────── */}

@@ -66,9 +66,10 @@ export function GlobeFigure({
 
   const tick = useCallback((globe: ReturnType<typeof createGlobe>) => {
     if (!runningRef.current) return;
-    phiRef.current += 0.0035;
+    phiRef.current += 0.007; // doubled to compensate for 30fps throttle
     globe.update({ phi: phiRef.current });
-    requestAnimationFrame(() => tick(globe));
+    // Throttle to ~30fps to cut GPU/CPU usage in half
+    setTimeout(() => requestAnimationFrame(() => tick(globe)), 16);
   }, []);
 
   useEffect(() => {
@@ -78,18 +79,18 @@ export function GlobeFigure({
     let width = canvas.offsetWidth;
     const onResize = () => {
       width = canvas.offsetWidth;
-      globe.update({ width: width * 2, height: width * 2 });
+      globe.update({ width, height: width });
     };
 
     const globe = createGlobe(canvas, {
-      devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      devicePixelRatio: 1,
+      width,
+      height: width,
       phi: 0,
       theta: 0.25,
       dark: 0,
       diffuse: 1.1,
-      mapSamples: 6000,
+      mapSamples: 2000,
       mapBrightness: 5,
       baseColor: [0.024, 0.369, 0.227],
       markerColor: [0.85, 0.4, 0.3],
