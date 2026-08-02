@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Hind_Siliguri } from "next/font/google";
+import { Plus_Jakarta_Sans, Geist_Mono, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
+import { Nav } from "@/components/site/Nav";
+import { Footer } from "@/components/site/Footer";
+import { LanguageProvider } from "@/components/site/LanguageProvider";
+import { getLang } from "@/lib/i18n.server";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -17,82 +28,43 @@ const bengali = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  title: "Service Temporarily Unavailable · Fashol",
+  metadataBase: new URL("https://fashol.com"),
+  title: {
+    default: "Fashol - Building a Safe, Sustainable food supply chain",
+    template: "%s · Fashol",
+  },
   description:
-    "Fashol is temporarily unavailable while we resolve an unexpected issue.",
-  robots: { index: false, follow: false },
+    "Fashol moves perishable produce from smallholder farms in Bangladesh to buyers in Dhaka, Singapore, and Dubai. Direct pricing, real-time logistics, 26 percent less waste.",
+  openGraph: {
+    title: "Fashol - Building a Safe, Sustainable food supply chain",
+    description:
+      "Direct-from-farm produce, four-tier quality grading, 24-hour settlement. Nine districts, 40+ hubs.",
+    type: "website",
+    locale: "en_US",
+    images: ["/images/content/hero-paddy-aerial.jpg"],
+  },
 };
 
-function RailwayIcon() {
-  return (
-    <svg
-      width="64"
-      height="64"
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Railway"
-    >
-      <circle cx="32" cy="32" r="32" fill="#0B0C0E" />
-      <path
-        d="M16 32C16 32 24 20 32 20C40 20 48 32 48 32C48 32 40 44 32 44C24 44 16 32 16 32Z"
-        fill="white"
-      />
-      <path d="M26 28L38 32L26 36V28Z" fill="#0B0C0E" />
-    </svg>
-  );
-}
-
-export default async function RootLayout() {
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const lang = await getLang();
   return (
     <html
-      lang="en"
-      data-lang="en"
-      className={`${plusJakarta.variable} ${bengali.variable}`}
+      lang={lang}
+      data-lang={lang}
+      className={`${plusJakarta.variable} ${geistMono.variable} ${bengali.variable}`}
     >
-      <body className="min-h-screen flex items-center justify-center bg-white">
-        <main className="flex flex-col items-center text-center px-6 max-w-lg mx-auto">
-          {/* Railway Icon */}
-          <div className="mb-8">
-            <RailwayIcon />
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 font-[family-name:var(--font-plus-jakarta)]">
-            Service Temporarily Unavailable
-          </h1>
-
-          {/* Divider */}
-          <div className="w-16 h-0.5 bg-gray-200 mb-6" />
-
-          {/* Message */}
-          <div className="space-y-4 text-gray-600 font-[family-name:var(--font-plus-jakarta)] leading-relaxed">
-            <p className="text-base sm:text-lg">
-              You have already used up{" "}
-              <span className="font-semibold text-gray-800">$5</span> of your
-              monthly limit and exceeded your billing cap of{" "}
-              <span className="font-semibold text-gray-800">$10</span>.
-            </p>
-
-            <p className="text-sm sm:text-base">
-              It appears your service has experienced an unexpected surge in
-              activity. To protect your infrastructure, we have temporarily
-              suspended the service. To reactivate it, please pay your
-              outstanding balance and restart the service.
-            </p>
-          </div>
-
-          {/* Contact hint */}
-          <p className="mt-10 text-xs text-gray-400 font-[family-name:var(--font-plus-jakarta)]">
-            If you believe this is a mistake, please contact{" "}
-            <a
-              href="mailto:support@railway.com"
-              className="underline hover:text-gray-600 transition-colors"
-            >
-              support@railway.com
-            </a>
-          </p>
-        </main>
+      <body className="min-h-screen flex flex-col bg-paper text-ink">
+        <LanguageProvider lang={lang}>
+          <Nav />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );
