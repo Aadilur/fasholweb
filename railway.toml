@@ -1,6 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd site && npm install && npm run build && cp -r public .next/standalone/public && cp -r .next/static .next/standalone/.next/static"
+buildCommand = "cd site && npm install && npm run build && cp -r public .next/standalone/public && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/static"
 configPath = "site"
 
 [deploy]
