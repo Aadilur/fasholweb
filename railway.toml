@@ -1,10 +1,10 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd site && npm install && npm run build && cp -r public .next/standalone/public && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/static"
+buildCommand = "npm install && npm run build && cp -r public .next/standalone/public && mkdir -p .next/standalone/.next && cp -r .next/static .next/standalone/.next/static"
 configPath = "site"
 
 [deploy]
 # standalone output requires node server.js, not next start
 # 350MB heap + ~80MB V8/native overhead stays safely under the 500MB container limit.
-startCommand = "cd site && NODE_OPTIONS='--max-old-space-size=350' node .next/standalone/server.js"
+startCommand = "NODE_OPTIONS='--max-old-space-size=350' node .next/standalone/server.js"
 numReplicas = 1
