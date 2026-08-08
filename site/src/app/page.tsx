@@ -1,3 +1,6 @@
+"use client";
+
+import { useLang } from "@/components/site/LanguageProvider";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { Section } from "@/components/ui/Section";
@@ -6,7 +9,6 @@ import { Reveal, StaggerChildren, StaggerItem } from "@/components/ui/Reveal";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
 import { GlobeFigure } from "@/components/site/GlobeLazy";
 import { t } from "@/lib/i18n";
-import { getLang } from "@/lib/i18n.server";
 
 // Code-split heavy below-fold sections — ssr:false keeps them out of the server render
 // path, reducing per-request memory on the constrained 500MB instance.
@@ -26,8 +28,8 @@ const TrustGrids = dynamic(
   { ssr: false },
 );
 
-export default async function HomePage() {
-  const lang = await getLang();
+export default function HomePage() {
+  const lang = useLang();
   return (
     <>
       {/* ───────────── Hero ───────────── */}

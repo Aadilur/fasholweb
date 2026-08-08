@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { getLang } from "@/lib/i18n.server";
 import { t, type Lang } from "@/lib/i18n";
+import { useLang } from "@/components/site/LanguageProvider";
 
 type FLink = { href: string; en: string; bn: string; external?: boolean };
 
@@ -22,15 +24,37 @@ const platformLinks: FLink[] = [
 ];
 
 const connectLinks: FLink[] = [
-  { href: "tel:+8809613105505", en: "+880 9613 105 505", bn: "+৮৮০ ৯৬১৩ ১০৫ ৫০৫" },
-  { href: "mailto:info@fashol.com", en: "info@fashol.com", bn: "info@fashol.com" },
-  { href: "https://www.facebook.com/fasholcom/", en: "Facebook", bn: "ফেসবুক", external: true },
-  { href: "https://www.linkedin.com/company/fashol", en: "LinkedIn", bn: "লিংকডইন", external: true },
-  { href: "https://www.youtube.com/channel/UCMAWUuelzAQc9nYKZ2s-fxQ", en: "YouTube", bn: "ইউটিউব", external: true },
+  {
+    href: "tel:+8809613105505",
+    en: "+880 9613 105 505",
+    bn: "+৮৮০ ৯৬১৩ ১০৫ ৫০৫",
+  },
+  {
+    href: "mailto:info@fashol.com",
+    en: "info@fashol.com",
+    bn: "info@fashol.com",
+  },
+  {
+    href: "https://www.facebook.com/fasholcom/",
+    en: "Facebook",
+    bn: "ফেসবুক",
+    external: true,
+  },
+  {
+    href: "https://www.linkedin.com/company/fashol",
+    en: "LinkedIn",
+    bn: "লিংকডইন",
+    external: true,
+  },
+  {
+    href: "https://www.youtube.com/channel/UCMAWUuelzAQc9nYKZ2s-fxQ",
+    en: "YouTube",
+    bn: "ইউটিউব",
+    external: true,
+  },
 ];
 
-const linkOnDark =
-  "text-[rgba(0,0,0,0.72)] hover:text-black transition-colors";
+const linkOnDark = "text-[rgba(0,0,0,0.72)] hover:text-black transition-colors";
 const headingOnDark = "text-[var(--color-ink)] text-[15px] tracking-[-0.01em]";
 
 function LinkColumn({
@@ -71,8 +95,8 @@ function LinkColumn({
   );
 }
 
-export async function Footer() {
-  const lang = await getLang();
+export function Footer() {
+  const lang = useLang();
   return (
     <footer className="relative isolate overflow-hidden bg-[var(--color-ink)] text-[var(--color-ink)]">
       {/* Background photograph */}
@@ -109,7 +133,11 @@ export async function Footer() {
         <div className="grid grid-cols-1 tablet:grid-cols-12 gap-12 desktop:gap-8">
           {/* Brand column */}
           <div className="tablet:col-span-5">
-            <Link href="/" aria-label="Fashol home" className="inline-flex items-center">
+            <Link
+              href="/"
+              aria-label="Fashol home"
+              className="inline-flex items-center"
+            >
               <Image
                 src="/fashol-logo-full.png"
                 alt="Fashol"
@@ -123,15 +151,31 @@ export async function Footer() {
               className="mt-7 text-[24px] tablet:text-[28px] leading-[1.15] tracking-[-0.02em] text-[var(--color-ink)] max-w-sm"
               style={{ fontWeight: 600 }}
             >
-              {t(lang, "A safe, sustainable food supply chain.", "নিরাপদ, টেকসই সাপ্লাই চেইন।")}
+              {t(
+                lang,
+                "A safe, sustainable food supply chain.",
+                "নিরাপদ, টেকসই সাপ্লাই চেইন।",
+              )}
             </h2>
           </div>
 
           {/* Link columns */}
           <div className="tablet:col-span-7 grid grid-cols-2 tablet:grid-cols-3 gap-10">
-            <LinkColumn heading={t(lang, "Company", "কোম্পানি")} links={companyLinks} lang={lang} />
-            <LinkColumn heading={t(lang, "Navigation", "নেভিগেশন")} links={platformLinks} lang={lang} />
-            <LinkColumn heading={t(lang, "Connect", "যোগাযোগ")} links={connectLinks} lang={lang} />
+            <LinkColumn
+              heading={t(lang, "Company", "কোম্পানি")}
+              links={companyLinks}
+              lang={lang}
+            />
+            <LinkColumn
+              heading={t(lang, "Navigation", "নেভিগেশন")}
+              links={platformLinks}
+              lang={lang}
+            />
+            <LinkColumn
+              heading={t(lang, "Connect", "যোগাযোগ")}
+              links={connectLinks}
+              lang={lang}
+            />
           </div>
         </div>
       </div>

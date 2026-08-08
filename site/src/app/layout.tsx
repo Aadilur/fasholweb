@@ -4,7 +4,6 @@ import "./globals.css";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { LanguageProvider } from "@/components/site/LanguageProvider";
-import { getLang } from "@/lib/i18n.server";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -45,20 +44,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const lang = await getLang();
   return (
     <html
-      lang={lang}
-      data-lang={lang}
+      lang="en"
       className={`${plusJakarta.variable} ${geistMono.variable} ${bengali.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-paper text-ink">
-        <LanguageProvider lang={lang}>
+        <LanguageProvider>
           <Nav />
           <main id="main" className="flex-1">
             {children}
