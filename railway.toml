@@ -4,5 +4,5 @@ buildCommand = "cd site && npm install && npm run build"
 configPath = "site"
 
 [deploy]
-startCommand = "cd site && npm run start"
+startCommand = "cd site && NODE_OPTIONS='--max-old-space-size=400' npm run start"
 numReplicas = 1

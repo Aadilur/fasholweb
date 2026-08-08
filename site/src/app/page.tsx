@@ -8,21 +8,22 @@ import { GlobeFigure } from "@/components/site/GlobeLazy";
 import { t } from "@/lib/i18n";
 import { getLang } from "@/lib/i18n.server";
 
-// Code-split heavy below-fold sections to reduce initial JS bundle
+// Code-split heavy below-fold sections — ssr:false keeps them out of the server render
+// path, reducing per-request memory on the constrained 500MB instance.
 const PlatformSection = dynamic(
   () =>
     import("@/components/site/PlatformSection").then((m) => m.PlatformSection),
-  { ssr: true },
+  { ssr: false },
 );
 
 const VoicesMarquee = dynamic(
   () => import("@/components/site/VoicesMarquee").then((m) => m.VoicesMarquee),
-  { ssr: true },
+  { ssr: false },
 );
 
 const TrustGrids = dynamic(
   () => import("@/components/site/TrustGrids").then((m) => m.TrustGrids),
-  { ssr: true },
+  { ssr: false },
 );
 
 export default async function HomePage() {

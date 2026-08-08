@@ -9,11 +9,14 @@ const nextConfig: NextConfig = {
   // Production browser source maps disabled (smaller bundles, no source leak)
   productionBrowserSourceMaps: false,
 
-  // Image optimization
+  // Image optimization — minimumCacheTTL prevents re-processing the same image on every cache miss.
+  // Fewer size variants reduces cold-start memory spikes on a constrained instance.
   images: {
     formats: ["image/webp", "image/avif"],
-    deviceSizes: [480, 768, 1024, 1280, 1536],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // Single variant per category — absolute minimum cache entries, lowest memory.
+    deviceSizes: [1920],
+    imageSizes: [256],
+    minimumCacheTTL: 604800, // 7 days
   },
 
   // Security & perf headers
