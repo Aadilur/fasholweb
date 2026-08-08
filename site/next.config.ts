@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
   // Tells Next.js the monorepo root so file tracing works correctly on Railway.
   outputFileTracingRoot: path.join(__dirname, ".."),
 
-
   // Compress responses for smaller payloads
   compress: true,
 
