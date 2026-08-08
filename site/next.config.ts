@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // Tells Next.js the monorepo root so file tracing works correctly on Railway.
+  outputFileTracingRoot: path.join(__dirname, ".."),
+
 
   // Compress responses for smaller payloads
   compress: true,
@@ -9,14 +13,10 @@ const nextConfig: NextConfig = {
   // Production browser source maps disabled (smaller bundles, no source leak)
   productionBrowserSourceMaps: false,
 
-  // Image optimization — minimumCacheTTL prevents re-processing the same image on every cache miss.
-  // Fewer size variants reduces cold-start memory spikes on a constrained instance.
+  // unoptimized: server does zero image processing — no LRU cache, no sharp, no RAM spike.
+  // Images are already <1MB each; browser/CDN caching handles the rest.
   images: {
-    formats: ["image/webp", "image/avif"],
-    // Single variant per category — absolute minimum cache entries, lowest memory.
-    deviceSizes: [1920],
-    imageSizes: [256],
-    minimumCacheTTL: 604800, // 7 days
+    unoptimized: true,
   },
 
   // Security & perf headers

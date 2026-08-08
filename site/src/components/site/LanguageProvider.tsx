@@ -10,7 +10,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const match = document.cookie.match(
-      new RegExp(`(?:^|; )${LANG_COOKIE}=([^;]*)`)
+      new RegExp(`(?:^|; )${LANG_COOKIE}=([^;]*)`),
     );
     if (match?.[1] === "bn") setLang("bn");
   }, []);
