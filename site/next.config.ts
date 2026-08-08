@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  // Tells Next.js the monorepo root so file tracing works correctly on Railway.
-  outputFileTracingRoot: path.join(__dirname, ".."),
 
   // Compress responses for smaller payloads
   compress: true,
